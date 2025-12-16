@@ -28,8 +28,8 @@ jobs:
           pip install -U setuptools wheel Kekik httpx parsel requests
           
 
-      - name: gbl.py Çalıştır
-        run: python gbl.py        
+      - name: geblt.py Çalıştır
+        run: python geblt.py        
        
       
       - name: Değişiklik Kontrolü
