@@ -1,11 +1,14 @@
-name: Kontrol
+name: CanliTV M3U Güncelleme
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
   cancel-in-progress: true
+
 on:
   workflow_dispatch:
   schedule:
     - cron: '*/5 * * * *'  
+
 jobs:
   BirlesikGuncelleme:
     runs-on: ubuntu-latest
@@ -25,13 +28,11 @@ jobs:
       - name: Gereksinimleri Kur
         run: |
           python -m pip install --upgrade pip
-          pip install -U setuptools wheel Kekik httpx parsel requests
-          
+          pip install requests
 
       - name: geblt.py Çalıştır
-        run: python geblt.py        
-     
-      
+        run: python geblt.py
+
       - name: Değişiklik Kontrolü
         id: degisiklik_kontrol
         run: |
@@ -42,6 +43,6 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add .
+          git add yeni.m3u
           git commit -m "🔄 Kanallar güncellendi" -m "📺 Domain kontrolü ve M3U güncellemeleri tamamlandı" -m "🕒 Otomatik işlem - $GITHUB_SHA"
           git push
