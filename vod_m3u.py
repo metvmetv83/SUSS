@@ -1,75 +1,120 @@
+
 import requests
 import time
 import os
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 
-# === KULLANICININ GİRMESİ GEREKEN ===
+# ================== AYARLAR ==================
 BEARER_TOKEN = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbnYiOiJMSVZFIiwiaXBiIjoiMCIsImNnZCI6IjA5M2Q3MjBhLTUwMmMtNDFlZC1hODBmLTJiODE2OTg0ZmI5NSIsImNzaCI6IlRSS1NUIiwiZGN0IjoiM0VGNzUiLCJkaSI6IjMwYTM5YzllLWE4ZDYtNGEwMC05NDBmLTFjMTE4NDgzZDcxMiIsInNnZCI6ImJkNmUyNmY5LWJkMzYtNDE2ZC05YWQzLTYzNjhlNGZkYTMyMiIsInNwZ2QiOiJjYjZmZGMwMi1iOGJlLTQ3MTYtYTZjYi1iZTEyYTg4YjdmMDkiLCJpY2giOiIwIiwiaWRtIjoiMCIsImlhIjoiOjpmZmZmOjEwLjAuMC4yMDYiLCJhcHYiOiIxLjAuMCIsImFibiI6IjEwMDAiLCJuYmYiOjE3NTE3MDMxODQsImV4cCI6MTc1MTcwMzI0NCwiaWF0IjoxNzUxNzAzMTg0fQ.SGC_FfT7cU1RVM4E5rMYO2IsA4aYUoYq2SXl51-PZwM"
-OUTPUT_M3U = "vodden.m3u"
 VOD_ID_FILE = "vod_ids.txt"
+OUTPUT_M3U = "vodden.m3u"
 
-HEADERS = {
-    "Authorization": BEARER_TOKEN,
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+BASE_URL = "https://core-api.kablowebtv.com/api/vod/detail"
+
+# ================== SESSION ==================
+session = requests.Session()
+
+session.headers.update({
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36",
     "Referer": "https://tvheryerde.com",
-    "Origin": "https://tvheryerde.com"
-}
+    "Origin": "https://tvheryerde.com",
+    "Cache-Control": "max-age=0",
+    "Authorization": BEARER_TOKEN
+})
 
+retry = Retry(
+    total=3,
+    backoff_factor=2,
+    status_forcelist=[429, 500, 502, 503, 504],
+    allowed_methods=["GET"]
+)
+
+adapter = HTTPAdapter(max_retries=retry)
+session.mount("https://", adapter)
+
+# ================== FONKSİYONLAR ==================
 def load_vod_ids(filename):
-    try:
-        with open(filename, "r", encoding="utf-8") as f:
-            return [line.strip() for line in f if line.strip()]
-    except FileNotFoundError:
-        print(f"[!] {filename} bulunamadı.")
+    if not os.path.exists(filename):
+        print(f"[!] {filename} bulunamadı")
         return []
+    with open(filename, "r", encoding="utf-8") as f:
+        return [x.strip() for x in f if x.strip()]
 
-def get_film_detail(vod_id):
-    url = "https://core-api.kablowebtv.com/api/vod/detail"
+def get_vod_detail(vod_id):
     try:
-        res = requests.get(url, headers=HEADERS, params={"VodUId": vod_id}, timeout=10)
-        res.raise_for_status()
-        data = res.json()
-        if data.get("IsSucceeded") and data.get("Data"):
-            return data["Data"][0]
+        r = session.get(
+            BASE_URL,
+            params={
+                "VodUId": vod_id,
+                "checkip": "false"
+            },
+            timeout=25
+        )
+        r.raise_for_status()
+        js = r.json()
+        if js.get("IsSucceeded") and js.get("Data"):
+            return js["Data"][0]
+    except requests.exceptions.Timeout:
+        print(f"[⏱️ TIMEOUT] {vod_id}")
     except Exception as e:
-        print(f"[!] Hata: {vod_id} → {e}")
+        print(f"[!] HATA {vod_id}: {e}")
     return None
 
-def write_m3u(films):
-    m3u_path = os.path.join(os.getcwd(), OUTPUT_M3U)
-    with open(m3u_path, "w", encoding="utf-8") as f:
+def write_m3u(items):
+    with open(OUTPUT_M3U, "w", encoding="utf-8") as f:
         f.write("#EXTM3U\n")
-        for film in films:
-            title = film.get("Title", "Bilinmeyen")
-            uid = film.get("UId")
-            logo = ""
-            for poster in film.get("Posters", []):
-                if poster.get("Type", "").lower() == "listing":
-                    logo = poster.get("ImageUrl", "")
-                    break
-            stream = film.get("StreamData", {})
-            mpd = stream.get("DashStreamUrl")
-            if mpd and not stream.get("IsDrmEnabled", True):
-                f.write(f'#EXTINF:-1 tvg-id="{uid}" tvg-logo="{logo}" group-title="VOD",{title}\n{mpd}\n')
-    print(f"[✓] {len(films)} film yazıldı → {OUTPUT_M3U}")
 
+        for item in items:
+            title = item.get("Title", "Bilinmeyen")
+            uid = item.get("UId", "")
+            posters = item.get("Posters", [])
+            stream = item.get("StreamData", {})
+
+            logo = ""
+            for p in posters:
+                if p.get("Type", "").lower() == "listing":
+                    logo = p.get("ImageUrl", "")
+                    break
+
+            mpd = stream.get("DashStreamUrl")
+            drm = stream.get("IsDrmEnabled", True)
+
+            if mpd and not drm:
+                f.write(
+                    f'#EXTINF:-1 tvg-id="{uid}" tvg-logo="{logo}" group-title="VOD",{title}\n{mpd}\n'
+                )
+
+    print(f"[✓] M3U oluşturuldu → {OUTPUT_M3U}")
+
+# ================== MAIN ==================
 def main():
     vod_ids = load_vod_ids(VOD_ID_FILE)
     if not vod_ids:
         return
 
-    collected = []
-    print(f"[▶] {len(vod_ids)} adet film işleniyor...")
+    total = len(vod_ids)
+    results = []
 
-    for i, vid in enumerate(vod_ids):
-        print(f"[{i+1}/{len(vod_ids)}] Alınıyor: {vid}")
-        detail = get_film_detail(vid)
-        if detail and detail.get("StreamData", {}).get("DashStreamUrl"):
-            collected.append(detail)
-        time.sleep(0.5)
+    print(f"[▶] {total} VOD işleniyor...")
 
-    write_m3u(collected)
-    print("📂 Çalışma dizini:", os.getcwd())
-    print("📂 Mevcut dosyalar:", os.listdir())
+    for i, vod_id in enumerate(vod_ids, 1):
+        print(f"[{i}/{total}] {vod_id}")
 
+        detail = get_vod_detail(vod_id)
+        if detail:
+            results.append(detail)
+
+        time.sleep(1.2)
+
+        if i % 40 == 0:
+            print("⏸️ Kısa mola...")
+            time.sleep(8)
+
+    write_m3u(results)
+
+    print("📂 Dosyalar:", os.listdir())
+
+# ================== ÇALIŞTIR ==================
 if __name__ == "__main__":
     main()
