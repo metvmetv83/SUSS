@@ -1,14 +1,18 @@
+
 import requests
 import time
 import os
 import json
 from datetime import datetime
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 
-# === KULLANICININ GİRMESİ GEREKEN ===
+# ================== AYARLAR ==================
 BEARER_TOKEN = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbnYiOiJMSVZFIiwiaXBiIjoiMCIsImNnZCI6IjA5M2Q3MjBhLTUwMmMtNDFlZC1hODBmLTJiODE2OTg0ZmI5NSIsImNzaCI6IlRSS1NUIiwiZGN0IjoiM0VGNzUiLCJkaSI6IjMwYTM5YzllLWE4ZDYtNGEwMC05NDBmLTFjMTE4NDgzZDcxMiIsInNnZCI6ImJkNmUyNmY5LWJkMzYtNDE2ZC05YWQzLTYzNjhlNGZkYTMyMiIsInNwZ2QiOiJjYjZmZGMwMi1iOGJlLTQ3MTYtYTZjYi1iZTEyYTg4YjdmMDkiLCJpY2giOiIwIiwiaWRtIjoiMCIsImlhIjoiOjpmZmZmOjEwLjAuMC4yMDYiLCJhcHYiOiIxLjAuMCIsImFibiI6IjEwMDAiLCJuYmYiOjE3NTE3MDMxODQsImV4cCI6MTc1MTcwMzI0NCwiaWF0IjoxNzUxNzAzMTg0fQ.SGC_FfT7cU1RVM4E5rMYO2IsA4aYUoYq2SXl51-PZwM"
 OUTPUT_M3U = "vodden.m3u"
+OUTPUT_M3U = "vodden.m3u"
 VOD_ID_FILE = "vod_ids.txt"
-LOG_FILE = "vod_log.json"  # Hata logu için
+LOG_FILE = "vod_log.json"
 
 HEADERS = {
     "Authorization": BEARER_TOKEN,
@@ -19,236 +23,198 @@ HEADERS = {
     "Accept-Language": "tr-TR,tr;q=0.9,en-US;q=0.8,en;q=0.7"
 }
 
+# ================== SESSION ==================
+session = requests.Session()
+session.headers.update(HEADERS)
+
+retry = Retry(
+    total=3,
+    backoff_factor=2,
+    status_forcelist=[429, 500, 502, 503, 504],
+    allowed_methods=["GET"]
+)
+
+adapter = HTTPAdapter(max_retries=retry)
+session.mount("https://", adapter)
+
+# ================== TOKEN KONTROL ==================
 def check_token_expiry():
-    """Token'in süresinin dolup dolmadığını kontrol et"""
     try:
-        import jwt
+        try:
+            import jwt
+        except ImportError:
+            print("[!] jwt modülü yok, token süresi kontrolü atlandı")
+            return True
+
         token = BEARER_TOKEN.replace("Bearer ", "")
         decoded = jwt.decode(token, options={"verify_signature": False})
-        exp_timestamp = decoded.get('exp')
-        if exp_timestamp:
-            exp_date = datetime.fromtimestamp(exp_timestamp)
-            now = datetime.now()
-            if exp_date < now:
-                print(f"[!] TOKEN SÜRESİ DOLMUŞ: {exp_date}")
-                return False
-            else:
-                print(f"[✓] Token geçerli, süresi: {exp_date}")
-                return True
+        exp = decoded.get("exp")
+
+        if not exp:
+            return True
+
+        exp_date = datetime.fromtimestamp(exp)
+        if exp_date < datetime.now():
+            print(f"[!] TOKEN SÜRESİ DOLMUŞ: {exp_date}")
+            return False
+
+        print(f"[✓] Token geçerli (bitiş: {exp_date})")
+        return True
+
     except Exception as e:
         print(f"[!] Token kontrol hatası: {e}")
-    return True
+        return True
 
+# ================== VOD ID OKUMA ==================
 def load_vod_ids(filename):
-    """VOD ID'lerini yükle, farklı formatları destekle"""
-    try:
-        with open(filename, "r", encoding="utf-8") as f:
-            ids = []
-            for line in f:
-                line = line.strip()
-                if line:
-                    # Sadece ID'yi al (URL'den veya tam satırdan)
-                    if "vod/" in line:
-                        # URL formatı: https://tvheryerde.com/vod/12345-abcde
-                        parts = line.split("/")
-                        if parts:
-                            ids.append(parts[-1])
-                    elif len(line) > 10:  # UID formatı kontrolü
-                        ids.append(line)
-            print(f"[✓] {len(ids)} VOD ID yüklendi")
-            return ids
-    except FileNotFoundError:
-        print(f"[!] {filename} bulunamadı!")
-        # Örnek ID'lerle devam et (test için)
-        return ["0c38309b-3e7d-426e-b6e5-0316b61ae8f6", "8e94b70f-9f34-4aff-b7bd-9ce706884426"]
-    except Exception as e:
-        print(f"[!] Dosya okuma hatası: {e}")
+    if not os.path.exists(filename):
+        print(f"[!] {filename} bulunamadı")
         return []
 
-def get_film_detail(vod_id):
-    """Film detaylarını API'den al"""
-    url = "https://core-api.kablowebtv.com/api/vod/detail"
-    params = {"VodUId": vod_id}
-    
-    try:
-        print(f"  → API isteği: {vod_id}")
-        res = requests.get(url, headers=HEADERS, params=params, timeout=15)
-        res.raise_for_status()
-        
-        data = res.json()
-        
-        if data.get("IsSucceeded"):
-            if data.get("Data") and len(data["Data"]) > 0:
-                film = data["Data"][0]
-                title = film.get("Title", "Bilinmeyen")
-                print(f"  ✓ Bulundu: {title}")
-                return film
+    ids = []
+    with open(filename, "r", encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if not line:
+                continue
+            if "vod/" in line:
+                ids.append(line.split("/")[-1])
             else:
-                print(f"  [!] Data boş: {vod_id}")
-        else:
-            print(f"  [!] API başarısız: {data.get('Message', 'Bilinmeyen hata')}")
-            
+                ids.append(line)
+
+    print(f"[✓] {len(ids)} VOD ID yüklendi")
+    return ids
+
+# ================== API ÇAĞRISI ==================
+def get_film_detail(vod_id):
+    url = "https://core-api.kablowebtv.com/api/vod/detail"
+    params = {
+        "VodUId": vod_id,
+        "checkip": "false"
+    }
+
+    try:
+        r = session.get(url, params=params, timeout=25)
+        r.raise_for_status()
+
+        js = r.json()
+        if js.get("IsSucceeded") and js.get("Data"):
+            return js["Data"][0]
+
     except requests.exceptions.Timeout:
-        print(f"  [!] Timeout: {vod_id}")
-    except requests.exceptions.RequestException as e:
-        print(f"  [!] Network hatası: {vod_id} → {e}")
-    except json.JSONDecodeError:
-        print(f"  [!] JSON decode hatası: {vod_id}")
+        print(f"[⏱️ TIMEOUT] {vod_id}")
     except Exception as e:
-        print(f"  [!] Beklenmeyen hata: {vod_id} → {type(e).__name__}: {e}")
-    
+        print(f"[!] Hata {vod_id}: {e}")
+
     return None
 
+# ================== STREAM AYIKLAMA ==================
 def extract_stream_info(film):
-    """Filmden stream bilgilerini çıkar"""
-    if not film:
-        return None, None, None, None
-    
     title = film.get("Title", "Bilinmeyen")
     uid = film.get("UId", "")
-    
-    # Logo URL'sini bul
     logo = ""
-    for poster in film.get("Posters", []):
-        if poster.get("Type", "").lower() == "listing":
-            logo = poster.get("ImageUrl", "")
+
+    for p in film.get("Posters", []):
+        if p.get("Type", "").lower() == "listing":
+            logo = p.get("ImageUrl", "")
             break
-    
-    # Stream bilgileri
+
     stream = film.get("StreamData", {})
     mpd = stream.get("DashStreamUrl")
     hls = stream.get("HlsStreamUrl")
-    is_drm = stream.get("IsDrmEnabled", True)
-    
-    # Kategori/Genre
-    categories = film.get("Categories", [])
+    drm = stream.get("IsDrmEnabled", True)
+
     genre = "VOD"
-    if categories and isinstance(categories, list) and len(categories) > 0:
-        if isinstance(categories[0], dict):
-            genre = categories[0].get("Name", "VOD")
-        else:
-            genre = str(categories[0])
-    
-    return title, uid, logo, mpd, hls, is_drm, genre
+    cats = film.get("Categories", [])
+    if cats and isinstance(cats[0], dict):
+        genre = cats[0].get("Name", "VOD")
 
-def write_m3u(films, output_file=OUTPUT_M3U):
-    """Filmleri M3U formatında yaz"""
+    return title, uid, logo, mpd, hls, drm, genre
+
+# ================== M3U YAZ ==================
+def write_m3u(films):
     if not films:
-        print("[!] Yazılacak film bulunamadı!")
+        print("[!] Yazılacak içerik yok")
         return 0
-    
-    m3u_path = os.path.join(os.getcwd(), output_file)
-    valid_count = 0
-    
-    with open(m3u_path, "w", encoding="utf-8") as f:
-        f.write("#EXTM3U\n")
-        
-        for film in films:
-            title, uid, logo, mpd, hls, is_drm, genre = extract_stream_info(film)
-            
-            # Stream URL'si seç (önce MPD, sonra HLS)
-            stream_url = None
-            if mpd and not is_drm:
-                stream_url = mpd
-                stream_type = "MPD"
-            elif hls and not is_drm:
-                stream_url = hls
-                stream_type = "HLS"
-            
-            if stream_url:
-                # M3U satırını yaz
-                f.write(f'#EXTINF:-1 tvg-id="{uid}" tvg-name="{title}" tvg-logo="{logo}" group-title="{genre}",{title}\n')
-                f.write(f'{stream_url}\n')
-                valid_count += 1
-                print(f"  ✓ Eklendi: {title} ({stream_type})")
-            else:
-                print(f"  [!] Atlanıyor: {title} (DRM veya stream yok)")
-    
-    print(f"[✓] {valid_count}/{len(films)} film yazıldı → {output_file}")
-    return valid_count
 
-def save_log(films, log_file=LOG_FILE):
-    """Detaylı log kaydı"""
-    log_data = {
+    count = 0
+    with open(OUTPUT_M3U, "w", encoding="utf-8") as f:
+        f.write("#EXTM3U\n")
+
+        for film in films:
+            title, uid, logo, mpd, hls, drm, genre = extract_stream_info(film)
+
+            url = None
+            if mpd and not drm:
+                url = mpd
+            elif hls and not drm:
+                url = hls
+
+            if url:
+                f.write(
+                    f'#EXTINF:-1 tvg-id="{uid}" tvg-logo="{logo}" group-title="{genre}",{title}\n{url}\n'
+                )
+                count += 1
+
+    print(f"[✓] {count}/{len(films)} içerik yazıldı → {OUTPUT_M3U}")
+    return count
+
+# ================== LOG ==================
+def save_log(films):
+    data = {
         "timestamp": datetime.now().isoformat(),
-        "total_films": len(films),
+        "total": len(films),
         "films": []
     }
-    
+
     for film in films:
-        title, uid, logo, mpd, hls, is_drm, genre = extract_stream_info(film)
-        log_data["films"].append({
+        title, uid, logo, mpd, hls, drm, genre = extract_stream_info(film)
+        data["films"].append({
             "title": title,
             "id": uid,
-            "logo": logo,
-            "mpd_url": mpd,
-            "hls_url": hls,
-            "drm": is_drm,
-            "genre": genre,
-            "has_stream": bool(mpd or hls)
+            "drm": drm,
+            "mpd": mpd,
+            "hls": hls,
+            "genre": genre
         })
-    
-    with open(log_file, "w", encoding="utf-8") as f:
-        json.dump(log_data, f, indent=2, ensure_ascii=False)
-    
-    print(f"[✓] Log kaydedildi: {log_file}")
 
+    with open(LOG_FILE, "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=2, ensure_ascii=False)
+
+    print(f"[✓] Log yazıldı → {LOG_FILE}")
+
+# ================== MAIN ==================
 def main():
     print("=" * 50)
-    print("VOD Film Çekme Aracı")
+    print("VOD M3U OLUŞTURUCU")
     print("=" * 50)
-    
-    # Token kontrolü
+
     if not check_token_expiry():
-        print("[!] Lütfen yeni bir Bearer Token alın!")
         return
-    
-    # VOD ID'lerini yükle
+
     vod_ids = load_vod_ids(VOD_ID_FILE)
     if not vod_ids:
-        print("[!] İşlenecek VOD ID bulunamadı!")
         return
-    
-    collected = []
-    print(f"\n[▶] {len(vod_ids)} adet film işleniyor...\n")
-    
-    # Her film için detay al
+
+    films = []
+    total = len(vod_ids)
+
     for i, vid in enumerate(vod_ids, 1):
-        print(f"[{i}/{len(vod_ids)}] İşleniyor: {vid}")
+        print(f"[{i}/{total}] {vid}")
         detail = get_film_detail(vid)
         if detail:
-            collected.append(detail)
-        
-        # Rate limiting
-        if i < len(vod_ids):  # Son filmde bekleme
-            time.sleep(0.3)
-    
-    print(f"\n[✓] Toplam {len(collected)} film detayı alındı")
-    
-    # M3U dosyasını oluştur
-    valid_count = write_m3u(collected)
-    
-    # Log kaydet
-    if collected:
-        save_log(collected)
-    
-    # Sonuçları göster
-    print("\n" + "=" * 50)
-    print("SONUÇLAR:")
-    print(f"  • Toplam ID: {len(vod_ids)}")
-    print(f"  • Başarılı: {len(collected)}")
-    print(f"  • M3U'ya yazılan: {valid_count}")
-    print(f"  • Çalışma dizini: {os.getcwd()}")
-    
-    # Dosya listesi
-    print("\n📂 Mevcut dosyalar:")
-    files = os.listdir()
-    for file in sorted(files)[:10]:  # İlk 10 dosya
-        if file.endswith(('.m3u', '.txt', '.json')):
-            print(f"  • {file}")
-    
-    if len(files) > 10:
-        print(f"  • ... ve {len(files) - 10} daha")
+            films.append(detail)
 
+        time.sleep(1.0)
+        if i % 40 == 0:
+            print("⏸️ Kısa mola...")
+            time.sleep(8)
+
+    write_m3u(films)
+    save_log(films)
+
+    print("\n📂 Dosyalar:", os.listdir())
+
+# ================== RUN ==================
 if __name__ == "__main__":
     main()
