@@ -1,63 +1,36 @@
-name: DiziPal33 Plugin Kontrol
+name: DiziPal33 Film & Dizi Çekici
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 */6 * * *"
+    - cron: "0 */6 * * *"   # 6 saatte bir
 
 jobs:
-  test-plugin:
+  scrape:
     runs-on: ubuntu-latest
 
     steps:
-      - name: 📥 Repo Checkout
+      - name: Repo klonla
         uses: actions/checkout@v4
 
-      - name: 🐍 Python Kur
+      - name: Python kur
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
-      - name: 📦 Bağımlılıkları Kur
+      - name: Gerekli paketleri kur
         run: |
           python -m pip install --upgrade pip
-          pip install httpx selectolax
+          pip install requests beautifulsoup4 lxml
 
-      # 🔧 MOCK KekikStream
-      - name: 🧪 KekikStream Mock Oluştur
+      - name: Botu çalıştır
         run: |
-          mkdir -p KekikStream
-          cat << 'EOF' > KekikStream/Core.py
-          class PluginBase: pass
-          class MainPageResult:
-              def __init__(self, **k): pass
-          class SearchResult:
-              def __init__(self, **k): pass
-          class MovieInfo:
-              def __init__(self, **k): pass
-          class SeriesInfo:
-              def __init__(self, **k): pass
-          class Episode:
-              def __init__(self, **k): pass
-          class Subtitle:
-              def __init__(self, **k): pass
-          class ExtractResult:
-              def __init__(self, **k): pass
-          EOF
+          python dizipal33.py
 
-      - name: 🔍 Plugin Import Test
+      - name: Değişiklikleri kaydet
         run: |
-          python - << 'EOF'
-          import sys
-          sys.path.insert(0, ".")
-
-          try:
-              from dizipal33 import DiziPal33
-              p = DiziPal33()
-              print("✅ DiziPal33 başarıyla yüklendi")
-              print("🔗 Site:", p.main_url)
-              print("📺 Kategori sayısı:", len(p.main_page))
-          except Exception as e:
-              print("❌ Plugin hata verdi")
-              raise e
-          EOF
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add *.m3u
+          git commit -m "📺 DiziPal33 otomatik güncelleme" || echo "Değişiklik yok"
+          git push
