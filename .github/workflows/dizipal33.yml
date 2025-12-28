@@ -3,7 +3,7 @@ name: DiziPal33 Plugin Kontrol
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 */6 * * *"   # 6 saatte bir çalışır
+    - cron: "0 */6 * * *"
 
 jobs:
   test-plugin:
@@ -23,18 +23,40 @@ jobs:
           python -m pip install --upgrade pip
           pip install httpx selectolax
 
+      # 🔧 MOCK KekikStream
+      - name: 🧪 KekikStream Mock Oluştur
+        run: |
+          mkdir -p KekikStream
+          cat << 'EOF' > KekikStream/Core.py
+          class PluginBase: pass
+          class MainPageResult:
+              def __init__(self, **k): pass
+          class SearchResult:
+              def __init__(self, **k): pass
+          class MovieInfo:
+              def __init__(self, **k): pass
+          class SeriesInfo:
+              def __init__(self, **k): pass
+          class Episode:
+              def __init__(self, **k): pass
+          class Subtitle:
+              def __init__(self, **k): pass
+          class ExtractResult:
+              def __init__(self, **k): pass
+          EOF
+
       - name: 🔍 Plugin Import Test
         run: |
           python - << 'EOF'
           import sys
-          sys.path.append("plugins")
+          sys.path.insert(0, ".")
 
           try:
               from dizipal33 import DiziPal33
               p = DiziPal33()
               print("✅ DiziPal33 başarıyla yüklendi")
               print("🔗 Site:", p.main_url)
-              print("📺 Kategoriler:", len(p.main_page))
+              print("📺 Kategori sayısı:", len(p.main_page))
           except Exception as e:
               print("❌ Plugin hata verdi")
               raise e
