@@ -1,4 +1,5 @@
-
+# Bu araç @keyiflerolsun tarafından | @KekikAkademi için yazılmıştır.
+# DiziPal33 - Full Fix | Mehmet EYİGÜN
 
 from KekikStream.Core import (
     PluginBase, MainPageResult, SearchResult,
@@ -12,12 +13,12 @@ class DiziPal33(PluginBase):
     language    = "tr"
     main_url    = "https://dizipal1224.com"
     favicon     = f"https://www.google.com/s2/favicons?domain={main_url}&sz=64"
-    description = "DiziPal güncel dizi ve filmler"
+    description = "DiziPal tüm dizi ve filmler (full fix)"
 
     main_page = {
         f"{main_url}/diziler/son-bolumler": "Son Bölümler",
         f"{main_url}/diziler": "Yeni Diziler",
-        f"{main_url}/filmler": "Yeni Filmler",
+        f"{main_url}/filmler": "Filmler",
         f"{main_url}/koleksiyon/netflix": "Netflix",
         f"{main_url}/koleksiyon/exxen": "Exxen",
         f"{main_url}/koleksiyon/blutv": "BluTV",
@@ -28,19 +29,23 @@ class DiziPal33(PluginBase):
         f"{main_url}/tur/mubi": "Mubi",
     }
 
-    # =========================
+    # ======================================================
     # MAIN PAGE
-    # =========================
+    # ======================================================
     async def get_main_page(self, page: int, url: str, category: str):
-        if page > 1:
+        # 🔥 DiziPal film/koleksiyon sayfaları page=1 olmadan boş dönebiliyor
+        if "filmler" in url or "koleksiyon" in url or "diziler" in url:
+            url = f"{url}?page={page}"
+        elif page > 1:
             url = f"{url}?page={page}"
 
         r = await self.httpx.get(url)
         dom = HTMLParser(r.text)
-
         results = []
 
-        # Son bölümler
+        # =========================
+        # SON BÖLÜMLER
+        # =========================
         if "son-bolumler" in url:
             for item in dom.css("div.episode-item"):
                 name = item.css_first("div.name")
@@ -53,38 +58,45 @@ class DiziPal33(PluginBase):
 
                 ep_txt = ep.text(strip=True) if ep else ""
                 ep_txt = ep_txt.replace(". Sezon ", "x").replace(". Bölüm", "")
-
                 dizi_url = re.sub(r'/sezon.*', '', a.attrs.get("href"))
 
                 results.append(MainPageResult(
                     category=category,
                     title=f"{name.text(strip=True)} {ep_txt}",
                     url=self.fix_url(dizi_url),
-                    poster=self.fix_url(img.attrs.get("src")) if img else None
+                    poster=self.fix_url(
+                        img.attrs.get("src") or img.attrs.get("data-src")
+                    ) if img else None
                 ))
             return results
 
-        # Diğer listeler
+        # =========================
+        # DİZİ + FİLM + KOLEKSİYON
+        # =========================
         for li in dom.css("article ul li"):
             a = li.css_first("a[href]")
-            t = li.css_first("span.title")
+            t = li.css_first("span.title") or li.css_first("div.name")
             i = li.css_first("img")
 
             if not a or not t:
                 continue
 
+            poster = None
+            if i:
+                poster = i.attrs.get("src") or i.attrs.get("data-src")
+
             results.append(MainPageResult(
                 category=category,
                 title=t.text(strip=True),
                 url=self.fix_url(a.attrs["href"]),
-                poster=self.fix_url(i.attrs.get("src")) if i else None
+                poster=self.fix_url(poster) if poster else None
             ))
 
         return results
 
-    # =========================
+    # ======================================================
     # SEARCH
-    # =========================
+    # ======================================================
     async def search(self, query: str):
         self.httpx.headers.update({
             "Accept": "application/json",
@@ -116,9 +128,9 @@ class DiziPal33(PluginBase):
                 ))
         return results
 
-    # =========================
+    # ======================================================
     # LOAD ITEM
-    # =========================
+    # ======================================================
     async def load_item(self, url: str):
         self.httpx.headers.clear()
         self.httpx.headers.update({"User-Agent": "Mozilla/5.0"})
@@ -132,9 +144,10 @@ class DiziPal33(PluginBase):
         if og:
             poster = self.fix_url(og.attrs.get("content"))
 
-        year = self._re(html, r'Yapım Yılı.*?<div[^>]*>(\d{4})')
-        rating = self._re(html, r'IMDB Puanı.*?<div[^>]*>([\d.]+)')
+        year     = self._re(html, r'Yapım Yılı.*?<div[^>]*>(\d{4})')
+        rating   = self._re(html, r'IMDB Puanı.*?<div[^>]*>([\d.]+)')
         duration = self._re(html, r'Ortalama Süre.*?<div[^>]*>(\d+)', int)
+
         desc = dom.css_first("div.summary p")
         desc = desc.text(strip=True) if desc else None
 
@@ -200,9 +213,9 @@ class DiziPal33(PluginBase):
             duration=duration
         )
 
-    # =========================
+    # ======================================================
     # LOAD LINKS
-    # =========================
+    # ======================================================
     async def load_links(self, url: str):
         self.httpx.headers.clear()
         self.httpx.headers.update({"User-Agent": "Mozilla/5.0"})
@@ -239,9 +252,9 @@ class DiziPal33(PluginBase):
             subtitles=subs
         )]
 
-    # =========================
+    # ======================================================
     # REGEX HELPER
-    # =========================
+    # ======================================================
     def _re(self, text, pattern, cast=str):
         m = re.search(pattern, text, re.S | re.I)
         return cast(m.group(1)) if m else None
