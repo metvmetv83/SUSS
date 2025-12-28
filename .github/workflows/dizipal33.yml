@@ -1,0 +1,41 @@
+name: DiziPal33 Plugin Kontrol
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 */6 * * *"   # 6 saatte bir çalışır
+
+jobs:
+  test-plugin:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Repo Checkout
+        uses: actions/checkout@v4
+
+      - name: 🐍 Python Kur
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: 📦 Bağımlılıkları Kur
+        run: |
+          python -m pip install --upgrade pip
+          pip install httpx selectolax
+
+      - name: 🔍 Plugin Import Test
+        run: |
+          python - << 'EOF'
+          import sys
+          sys.path.append("plugins")
+
+          try:
+              from dizipal33 import DiziPal33
+              p = DiziPal33()
+              print("✅ DiziPal33 başarıyla yüklendi")
+              print("🔗 Site:", p.main_url)
+              print("📺 Kategoriler:", len(p.main_page))
+          except Exception as e:
+              print("❌ Plugin hata verdi")
+              raise e
+          EOF
