@@ -10,17 +10,9 @@ DEFAULT_HEADERS = {
     "Origin": "https://www.freeshot.live"
 }
 
-def load_channels(path=CHANNELS_FILE):
-    with open(path, "r", encoding="utf-8") as f:
+def load_channels():
+    with open(CHANNELS_FILE, "r", encoding="utf-8") as f:
         return json.load(f)
-
-async def construct_m3u8_from_embed(embed_url):
-    if not embed_url or "embed.html" not in embed_url:
-        return None
-
-    base_part = embed_url.split("embed.html")[0]
-    query_part = embed_url.split("embed.html")[1]
-    return f"{base_part}tracks-v1/index.fmp4.m3u8{query_part}"
 
 async def scrape_channel(playwright, channel):
     browser = await playwright.chromium.launch(
@@ -33,38 +25,47 @@ async def scrape_channel(playwright, channel):
     )
     page = await context.new_page()
 
-    print(f"\n📡 ערוץ: {channel['name']}")
+    found_m3u8 = None
+
+    async def handle_response(response):
+        nonlocal found_m3u8
+        url = response.url
+        if ".m3u8" in url and "token=" in url:
+            found_m3u8 = url
+
+    page.on("response", handle_response)
+
+    print(f"\n📡 Kanal: {channel['name']}")
 
     try:
-        await page.goto(channel["page_url"], timeout=30000, wait_until="domcontentloaded")
+        await page.goto(
+            channel["page_url"],
+            timeout=45000,
+            wait_until="networkidle"
+        )
 
-        embed_url = None
-        for _ in range(10):
-            for frame in page.frames:
-                if "embed.html" in frame.url and "token" in frame.url:
-                    embed_url = frame.url
-                    break
-            if embed_url:
+        # JS player çalışsın diye bekle
+        for _ in range(15):
+            if found_m3u8:
                 break
-            await page.wait_for_timeout(800)
+            await page.wait_for_timeout(1000)
 
-        if not embed_url:
-            print("      ⚠️ iframe לא נמצא")
+        if not found_m3u8:
+            print("      ❌ m3u8 yakalanamadı")
             return None
 
-        final_url = await construct_m3u8_from_embed(embed_url)
-        print("      ✅ לינק הופק")
-        return final_url
+        print("      ✅ m3u8 bulundu")
+        return found_m3u8
 
     except Exception as e:
-        print(f"      ❌ שגיאה: {e}")
+        print(f"      ❌ Hata: {e}")
         return None
 
     finally:
         await browser.close()
 
 async def main():
-    print("\n=== FreeShot Scraper – JSON Driven ===\n")
+    print("\n=== FreeShot Scraper – NETWORK MODE ===\n")
 
     channels = load_channels()
     results = []
@@ -74,12 +75,12 @@ async def main():
             if "page_url" not in ch:
                 continue
 
-            url = await scrape_channel(playwright, ch)
-            if url:
+            m3u8 = await scrape_channel(playwright, ch)
+            if m3u8:
                 results.append({
                     "id": ch["id"],
                     "name": ch["name"],
-                    "url": url,
+                    "url": m3u8,
                     "image": ch.get("image", ""),
                     "headers": DEFAULT_HEADERS
                 })
@@ -87,7 +88,7 @@ async def main():
     with open("channels.json", "w", encoding="utf-8") as f:
         json.dump(results, f, indent=2, ensure_ascii=False)
 
-    print("\n🏆 channels.json עודכן בהצלחה")
+    print("\n🏆 channels.json başarıyla güncellendi")
 
 if __name__ == "__main__":
     asyncio.run(main())
