@@ -4,7 +4,7 @@ from playwright.async_api import async_playwright
 
 CHANNELS_FILE = "channels.json"
 
-DEFAULT_HEADERS = {
+HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36",
     "Referer": "https://www.freeshot.live/",
     "Origin": "https://www.freeshot.live"
@@ -21,31 +21,47 @@ async def scrape_channel(playwright, channel):
     )
 
     context = await browser.new_context(
-        user_agent=DEFAULT_HEADERS["User-Agent"]
+        user_agent=HEADERS["User-Agent"],
+        extra_http_headers=HEADERS
     )
-    page = await context.new_page()
 
+    page = await context.new_page()
     found_m3u8 = None
 
-    async def handle_response(response):
+    async def on_request(request):
         nonlocal found_m3u8
-        url = response.url
+        url = request.url
         if ".m3u8" in url and "token=" in url:
             found_m3u8 = url
 
-    page.on("response", handle_response)
+    page.on("request", on_request)
 
     print(f"\n📡 Kanal: {channel['name']}")
 
     try:
         await page.goto(
             channel["page_url"],
-            timeout=45000,
-            wait_until="networkidle"
+            timeout=60000,
+            wait_until="domcontentloaded"
         )
 
-        # JS player çalışsın diye bekle
-        for _ in range(15):
+        # player JS çalışsın
+        await page.wait_for_timeout(3000)
+
+        # 👉 HER TÜRLÜ PLAY TETİĞİ
+        await page.mouse.click(400, 300)
+        await page.keyboard.press("Space")
+
+        # video varsa force play
+        await page.evaluate("""
+            document.querySelectorAll('video').forEach(v => {
+                v.muted = true;
+                v.play().catch(()=>{});
+            });
+        """)
+
+        # m3u8 yakalamak için bekle
+        for _ in range(20):
             if found_m3u8:
                 break
             await page.wait_for_timeout(1000)
@@ -65,7 +81,7 @@ async def scrape_channel(playwright, channel):
         await browser.close()
 
 async def main():
-    print("\n=== FreeShot Scraper – NETWORK MODE ===\n")
+    print("\n=== FreeShot Scraper – PLAY FORCE MODE ===\n")
 
     channels = load_channels()
     results = []
@@ -75,20 +91,19 @@ async def main():
             if "page_url" not in ch:
                 continue
 
-            m3u8 = await scrape_channel(playwright, ch)
-            if m3u8:
+            url = await scrape_channel(playwright, ch)
+            if url:
                 results.append({
                     "id": ch["id"],
                     "name": ch["name"],
-                    "url": m3u8,
-                    "image": ch.get("image", ""),
-                    "headers": DEFAULT_HEADERS
+                    "url": url,
+                    "headers": HEADERS
                 })
 
     with open("channels.json", "w", encoding="utf-8") as f:
         json.dump(results, f, indent=2, ensure_ascii=False)
 
-    print("\n🏆 channels.json başarıyla güncellendi")
+    print("\n🏆 channels.json güncellendi")
 
 if __name__ == "__main__":
     asyncio.run(main())
