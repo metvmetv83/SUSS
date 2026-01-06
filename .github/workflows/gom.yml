@@ -10,11 +10,16 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    # 🔴 EN KRİTİK SATIR
+    permissions:
+      contents: write
+
     steps:
       - name: Repoyu Klonla
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          persist-credentials: true
 
       - name: Python Kurulumu
         uses: actions/setup-python@v5
@@ -47,5 +52,5 @@ jobs:
           else
             git commit -m "Oto-Güncelleme: $(date +'%Y-%m-%d %H:%M')"
             git pull --rebase origin main
-            git push
+            git push origin main
           fi
