@@ -146,7 +146,7 @@ https://dsmartgo-live.ercdn.net/showmax/showmax.m3u8
 #EXTINF:-1 tvg-id="lider-haber" tvg-name="Lider Haber" group-title="Haber" tvg-logo="https://dsmart-static-v2.ercdn.net/content/q/xd/100989/Thumbnail.png",Lider Haber
 https://dsmartgo-live.ercdn.net/liderhaber/liderhaber.m3u8
 #EXTINF:-1 tvg-id="bi-kanal" tvg-name="Bi Kanal" group-title="Haber" tvg-logo="https://dsmart-static-v2.ercdn.net/content/H/00/73067/Thumbnail.png",Bi Kanal
-http://162.212.179.33/trn03/gt-bikanal/index.m3u8
+https://live.artidijitalmedya.com/artidijital_bikanal/bikanal/playlist.m3u8
 #EXTINF:-1 tvg-id="akit" tvg-name="Akit" group-title="Haber" tvg-logo="https://dsmart-static-v2.ercdn.net/content/E/lr/13378/Thumbnail.png",Akit
 https://dsmartgo-live.ercdn.net/akit/akit.m3u8
 #EXTINF:-1 tvg-id="diyanet-tv" tvg-name="Diyanet Tv" group-title="Diyanet" tvg-logo="https://dsmart-static-v2.ercdn.net/content/N/ZR/103646/Poster.png",Diyanet Tv
