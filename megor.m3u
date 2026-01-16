@@ -137,7 +137,7 @@ https://dsmartgo-live.ercdn.net/sportstv/sportstv.m3u8
 https://dsmartgo-live.ercdn.net/trtspor/trtspor.m3u8
 #EXTINF:-1 tvg-id="trt-spor-yildiz" tvg-name="Trt Spor Yıldız" group-title="Spor" tvg-logo="https://dsmart-static-v2.ercdn.net/content/h/NK/15953/Thumbnail.png",Trt Spor Yıldız
 https://dsmartgo-live.ercdn.net/trtspor2/trtspor2.m3u8
-#EXTINF:-1 tvg-id="tv8,5" tvg-name="TV8,5" group-title="Ulusal" tvg-logo="https://dsmart-static-v2.ercdn.net/content/j/3s/13867/Thumbnail.png",TV8,5
+#EXTINF:-1 tvg-id="tv85" tvg-name="TV85" group-title="Ulusal" tvg-logo="https://dsmart-static-v2.ercdn.net/content/j/3s/13867/Thumbnail.png",TV8,5
 https://rkhubpaomb.turknet.ercdn.net/fwjkgpasof/tv8bucuk/tv8bucuk.m3u8
 #EXTINF:-1 tvg-id="szc-tv" tvg-name="SZC TV" group-title="Haber" tvg-logo="https://dsmart-static-v2.ercdn.net/content/I/XZ/54352/Thumbnail.png",SZC TV
 https://dsmartgo-live.ercdn.net/sozcutv/sozcutv.m3u8
