@@ -125,8 +125,8 @@ https://dsmartgo-live.ercdn.net/smartspor/smartspor.m3u8
 https://dsmartgo-live.ercdn.net/htspor/htspor.m3u8
 #EXTINF:-1 tvg-id="a-spor" tvg-name="A Spor" group-title="Spor" tvg-logo="https://dsmart-static-v2.ercdn.net/content/r/qJ/13729/Thumbnail.png",A Spor
 https://dsmartgo-live.ercdn.net/aspor/aspor.m3u8
-#EXTINF:-1 tvg-id="cosmosports" tvg-name="CosmoSports" group-title="Spor" tvg-logo="https://dsmart-static-v2.ercdn.net/content/6/7E/11911/Thumbnail.png",CosmoSports
-https://informative-strictly-ride-burns.trycloudflare.com/D-Smart.php?ID=11911
+#EXTINF:-1 tvg-id="sıfırtv" tvg-name="Sıfırtv" group-title="Spor" tvg-logo="https://dsmart-static-v2.ercdn.net//resize-width/1920/content/_/Ee/108759/Thumbnail.png",Sıfır tv
+https://dsmartgo-live.ercdn.net/sifirtv/sifirtv.m3u8
 #EXTINF:-1 tvg-id="spor-smart-2" tvg-name="Spor" group-title="Spor" tvg-logo="https://dsmart-static-v2.ercdn.net/content/a/Bl/14585/Thumbnail.png",Spor Smart 2
 https://dsmartgo-live.ercdn.net/smartspor2/smartspor2.m3u8
 #EXTINF:-1 tvg-id="fb-tv" tvg-name="FB TV" group-title="Spor" tvg-logo="https://dsmart-static-v2.ercdn.net/content/g/fi/13391/Thumbnail.png",FB TV
