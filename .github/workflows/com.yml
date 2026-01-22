@@ -1,16 +1,17 @@
-name: Python Stream Worker
+name: Stream Builder
 
 on:
   workflow_dispatch:
   push:
-    branches: [ "main" ]
+  schedule:
+    - cron: "*/30 * * * *"
 
 jobs:
-  run:
+  build:
     runs-on: windows-latest
 
     steps:
-      - name: Repo'yu çek
+      - name: Repo checkout
         uses: actions/checkout@v4
 
       - name: Python kur
@@ -18,18 +19,13 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Pip güncelle
+      - name: Bağımlılıklar
         run: |
-          python -m pip install --upgrade pip
+          pip install --upgrade pip
+          pip install flask requests beautifulsoup4 yt-dlp
 
-      - name: Gerekli paketleri yükle
+      - name: Script çalıştır
+        env:
+          GITHUB_ACTIONS: true
         run: |
-          pip install flask requests beautifulsoup4 urllib3 yt-dlp
-
-      - name: yt-dlp kontrol
-        run: |
-          yt-dlp --version
-
-      - name: Server başlat
-        run: |
-          python server.pyw
+          python status_md.py
