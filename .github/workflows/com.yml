@@ -1,31 +1,48 @@
-name: Stream Builder
+name: Build M3U8 Playlist
 
 on:
-  workflow_dispatch:
   push:
+    branches: [ main ]
+  workflow_dispatch:
   schedule:
-    - cron: "*/30 * * * *"
+    - cron: "*/30 * * * *"   # 30 dakikada bir
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
-      - name: Repo checkout
+      # 1️⃣ Repo'yu çek
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Python kur
+      # 2️⃣ Python kur
+      - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
-      - name: Bağımlılıklar
+      # 3️⃣ yt-dlp kur
+      - name: Install yt-dlp
         run: |
-          pip install --upgrade pip
-          pip install flask requests beautifulsoup4 yt-dlp
+          python -m pip install --upgrade pip
+          pip install yt-dlp
 
-      - name: Script çalıştır
-        env:
-          GITHUB_ACTIONS: true
+      # 4️⃣ JSON → M3U8 çalıştır
+      - name: Generate playlist
         run: |
-          python status_md.py
+          python common.py
+
+      # 5️⃣ Değişiklik var mı kontrol et
+      - name: Commit & Push if changed
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+
+          if [[ -n "$(git status --porcelain)" ]]; then
+            git add output.m3u8
+            git commit -m "Update playlist"
+            git push
+          else
+            echo "Değişiklik yok"
+          fi
