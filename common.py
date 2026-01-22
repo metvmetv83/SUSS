@@ -4,11 +4,9 @@ import time
 import re
 import os
 
-# DOSYALAR
 JSON_FILE = "com.json"
-YT_DLP = "yt-dlp"          # Windows: yt-dlp.exe
+YT_DLP = "yt-dlp"  # Windows: yt-dlp.exe
 
-# REGEX (PHP ile birebir)
 HLS_REGEX = re.compile(
     r"https://manifest\.googlevideo\.com/[^\s\"']+\.m3u8[^\s\"']*"
 )
@@ -35,14 +33,16 @@ def get_hls(video_id):
         text=True
     )
 
-    # debug istersen aç
-    # print(p.stdout)
-
     m = HLS_REGEX.search(p.stdout)
     if m:
         return m.group(0)
 
     return None
+
+
+def is_enabled(val):
+    # true, 1, "1" → aktif
+    return val is True or val == 1 or val == "1"
 
 
 def main():
@@ -53,19 +53,19 @@ def main():
     with open(JSON_FILE, "r", encoding="utf-8") as f:
         data = json.load(f)
 
-    for i, ch in enumerate(data):
+    for key, ch in data.items():
 
-        if ch.get("enabled") is False:
-            print(ch.get("name"), "kapalı")
+        if not is_enabled(ch.get("enabled")):
+            print(f"{key} kapalı")
             continue
 
         video_id = ch.get("video_id")
         if not video_id:
-            print(i, "video_id yok")
+            print(f"{key} video_id yok")
             continue
 
-        name = ch.get("name", f"ch{i}")
-        file = ch.get("file", name)
+        name = ch.get("name", key)
+        file = ch.get("file", key)
 
         if not file.endswith(".m3u8"):
             file += ".m3u8"
@@ -90,7 +90,7 @@ def main():
 
         print(f"[✓] {name} OK -> {file}")
 
-        time.sleep(2)  # PHP'deki sleep(2) ile aynı
+        time.sleep(2)
 
     print("Bitti")
 
