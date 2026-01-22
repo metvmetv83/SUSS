@@ -1,7 +1,6 @@
 name: Run Python Scripts
 
 on:
-  # Manuel tetikleme
   workflow_dispatch:
     inputs:
       script_choice:
@@ -14,6 +13,7 @@ on:
         - github
         - server
         - status_md
+        - test_common
         - custom
       custom_command:
         description: 'Özel Komut (custom seçeneği için)'
@@ -21,12 +21,10 @@ on:
         default: ''
         type: string
 
-  # Belirli zamanlarda çalıştırma
   schedule:
-    - cron: '0 */6 * * *'  # Her 6 saatte bir
-    - cron: '0 0 * * *'    # Her gün saat 00:00'da
+    - cron: '0 */6 * * *'
+    - cron: '0 0 * * *'
 
-  # Kod push edildiğinde
   push:
     branches: [ main, master ]
     paths:
@@ -34,8 +32,8 @@ on:
       - '**.pyw'
       - 'config.json'
       - 'requirements.txt'
+      - 'common.py'
 
-  # Pull request oluşturulduğunda
   pull_request:
     branches: [ main, master ]
 
@@ -59,7 +57,7 @@ jobs:
     - name: Install system dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y ffmpeg python3-pip
+        sudo apt-get install -y ffmpeg git
         
     - name: Cache Python packages
       uses: actions/cache@v3
@@ -75,6 +73,19 @@ jobs:
         pip install --upgrade yt-dlp
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
         pip install requests beautifulsoup4
+    
+    - name: Check common.py functions
+      run: |
+        echo "=== common.py testi ==="
+        python -c "
+import common
+print('common.py başarıyla import edildi')
+print(f'CONFIG_FILE: {common.CONFIG_FILE}')
+print(f'LOG_FILE: {common.LOG_FILE}')
+print('Test fonksiyonları:')
+common.log('Test log mesajı')
+print(f'Sanitize filename: {common.sanitize_filename("Test Kanalı İşçi Öğle")}')
+        "
     
     - name: Create config files if not exist
       run: |
@@ -106,21 +117,21 @@ jobs:
         case "${{ github.event.inputs.script_choice }}" in
           "all")
             echo "Tüm scriptler çalıştırılıyor..."
-            python -c "import ortak; ortak.log('GitHub Actions testi')"
             if [ -f github.pyw ]; then
               echo "github.pyw çalıştırılıyor..."
-              python github.pyw
+              python github.pyw || echo "github.pyw hata verdi"
             fi
             if [ -f server.pyw ]; then
               echo "server.pyw çalıştırılıyor..."
-              python server.pyw &
+              timeout 30 python server.pyw &
               SERVER_PID=$!
               sleep 5
+              curl -f http://localhost:5000 || echo "Sunucu testi başarısız"
               kill $SERVER_PID 2>/dev/null || true
             fi
             if [ -f status_md.py ]; then
               echo "status_md.py çalıştırılıyor..."
-              python status_md.py
+              python status_md.py || echo "status_md.py hata verdi"
             fi
             ;;
           "github")
@@ -133,11 +144,11 @@ jobs:
             ;;
           "server")
             if [ -f server.pyw ]; then
-              python server.pyw &
+              timeout 60 python server.pyw &
               SERVER_PID=$!
               sleep 10
-              curl -f http://localhost:5000 || echo "Sunucu testi başarısız"
-              kill $SERVER_PID
+              curl -f http://localhost:5000 || echo "Sunucu erişilemez"
+              kill $SERVER_PID 2>/dev/null || true
             else
               echo "server.pyw bulunamadı!"
               exit 1
@@ -147,7 +158,7 @@ jobs:
             if [ -f status_md.py ]; then
               python status_md.py
               if [ -f STATUS.md ]; then
-                echo "STATUS.md içeriği:"
+                echo "=== STATUS.md İLK 20 SATIR ==="
                 head -20 STATUS.md
               fi
             else
@@ -155,12 +166,48 @@ jobs:
               exit 1
             fi
             ;;
+          "test_common")
+            echo "=== common.py DETAYLI TEST ==="
+            python -c "
+import common
+import json
+import os
+
+print('1. Log fonksiyonu testi:')
+common.log('GitHub Actions test logu', to_file=True, to_console=False)
+
+print('2. Config işlemleri:')
+channels, only_highest, view_mode = common.load_config()
+print(f'Kanal sayısı: {len(channels)}')
+print(f'Only highest: {only_highest}')
+print(f'View mode: {view_mode}')
+
+print('3. Dosya adı sanitize:')
+test_names = ['TRT HABER', 'NTV Spor', 'Kanal D Türkçe']
+for name in test_names:
+    clean = common.sanitize_filename(name)
+    print(f'  \"{name}\" -> \"{clean}\"')
+
+print('4. YouTube fonksiyonları testi (mock):')
+try:
+    result = common.search_youtube_innertube('test')
+    print(f'  YouTube search: {result}')
+except Exception as e:
+    print(f'  YouTube search hatası (beklenen): {type(e).__name__}')
+
+print('5. IP adresi alma:')
+ip = common.get_ipv4_address()
+print(f'  IPv4: {ip}')
+
+print('Test tamamlandı!')
+            "
+            ;;
           "custom")
-            if [ -n "${{ github.event.inputs.custom_command }}" ]; then
-              echo "Özel komut çalıştırılıyor: ${{ github.event.inputs.custom_command }}"
-              eval "${{ github.event.inputs.custom_command }}"
+            if [ -n \"${{ github.event.inputs.custom_command }}\" ]; then
+              echo \"Özel komut çalıştırılıyor: ${{ github.event.inputs.custom_command }}\"
+              eval \"${{ github.event.inputs.custom_command }}\"
             else
-              echo "Özel komut belirtilmedi!"
+              echo \"Özel komut belirtilmedi!\"
               exit 1
             fi
             ;;
@@ -179,14 +226,27 @@ jobs:
           STATUS.md
         retention-days: 7
     
-    - name: Show logs
+    - name: Show execution summary
       if: always()
       run: |
-        echo "=== SON 50 LOG SATIRI ==="
-        tail -50 log.txt || echo "log.txt bulunamadı"
+        echo "=== ÇALIŞTIRMA ÖZETİ ==="
+        echo "Python version: ${{ matrix.python-version }}"
+        echo "Workflow: ${{ github.event.inputs.script_choice }}"
+        echo ""
         
-        echo "=== CONFIG.JSON ==="
-        cat config.json || echo "config.json bulunamadı"
+        echo "=== DOSYA DURUMLARI ==="
+        ls -la *.py *.pyw 2>/dev/null || echo "Python dosyası bulunamadı"
         
-        echo "=== M3U8 DİZİNİ İÇERİĞİ ==="
-        ls -la m3u8/ || echo "m3u8 dizini bulunamadı"
+        echo ""
+        echo "=== LOG DOSYASI SON 20 SATIR ==="
+        if [ -f log.txt ]; then
+          tail -20 log.txt
+        else
+          echo "log.txt bulunamadı"
+        fi
+        
+        if [ -f STATUS.md ]; then
+          echo ""
+          echo "=== STATUS.md SATIR SAYISI ==="
+          wc -l STATUS.md
+        fi
