@@ -2,7 +2,7 @@ import json
 import subprocess
 import os
 
-INPUT_JSON = "channels.json"
+INPUT_JSON = "com.json"
 OUTPUT_M3U8 = "output.m3u8"
 
 SUBPROCESS_FLAGS = 0
@@ -44,7 +44,7 @@ def get_m3u8(url):
 
 def main():
     if not os.path.exists(INPUT_JSON):
-        print("channels.json bulunamadı")
+        print("com.json bulunamadı")
         return
 
     with open(INPUT_JSON, "r", encoding="utf-8") as f:
