@@ -1,45 +1,9 @@
 import json
-import subprocess
 import os
+from common import get_m3u8_from_url
 
 INPUT_JSON = "com.json"
 OUTPUT_M3U8 = "output.m3u8"
-
-SUBPROCESS_FLAGS = 0
-if os.name == "nt":
-    try:
-        SUBPROCESS_FLAGS = subprocess.CREATE_NO_WINDOW
-    except:
-        pass
-
-
-def get_m3u8(url):
-    try:
-        result = subprocess.run(
-            [
-                "yt-dlp",
-                "--no-warnings",
-                "--print",
-                "manifest_url",
-                url
-            ],
-            capture_output=True,
-            text=True,
-            creationflags=SUBPROCESS_FLAGS,
-            timeout=20
-        )
-
-        if result.returncode != 0:
-            return None
-
-        out = result.stdout.strip()
-        if out.startswith("http"):
-            return out
-
-    except Exception as e:
-        print("yt-dlp hata:", e)
-
-    return None
 
 
 def main():
@@ -53,31 +17,29 @@ def main():
     lines = ["#EXTM3U\n"]
 
     for ch in channels:
-        if not ch.get("enabled", True):
-            continue
-
-        name = ch.get("name", "Bilinmeyen")
+        name = ch.get("name")
         url = ch.get("url")
 
-        if not url:
+        if not name or not url:
             continue
 
         print("Çözülüyor:", name)
-        m3u8 = get_m3u8(url)
+
+        m3u8 = get_m3u8_from_url(url)
 
         if not m3u8:
             print("  ❌ m3u8 alınamadı")
             continue
 
-        lines.append(f'#EXTINF:-1,{name}\n')
-        lines.append(f'{m3u8}\n')
+        lines.append(f"#EXTINF:-1,{name}\n")
+        lines.append(f"{m3u8}\n")
 
         print("  ✅ eklendi")
 
     with open(OUTPUT_M3U8, "w", encoding="utf-8") as f:
         f.writelines(lines)
 
-    print("\n✔ output.m3u8 oluşturuldu")
+    print("\n✔ output.m3u8 hazır")
 
 
 if __name__ == "__main__":
