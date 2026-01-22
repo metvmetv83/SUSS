@@ -1,97 +1,192 @@
-name: YouTube M3U8 Playlist Generator
+name: Run Python Scripts
 
 on:
+  # Manuel tetikleme
   workflow_dispatch:
     inputs:
-      channel_url:
-        description: 'YouTube Live URL'
+      script_choice:
+        description: 'Çalıştırılacak Script'
+        required: true
+        default: 'all'
+        type: choice
+        options:
+        - all
+        - github
+        - server
+        - status_md
+        - custom
+      custom_command:
+        description: 'Özel Komut (custom seçeneği için)'
         required: false
-        default: 'https://www.youtube.com/live/na_jT2Q1rfA'
-      channel_name:
-        description: 'Channel Name'
-        required: false
-        default: 'HalkTV'
-  
+        default: ''
+        type: string
+
+  # Belirli zamanlarda çalıştırma
   schedule:
-    - cron: '0 */3 * * *'  # 3 saatte bir
-  
+    - cron: '0 */6 * * *'  # Her 6 saatte bir
+    - cron: '0 0 * * *'    # Her gün saat 00:00'da
+
+  # Kod push edildiğinde
   push:
-    branches: [ main ]
+    branches: [ main, master ]
     paths:
-      - 'YouTube.py'
-      - 'channels.txt'
+      - '**.py'
+      - '**.pyw'
+      - 'config.json'
+      - 'requirements.txt'
+
+  # Pull request oluşturulduğunda
+  pull_request:
+    branches: [ main, master ]
 
 jobs:
-  generate-m3u8:
+  run-scripts:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    
+    strategy:
+      matrix:
+        python-version: ['3.9', '3.10', '3.11']
     
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-    
-    - name: Setup Python
-      uses: actions/setup-python@v5
+    - name: Checkout repository
+      uses: actions/checkout@v3
+      
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
       with:
-        python-version: '3.10'
+        python-version: ${{ matrix.python-version }}
     
-    - name: Install yt-dlp
-      run: pip install yt-dlp
-    
-    - name: Create directories
+    - name: Install system dependencies
       run: |
-        mkdir -p playlists
-        mkdir -p logs
+        sudo apt-get update
+        sudo apt-get install -y ffmpeg python3-pip
+        
+    - name: Cache Python packages
+      uses: actions/cache@v3
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
     
-    - name: Run YouTube M3U8 Script
-      id: run-script
+    - name: Install Python dependencies
       run: |
-        echo "🔍 Starting M3U8 generation..."
-        
-        CHANNEL_URL="${{ github.event.inputs.channel_url }}"
-        CHANNEL_NAME="${{ github.event.inputs.channel_name }}"
-        
-        if [ -f "channels.txt" ] && [ -s "channels.txt" ]; then
-          echo "📋 Using channels.txt file"
-          python YouTube.py --batch channels.txt
-        elif [ ! -z "$CHANNEL_URL" ]; then
-          echo "🎬 Processing: $CHANNEL_NAME ($CHANNEL_URL)"
-          python YouTube.py --url "$CHANNEL_URL" --name "$CHANNEL_NAME"
-        else
-          echo "⚠️ No input provided, running default test"
-          python YouTube.py --url "https://www.youtube.com/live/na_jT2Q1rfA" --name "HalkTV_Test"
+        python -m pip install --upgrade pip
+        pip install --upgrade yt-dlp
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        pip install requests beautifulsoup4
+    
+    - name: Create config files if not exist
+      run: |
+        if [ ! -f config.json ]; then
+          echo '{"channels": [], "ONLY_HIGHEST": 1, "VIEW_MODE": 0}' > config.json
+          echo "config.json oluşturuldu"
         fi
         
-        # Count generated files
-        FILE_COUNT=$(find playlists -name "*.m3u8" -type f 2>/dev/null | wc -l)
-        echo "FILE_COUNT=$FILE_COUNT" >> $GITHUB_OUTPUT
-        echo "✅ Found $FILE_COUNT M3U8 files"
+        if [ ! -d m3u8 ]; then
+          mkdir m3u8
+          echo "m3u8 dizini oluşturuldu"
+        fi
+        
+        if [ ! -f tv.m3u8 ]; then
+          echo "#EXTM3U" > tv.m3u8
+          echo "tv.m3u8 oluşturuldu"
+        fi
+        
+        if [ ! -f log.txt ]; then
+          touch log.txt
+          echo "log.txt oluşturuldu"
+        fi
     
-    - name: Upload M3U8 Playlists
-      uses: actions/upload-artifact@v4
+    - name: Run selected script
+      run: |
+        echo "Seçilen script: ${{ github.event.inputs.script_choice }}"
+        echo "Özel komut: ${{ github.event.inputs.custom_command }}"
+        
+        case "${{ github.event.inputs.script_choice }}" in
+          "all")
+            echo "Tüm scriptler çalıştırılıyor..."
+            python -c "import ortak; ortak.log('GitHub Actions testi')"
+            if [ -f github.pyw ]; then
+              echo "github.pyw çalıştırılıyor..."
+              python github.pyw
+            fi
+            if [ -f server.pyw ]; then
+              echo "server.pyw çalıştırılıyor..."
+              python server.pyw &
+              SERVER_PID=$!
+              sleep 5
+              kill $SERVER_PID 2>/dev/null || true
+            fi
+            if [ -f status_md.py ]; then
+              echo "status_md.py çalıştırılıyor..."
+              python status_md.py
+            fi
+            ;;
+          "github")
+            if [ -f github.pyw ]; then
+              python github.pyw
+            else
+              echo "github.pyw bulunamadı!"
+              exit 1
+            fi
+            ;;
+          "server")
+            if [ -f server.pyw ]; then
+              python server.pyw &
+              SERVER_PID=$!
+              sleep 10
+              curl -f http://localhost:5000 || echo "Sunucu testi başarısız"
+              kill $SERVER_PID
+            else
+              echo "server.pyw bulunamadı!"
+              exit 1
+            fi
+            ;;
+          "status_md")
+            if [ -f status_md.py ]; then
+              python status_md.py
+              if [ -f STATUS.md ]; then
+                echo "STATUS.md içeriği:"
+                head -20 STATUS.md
+              fi
+            else
+              echo "status_md.py bulunamadı!"
+              exit 1
+            fi
+            ;;
+          "custom")
+            if [ -n "${{ github.event.inputs.custom_command }}" ]; then
+              echo "Özel komut çalıştırılıyor: ${{ github.event.inputs.custom_command }}"
+              eval "${{ github.event.inputs.custom_command }}"
+            else
+              echo "Özel komut belirtilmedi!"
+              exit 1
+            fi
+            ;;
+        esac
+    
+    - name: Upload artifacts
+      if: always()
+      uses: actions/upload-artifact@v3
       with:
-        name: youtube-m3u8-playlists
-        path: playlists/
+        name: script-outputs-${{ matrix.python-version }}
+        path: |
+          log.txt
+          config.json
+          m3u8/
+          tv.m3u8
+          STATUS.md
         retention-days: 7
     
-    - name: Upload Logs
-      uses: actions/upload-artifact@v4
-      with:
-        name: generation-logs
-        path: logs/
-        retention-days: 3
-    
-    - name: Commit M3U8 Files
-      if: steps.run-script.outputs.FILE_COUNT != '0'
+    - name: Show logs
+      if: always()
       run: |
-        git config --local user.email "github-actions[bot]@users.noreply.github.com"
-        git config --local user.name "github-actions[bot]"
+        echo "=== SON 50 LOG SATIRI ==="
+        tail -50 log.txt || echo "log.txt bulunamadı"
         
-        git add playlists/
+        echo "=== CONFIG.JSON ==="
+        cat config.json || echo "config.json bulunamadı"
         
-        if git diff --cached --quiet; then
-          echo "📌 No new M3U8 files to commit"
-        else
-          git commit -m "🤖 Auto-update M3U8 playlists $(date '+%Y-%m-%d %H:%M')"
-          git push
-        fi
+        echo "=== M3U8 DİZİNİ İÇERİĞİ ==="
+        ls -la m3u8/ || echo "m3u8 dizini bulunamadı"
