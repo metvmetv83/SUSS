@@ -9,9 +9,12 @@ HEADERS = {
     "Referer": "https://play.dizigom104.com/"
 }
 
-# -------------------------------------------------
-# M3U8 link aktif mi kontrol
-# -------------------------------------------------
+# --- AYARLAR ---
+START_PAGE = 1
+END_PAGE = 4521  # Belirttiğin son sayfa
+BASE_URL = "https://dizigom104.com/tum-bolumler/page/"
+FIRST_PAGE = "https://dizigom104.com/tum-bolumler/" # İlk sayfa yapısı farklı olabilir
+
 def check_link_is_active(url):
     try:
         r = requests.head(url, headers=HEADERS, timeout=1.5, allow_redirects=True)
@@ -19,27 +22,16 @@ def check_link_is_active(url):
     except:
         return False
 
-
-# -------------------------------------------------
-# Embed içinden m3u8 bul
-# -------------------------------------------------
 def get_m3u8_link(embed_url):
     try:
         r = requests.get(embed_url, headers=HEADERS, timeout=10)
-
-        m2 = re.search(
-            r"eval\(function\(p,a,c,k,e,d\).*?\('(.+?)'\.split\('\|'\)",
-            r.text,
-            re.S
-        )
-        if not m2:
-            return None
+        m2 = re.search(r"eval\(function\(p,a,c,k,e,d\).*?\('(.+?)'\.split\('\|'\)", r.text, re.S)
+        if not m2: return None
 
         parts = m2.group(1).split("|")
         video_hash = next((p for p in parts if re.fullmatch(r"[a-f0-9]{32}", p)), None)
-        if not video_hash:
-            return None
-
+        if not video_hash: return None
+        
         letters = string.ascii_lowercase
         for char in letters:
             for num in ["1", "2"]:
@@ -47,34 +39,25 @@ def get_m3u8_link(embed_url):
                 test_url = f"https://{prefix}.df856-54hilsnz.xyz/storage/media/{video_hash}-720.mp4/gomindex.m3u8"
                 if check_link_is_active(test_url):
                     return test_url
-
         return None
-    except:
-        return None
+    except: return None
 
-
-# -------------------------------------------------
-# Bölüm sayfasından embed al
-# -------------------------------------------------
 def get_embed_from_episode(episode_url):
     try:
         r = requests.get(episode_url, headers=HEADERS, timeout=10)
-
         pattern = r'eval\(function\(h,u,n,t,e,r\).*?\("(.*?)",(\d+),"(.*?)",(\d+),(\d+),(\d+)\)'
         match = re.search(pattern, r.text)
-        if not match:
-            return None
+        if not match: return None
 
         h_data, u_val, n_data, t_val, e_val, r_val = match.groups()
-        u_val, t_val, e_val, r_val = map(int, (u_val, t_val, e_val, r_val))
-
+        u_val, t_val, e_val, r_val = int(u_val), int(t_val), int(e_val), int(r_val)
+        
         def _0xe2c(d, e, f):
             g = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ+/"
             h, i = g[0:e], g[0:f]
             j = 0
             for idx, char in enumerate(d[::-1]):
-                if char in h:
-                    j += h.find(char) * (e ** idx)
+                if char in h: j += h.find(char) * (e ** idx)
             k = ""
             while j > 0:
                 k = i[j % f] + k
@@ -88,110 +71,64 @@ def get_embed_from_episode(episode_url):
             while idx_i < len(h_data) and h_data[idx_i] != n_data[e_val]:
                 s += h_data[idx_i]
                 idx_i += 1
-
-            for j in range(len(n_data)):
-                s = s.replace(n_data[j], str(j))
-
-            if s:
-                decoded_js += chr(int(_0xe2c(s, e_val, 10)) - t_val)
-
+            for j in range(len(n_data)): s = s.replace(n_data[j], str(j))
+            if s: decoded_js += chr(int(_0xe2c(s, e_val, 10)) - t_val)
             idx_i += 1
-
-        api_match = re.search(r'/(api/watch/.*?\.dizigom)', decoded_js)
-        if not api_match:
-            return None
-
-        api_url = "https://dizigom104.com" + api_match.group(1)
-        api_res = requests.get(api_url, headers=HEADERS)
-
-        final_html = base64.b64decode(api_res.text).decode("utf-8")
+        
+        api_path_match = re.search(r'/(api/watch/.*?\.dizigom)', decoded_js)
+        if not api_path_match: return None
+        
+        api_res = requests.get("https://dizigom104.com/" + api_path_match.group(1), headers=HEADERS)
+        final_html = base64.b64decode(api_res.text).decode('utf-8')
         embed_match = re.search(r'src=["\'](https?://.*?)["\']', final_html)
-
         return embed_match.group(1) if embed_match else None
+    except: return None
 
-    except:
-        return None
-
-
-# -------------------------------------------------
-# Tüm bölümleri çek (1 → 4521)
-# -------------------------------------------------
-def get_all_episode_links(max_page=4521):
-    episodes = []
-
-    for page in range(1, max_page + 1):
-        if page == 1:
-            url = "https://dizigom104.com/tum-bolumler/"
-        else:
-            url = f"https://dizigom104.com/tum-bolumler/page/{page}/"
-
-        print(f"[SAYFA] {page}/{max_page}")
-
-        try:
-            r = requests.get(url, headers=HEADERS, timeout=10)
-            links = re.findall(
-                r'<a href="(https://dizigom104.com/.*?-izle/.*?)"',
-                r.text
-            )
-            episodes.extend(links)
-            time.sleep(0.1)
-
-        except Exception as e:
-            print(f"[HATA] Sayfa {page}: {e}")
-
-    return list(set(episodes))
-
-
-# -------------------------------------------------
-# MAIN
-# -------------------------------------------------
 def main():
-    m3u_filename = "dizigom-tum-bolumler.m3u"
-    print(f"\nBOT BAŞLADI → {m3u_filename}\n")
-
-    episode_links = get_all_episode_links(4521)
-    print(f"\nTOPLAM BÖLÜM: {len(episode_links)}\n")
-
-    with open(m3u_filename, "w", encoding="utf-8") as f:
-        f.write("#EXTM3U\n")
-
-        for ep_url in episode_links:
-            print(f"[BÖLÜM] {ep_url}")
-
+    m3u_filename = "dizigom_arsiv.m3u"
+    print(f"--- DIZIGOM FULL ARSIV BOTU ---")
+    
+    # Dosyayı 'a' (append) modunda açıyoruz ki hata verirse silinmesin
+    with open(m3u_filename, "a", encoding="utf-8") as f:
+        if f.tell() == 0:
+            f.write("#EXTM3U\n")
+        
+        for p_idx in range(START_PAGE, END_PAGE + 1):
+            url = FIRST_PAGE if p_idx == 1 else f"{BASE_URL}{p_idx}/"
+            print(f"\n[SAYFA {p_idx}] taranıyor: {url}")
+            
             try:
-                r = requests.get(ep_url, headers=HEADERS, timeout=10)
+                res = requests.get(url, headers=HEADERS, timeout=15)
+                # Sayfadaki tüm bölümleri yakala
+                # Regex: <div class="bolumust"> içindeki linki, resmi ve başlığı alır
+                items = re.findall(r'<div class="bolumust">.*?<a href="(.*?)">.*?<img src="(.*?)".*?<div class="baslik">\s*(.*?)\s*<div', res.text, re.S)
+                
+                if not items:
+                    print(f"!!! Sayfada bölüm bulunamadı, son sayfa olabilir.")
+                    break
 
-                title_match = re.search(r'<title>(.*?) (?:İzle|izle)', r.text)
-                ep_name = title_match.group(1).strip() if title_match else "Bilinmeyen Bölüm"
-
-                logo_match = re.search(r'"image":"(.*?)"', r.text)
-                logo = logo_match.group(1).replace("\\/", "/") if logo_match else ""
-
-                embed = get_embed_from_episode(ep_url)
-                if not embed:
-                    print("  ❌ PLAYER ERROR")
-                    continue
-
-                m3u8 = get_m3u8_link(embed)
-                if not m3u8:
-                    print("  ❌ M3U8 YOK")
-                    continue
-
-                f.write(
-                    f'#EXTINF:-1 tvg-name="TR: {ep_name}" '
-                    f'tvg-logo="{logo}" group-title="Dizigom",TR: {ep_name}\n'
-                )
-                f.write(m3u8 + "\n")
-                f.flush()
-
-                print("  ✅ EKLENDİ")
-                time.sleep(0.1)
+                for b_link, b_img, b_title in items:
+                    b_title = b_title.strip().replace("\n", " ")
+                    print(f"  > {b_title}", end=" ", flush=True)
+                    
+                    embed = get_embed_from_episode(b_link)
+                    if embed:
+                        m3u8 = get_m3u8_link(embed)
+                        if m3u8:
+                            f.write(f'#EXTINF:-1 tvg-logo="{b_img}" group-title="Dizigom-Arsiv",{b_title}\n')
+                            f.write(f'{m3u8}\n')
+                            f.flush()
+                            print("[OK]")
+                        else: print("[M3U8 YOK]")
+                    else: print("[PLAYER BULUNAMADI]")
+                    
+                    time.sleep(0.05) # Siteyi bloklamasın
 
             except Exception as e:
-                print(f"  ⚠ HATA: {e}")
+                print(f"\n[HATA] {p_idx}. sayfada sorun oluştu: {e}")
+                time.sleep(3) # Hata sonrası bekle ve devam et
 
-    print("\nBİTTİ ✔ M3U DOSYASI HAZIR")
-
+    print(f"\nBitti! Veriler {m3u_filename} dosyasına kaydedildi.")
 
 if __name__ == "__main__":
     main()
