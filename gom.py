@@ -4,16 +4,17 @@ import base64
 import string
 import time
 
-HEADERS = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36",
-    "Referer": "https://play.dizigom104.com/"
-}
-
 # --- AYARLAR ---
 START_PAGE = 1
-END_PAGE = 4521  # Belirttiğin son sayfa
+END_PAGE = 4521
 BASE_URL = "https://dizigom104.com/tum-bolumler/page/"
-FIRST_PAGE = "https://dizigom104.com/tum-bolumler/" # İlk sayfa yapısı farklı olabilir
+FIRST_PAGE = "https://dizigom104.com/tum-bolumler/"
+M3U_FILENAME = "dizigom_arsiv.m3u"
+
+HEADERS = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36",
+    "Referer": "https://dizigom104.com/"
+}
 
 def check_link_is_active(url):
     try:
@@ -85,11 +86,9 @@ def get_embed_from_episode(episode_url):
     except: return None
 
 def main():
-    m3u_filename = "dizigom_arsiv.m3u"
-    print(f"--- DIZIGOM FULL ARSIV BOTU ---")
+    print(f"--- DIZIGOM FULL ARSIV BOTU BAŞLATILDI ---")
     
-    # Dosyayı 'a' (append) modunda açıyoruz ki hata verirse silinmesin
-    with open(m3u_filename, "a", encoding="utf-8") as f:
+    with open(M3U_FILENAME, "a", encoding="utf-8") as f:
         if f.tell() == 0:
             f.write("#EXTM3U\n")
         
@@ -99,16 +98,28 @@ def main():
             
             try:
                 res = requests.get(url, headers=HEADERS, timeout=15)
-                # Sayfadaki tüm bölümleri yakala
-                # Regex: <div class="bolumust"> içindeki linki, resmi ve başlığı alır
-                items = re.findall(r'<div class="bolumust">.*?<a href="(.*?)">.*?<img src="(.*?)".*?<div class="baslik">\s*(.*?)\s*<div', res.text, re.S)
+                if res.status_code != 200:
+                    print(f"!!! Sayfa yüklenemedi. Durum Kodu: {res.status_code}")
+                    continue
+
+                # GENİŞLETİLMİŞ REGEX: 
+                # Linki, Logoyu (src veya data-src) ve Başlığı yakalar
+                items = re.findall(r'<div class="bolumust">.*?<a href="(.*?)">.*?<img.*?src="(.*?)".*?alt="(.*?)"', res.text, re.S)
                 
+                # Eğer üstteki bulamazsa alternatif (bazı sayfalarda farklı div yapıları olabiliyor)
                 if not items:
-                    print(f"!!! Sayfada bölüm bulunamadı, son sayfa olabilir.")
-                    break
+                    items = re.findall(r'href="(https://dizigom104\.com/.*?bolum/.*?)".*?src="(.*?)".*?class="baslik">(.*?)<', res.text, re.S)
+
+                if not items:
+                    print(f"!!! Bu sayfada veri yakalanamadı. Yapı değişmiş olabilir.")
+                    continue
 
                 for b_link, b_img, b_title in items:
-                    b_title = b_title.strip().replace("\n", " ")
+                    # Temizlik
+                    b_title = b_title.replace("izle", "").replace("İzle", "").strip()
+                    # Logo URL'si bazen // ile başlayabilir
+                    if b_img.startswith("//"): b_img = "https:" + b_img
+                    
                     print(f"  > {b_title}", end=" ", flush=True)
                     
                     embed = get_embed_from_episode(b_link)
@@ -120,15 +131,15 @@ def main():
                             f.flush()
                             print("[OK]")
                         else: print("[M3U8 YOK]")
-                    else: print("[PLAYER BULUNAMADI]")
+                    else: print("[PLAYER YOK]")
                     
-                    time.sleep(0.05) # Siteyi bloklamasın
+                    time.sleep(0.1) # Engel yememek için çok kısa bekleme
 
             except Exception as e:
-                print(f"\n[HATA] {p_idx}. sayfada sorun oluştu: {e}")
-                time.sleep(3) # Hata sonrası bekle ve devam et
+                print(f"\n[SİSTEM HATASI] {p_idx}. sayfada hata: {e}")
+                time.sleep(5)
 
-    print(f"\nBitti! Veriler {m3u_filename} dosyasına kaydedildi.")
+    print(f"\nİşlem tamamlandı. Dosya: {M3U_FILENAME}")
 
 if __name__ == "__main__":
     main()
