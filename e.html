@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>METV | VOD</title>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.esm.js"></script>
+    <style>
+        :root { --main-bg: #0b0c10; --card-bg: #1f2833; --accent: #66fcf1; --text: #c5c6c7; }
+        body { background: var(--main-bg); color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; overflow-x: hidden; }
+        
+        /* Arama Paneli (Sola Yaslı Logo) */
+        .aramapanel {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background: #161b22;
+            border-bottom: 2px solid var(--accent);
+        }
+        .aramapanelsol { display: flex; align-items: center; gap: 12px; }
+        .logo img { width: 45px; height: 45px; object-fit: contain; filter: drop-shadow(0 0 5px var(--accent)); }
+        .logoisim { font-size: 22px; font-weight: 800; color: #fff; letter-spacing: 1px; }
+
+        .aramapanelsag form { display: flex; gap: 5px; }
+        .aramapanelyazi {
+            padding: 8px 15px; border-radius: 20px; border: 1px solid var(--accent);
+            background: #000; color: #fff; outline: none; width: 180px;
+        }
+        .aramapanelbuton {
+            padding: 8px 15px; border-radius: 20px; border: none;
+            background: var(--accent); color: #000; font-weight: bold; cursor: pointer;
+        }
+
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 15px; padding: 15px; }
+        .hidden { display: none !important; }
+
+        /* Kartlar */
+        .card { position: relative; background: var(--card-bg); border-radius: 8px; overflow: hidden; cursor: pointer; transition: 0.3s; border: 1px solid #45a29e33; }
+        .card:hover { transform: scale(1.03); border-color: var(--accent); }
+        .card img { width: 100%; height: 210px; object-fit: cover; display: block; }
+        .badge-imdb { position: absolute; top: 8px; right: 8px; background: rgba(0,0,0,0.85); color: #EEBF16; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold; z-index: 5; }
+        .card-info { padding: 8px; background: linear-gradient(transparent, rgba(0,0,0,0.9)); text-align: center; }
+        .card-title { font-size: 11px; font-weight: bold; color: var(--accent); overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+
+        /* Bölüm Sayfası */
+        .bolum-header { padding: 25px; display: flex; align-items: center; gap: 20px; background: #161b22; border-bottom: 1px solid #45a29e33; }
+        .bolum-header img { width: 80px; height: 110px; border-radius: 6px; object-fit: cover; }
+        .last-episodes { display: flex; flex-wrap: wrap; gap: 12px; padding: 15px; }
+        .episode-item { width: calc(50% - 6px); }
+        .episode-item a { display: flex; align-items: center; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 8px; text-decoration: none; border: 1px solid transparent; transition: 0.2s; }
+        .episode-item a:hover { background: rgba(255,255,255,0.1); border-color: var(--accent); }
+        .episode-item img { width: 90px; height: 55px; border-radius: 4px; margin-right: 12px; object-fit: cover; background: #000; }
+        .ep-info { flex: 1; overflow: hidden; }
+        .ep-title { display: block; color: #fff; font-size: 14px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .ep-sub { font-size: 11px; color: var(--accent); }
+
+        /* Player */
+        #loading-overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:20000; flex-direction:column; align-items:center; justify-content:center; color:var(--accent); }
+        #player-screen { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:#000; z-index:10000; }
+        iframe { width: 100%; height: 100%; border: none; }
+        .back-btn { --background: #45a29e; color: #000; margin: 15px; }
+
+        @media (max-width: 700px) { .episode-item { width: 100%; } .aramapanelyazi { width: 120px; } }
+    </style>
+</head>
+<body>
+
+<div id="loading-overlay">
+    <ion-spinner name="crescent"></ion-spinner>
+    <p id="loading-text">Yükleniyor...</p>
+</div>
+
+<div class="aramapanel">
+    <div class="aramapanelsol">
+        <div class="logo"><img src="https://i.hizliresim.com/t6e66bt.png"></div>
+        <div class="logoisim">ME TV</div>
+    </div>
+    <div class="aramapanelsag">
+        <form onsubmit="event.preventDefault(); searchSeries();">
+            <input type="text" id="seriesSearch" placeholder="Dizi Ara..." class="aramapanelyazi" oninput="searchSeries()">
+            <input type="submit" value="ARA" class="aramapanelbuton">
+        </form>
+    </div>
+</div>
+
+<div id="main-screen">
+    <div class="grid" id="movie-grid"></div>
+</div>
+
+<div id="episodes-screen" class="hidden">
+    <ion-button class="back-btn" onclick="showMain()">← GERİ DÖN</ion-button>
+    <div id="episode-content"></div>
+</div>
+
+<div id="player-screen">
+    <ion-button style="position:absolute; top:10px; right:10px; z-index:11" color="danger" onclick="closePlayer()">KAPAT</ion-button>
+    <div id="video-container" style="width:100%; height:100%;"></div>
+</div>
+
+<script>
+const diziler = [
+    {"title":"KONUŞANLAR","img":"https://www.themoviedb.org/t/p/w500//gTJZ9d49dLI2m1vv1Ufi3Cx7rMt.jpg","imdb":"6.3","link":"https://www.dizipal1226.com/dizi/konusanlar"},
+    {"title":"GIBI","img":"https://www.themoviedb.org/t/p/w500//AkPB7krLMDyEjKCOUYVoKF6f8St.jpg","imdb":"9.0","link":"https://www.dizipal1226.com/dizi/gibi"},
+    {"title":"LEYLA ILE MECNUN","img":"https://www.themoviedb.org/t/p/w500//1TOSWWWgTRkFGpCyx2g8Mt4UOi1.jpg","imdb":"9.1","link":"https://www.dizipal1226.com/dizi/leyla-ile-mecnun"},
+    {"title":"KARMA 2025","img":"https://www.themoviedb.org/t/p/w500/cwIujmphpI5dcYCgJsRYf1WztRS.jpg","imdb":"0.0","link":"https://www.dizipal1226.com/dizi/karma-2025"},
+    {"title":"KARŞILAŞMALAR","img":"https://www.themoviedb.org/t/p/w500/sOWIbBu3u1319LeKAno69zReCzk.jpg","imdb":"6.5","link":"https://www.dizipal1226.com/dizi/karsilasmalar"},
+    {"title":"KARA KENAN","img":"https://www.themoviedb.org/t/p/w500/txlswG8QBHeHXJ5LYbgmYCyMzPu.jpg","imdb":"6.5","link":"https://www.dizipal1226.com/dizi/kara-kenan"},
+    {"title":"TOLGSHOW ÇILGIN SEZON","img":"https://www.themoviedb.org/t/p/w500/y3tfIQqUNJLSxQGQURbN34icVrM.jpg","imdb":"6.5","link":"https://www.dizipal1226.com/dizi/tolgshow-cilgin-sezon"},
+    {"title":"TERTEMIZ","img":"https://www.themoviedb.org/t/p/w500/vUEoccgTd3WKze09RpuDgpdutKj.jpg","imdb":"6.5","link":"https://www.dizipal1226.com/dizi/tertemiz"},
+    {"title":"ANONIM","img":"https://www.themoviedb.org/t/p/w500/mBLVA7fPGBs7bDKgprY5aMmBwYf.jpg","imdb":"6.5","link":"https://www.dizipal1226.com/dizi/anonim"},
+    {"title":"O SES TÜRKIYE RAP","img":"https://www.themoviedb.org/t/p/w500//3W5V1SLQzbbX4DhH7YEQbG8Y4KK.jpg","imdb":"6.0","link":"https://www.dizipal1226.com/dizi/o-ses-turkiye-rap"},
+    {"title":"SADECE ARKADAŞIZ","img":"https://www.themoviedb.org/t/p/w500/mqOD3FhBNNwxWBNVE4mjvtsQfSj.jpg","imdb":"6.5","link":"https://www.dizipal1226.com/dizi/sadece-arkadasiz"},
+    {"title":"ESNAF","img":"https://www.themoviedb.org/t/p/w500/l1XzfBxaCABfvL17qWvWOkM1IIt.jpg","imdb":"0.0","link":"https://www.dizipal1226.com/dizi/esnaf"},
+    {"title":"SIZI DINLIYORUM","img":"https://www.themoviedb.org/t/p/w500/kKc0S0H21WzhKo2TjIhgr9lDWlM.jpg","imdb":"6.5","link":"https://www.dizipal1226.com/dizi/sizi-dinliyorum"},
+    {"title":"ALPER RENDE ILE KAÇIŞ","img":"https://www.themoviedb.org/t/p/w500/rQAeFTYCKRczkwJTCfRP2Q8kSqm.jpg","imdb":"0.0","link":"https://www.dizipal1226.com/dizi/alper-rende-ile-kacis"},
+    {"title":"SURVIVOR TV'DE YOK","img":"https://www.themoviedb.org/t/p/w500//urz8dx3VXjBaxQDLklznBjic8Zi.jpg","imdb":"6.5","link":"https://www.dizipal1226.com/dizi/survivor-tvde-yok"},
+    {"title":"AŞK KUMARDIR","img":"https://www.themoviedb.org/t/p/w500//inSWnomV5mHjXSiWpVepqcSJdw1.jpg","imdb":"6.5","link":"https://www.dizipal1226.com/dizi/ask-kumardir"},
+    {"title":"Pascal","img":"https://www.themoviedb.org/t/p/w500//zWgMQvGSXyXqfWDiTZQogs9Pl5m.jpg","imdb":"6.4","link":"https://www.dizipal1226.com/dizi/pascal"},
+    {"title":"103 Gol","img":"https://www.themoviedb.org/t/p/w500//3deP1IuGdDy3XgJLapXR57f7gXJ.jpg","imdb":"6.2","link":"https://www.dizipal1226.com/dizi/103-gol"},
+    {"title":"Stand-Up Evreni","img":"https://www.themoviedb.org/t/p/w500//6JquIhL1maOI1cSiH8lbC7LP1Ir.jpg","imdb":"6.0","link":"https://www.dizipal1226.com/dizi/stand-up-evreni"},
+    {"title":"Adım Başı Kafe","img":"https://www.themoviedb.org/t/p/w500//xRa6ePQygKgKJWTfb3N83XudjjB.jpg","imdb":"6.0","link":"https://www.dizipal1226.com/dizi/adim-basi-kafe"},
+    {"title":"Olağan Şüpheliler","img":"https://www.themoviedb.org/t/p/w500//uaC5k12rTWILTaPANoqfxF0D1aG.jpg","imdb":"6.0","link":"https://www.dizipal1226.com/dizi/olagan-supheliler"},
+    {"title":"Ölüm Zamanı","img":"https://www.themoviedb.org/t/p/w500//w2Cw6n2hqbi0AD0roLBChfhsfV9.jpg","imdb":"6.0","link":"https://www.dizipal1226.com/dizi/olum-zamani"},
+    {"title":"İlginç Bazı Olaylar","img":"https://www.themoviedb.org/t/p/w500//hdv51YXV5A1jTcq95Ectcxvg4PS.jpg","imdb":"6.0","link":"https://www.dizipal1226.com/dizi/ilginc-bazi-olaylar"},
+    {"title":"Benim İçin Yap","img":"https://www.themoviedb.org/t/p/w500//43Zl6CbdVGLnGHbdtOCykLGnYr8.jpg","imdb":"5.0","link":"https://www.dizipal1226.com/dizi/benim-icin-yap"},
+    {"title":"Bir Yeraltı Sit-Com'u","img":"https://www.themoviedb.org/t/p/w500//o9nB4w31HgaNUL2EeJ7xzG0c15H.jpg","imdb":"6.3","link":"https://www.dizipal1226.com/dizi/bir-yeralti-sit-comu"},
+    {"title":"Özcan Show","img":"https://www.themoviedb.org/t/p/w500//tgf0oqKDACFRpoG9ERoQLuOk00r.jpg","imdb":"3.3","link":"https://www.dizipal1226.com/dizi/ozcan-show"},
+    {"title":"Sesli Güldüm","img":"https://www.themoviedb.org/t/p/w500//srzV7KTgMSE673vGBqjHEGixXMy.jpg","imdb":"3.5","link":"https://www.dizipal1226.com/dizi/sesli-guldum"},
+    {"title":"Survivor Exxen Cup","img":"https://www.themoviedb.org/t/p/w500//pIn3lKLW6rCMQgPvxeOTH9BM4mX.jpg","imdb":"0.0","link":"https://www.dizipal1226.com/dizi/survivor-exxen-cup"},
+    {"title":"Cadde Cadde İstanbul","img":"https://www.themoviedb.org/t/p/w500//f4Ttb4wdVVeJ8lHcH7wSFhuQDKj.jpg","imdb":"0.0","link":"https://www.dizipal1226.com/dizi/cadde-cadde-istanbul"},
+    {"title":"Tasarım Evler","img":"https://www.themoviedb.org/t/p/w500//6ZC6SAKdzVCd99t0VhJCkJWXThQ.jpg","imdb":"0.0","link":"https://www.dizipal1226.com/dizi/tasarim-evler"},
+    {"title":"Stiller Konuşsun","img":"https://www.themoviedb.org/t/p/w500//9f8bGwT88x66ivlrzzjSGtPYaY9.jpg","imdb":"0.0","link":"https://www.dizipal1226.com/dizi/stiller-konussun"},
+    {"title":"No Limit","img":"https://www.themoviedb.org/t/p/w500//rJ69WpwgCEAufOXnm7CTEAlTAXH.jpg","imdb":"0.0","link":"https://www.dizipal1226.com/dizi/no-limit"},
+    {"title":"Buraların Yabancısıyız","img":"https://www.themoviedb.org/t/p/w500//kYUH8f9oxf9qLN86FWDeqbAZbu6.jpg","imdb":"0.0","link":"https://www.dizipal1226.com/dizi/buralarin-yabancisiyiz"},
+    {"title":"Ayak Tenis","img":"https://www.themoviedb.org/t/p/w500//l1caRCnJrKZc0oEbZPjhBGOCmq4.jpg","imdb":"0.0","link":"https://www.dizipal1226.com/dizi/ayak-tenis"},
+    {"title":"Kesin Yaşanmıştır","img":"https://www.themoviedb.org/t/p/w500//jUX5mhXoz5QqeMYUOuxAwmXe5pP.jpg","imdb":"0.0","link":"https://www.dizipal1226.com/dizi/kesin-yasanmistir"},
+    {"title":"Fight Club Exxen","img":"https://www.themoviedb.org/t/p/w500//yJYt9LxPpazoENJhX26pQy2Zbqp.jpg","imdb":"0.0","link":"https://www.dizipal1226.com/dizi/fight-club-exxen"},
+    {"title":"Kirli Çamaşırlar","img":"https://www.themoviedb.org/t/p/w500//7APYVk28EHzYcjENk4DSWVXpC6h.jpg","imdb":"0.0","link":"https://www.dizipal1226.com/dizi/kirli-camasirlar"},
+    {"title":"Garaj","img":"https://www.themoviedb.org/t/p/w500//ktQrRRapHKdn97JZaRZHFnOkRHX.jpg","imdb":"0.0","link":"https://www.dizipal1226.com/dizi/garaj"},
+    {"title":"Astrolojik Şifreler","img":"https://www.themoviedb.org/t/p/w500//unCPlKZ91OSPTRroMLiQfHQOxD2.jpg","imdb":"0.0","link":"https://www.dizipal1226.com/dizi/astrolojik-sifreler"},
+    {"title":"Akıl Oyunları","img":"https://www.themoviedb.org/t/p/w500//cHf1RuFMBUdJdf2OMcRxPSvIEqv.jpg","imdb":"0.0","link":"https://www.dizipal1226.com/dizi/akil-oyunlari"},
+    {"title":"@EnisArıkan","img":"https://www.themoviedb.org/t/p/w500//eN5m7e0aLSf5mPxBDL6IrnhxKRs.jpg","imdb":"0.0","link":"https://www.dizipal1226.com/dizi/enisarikan"},
+    {"title":"Katarsis","img":"https://www.themoviedb.org/t/p/w500//bQMrXhSUGwXjGh0MBivqCbdN2Zp.jpg","imdb":"0.0","link":"https://www.dizipal1226.com/dizi/katarsis"},
+    {"title":"Yetiş Zeynep","img":"https://www.themoviedb.org/t/p/w500//cwSUQ3H2WIQE78e9rkd4evTSVri.jpg","imdb":"0.0","link":"https://www.dizipal1226.com/dizi/yetis-zeynep"},
+    {"title":"Vahşi Şeyler","img":"https://www.themoviedb.org/t/p/w500//qbakpxiCYU28XSCHk16QQ6YzU7Y.jpg","imdb":"0.0","link":"https://www.dizipal1226.com/dizi/vahsi-seyler"},
+    {"title":"Tolgshow Filtresiz","img":"https://www.themoviedb.org/t/p/w500//kJ8uHMRok9NnwGsogMQxjkwvLpp.jpg","imdb":"7.7","link":"https://www.dizipal1226.com/dizi/tolgshow-filtresiz"},
+    {"title":"Sihirli Annem 2021","img":"https://www.themoviedb.org/t/p/w500//9LvmF4KykDcE503a26X2eaxdLMt.jpg","imdb":"0.0","link":"https://www.dizipal1226.com/dizi/sihirli-annem-2021"},
+    {"title":"Şeref Bey","img":"https://www.themoviedb.org/t/p/w500//jjuzcc6tIJNb9sAbGqNa2IRJXav.jpg","imdb":"0.0","link":"https://www.dizipal1226.com/dizi/seref-bey"},
+    {"title":"MasterChef Junior","img":"https://www.themoviedb.org/t/p/w500//oDaYrSqSOchGmjUvMBjiuT4kCIB.jpg","imdb":"0.0","link":"https://www.dizipal1226.com/dizi/masterchef-junior"},
+    {"title":"Hükümsüz","img":"https://www.themoviedb.org/t/p/w500//fknQJBBVT5d4yVxOJM4cfWK5sqM.jpg","imdb":"0.0","link":"https://www.dizipal1226.com/dizi/hukumsuz"}
+];
+
+const proxy = "https://api.codetabs.com/v1/proxy/?quest=";
+
+function toggleLoading(show, text = "Yükleniyor...") {
+    const loader = document.getElementById('loading-overlay');
+    document.getElementById('loading-text').innerText = text;
+    loader.style.display = show ? 'flex' : 'none';
+}
+
+function renderMain(filter = "") {
+    const grid = document.getElementById('movie-grid');
+    grid.innerHTML = "";
+    const filtered = diziler.filter(d => d.title.toLowerCase().includes(filter.toLowerCase()));
+    
+    filtered.forEach((dizi) => {
+        // Orijinal listedeki index'i bul (fetchEpisodes için)
+        const originalIndex = diziler.findIndex(item => item.title === dizi.title);
+        grid.innerHTML += `
+            <div class="card" onclick="fetchEpisodes(${originalIndex})">
+                ${dizi.imdb !== '0.0' ? `<div class="badge-imdb">⭐ ${dizi.imdb}</div>` : ''}
+                <img src="${dizi.img}" loading="lazy">
+                <div class="card-info"><div class="card-title">${dizi.title}</div></div>
+            </div>`;
+    });
+}
+
+function searchSeries() {
+    const term = document.getElementById('seriesSearch').value;
+    renderMain(term);
+}
+
+async function fetchEpisodes(index) {
+    const dizi = diziler[index];
+    toggleLoading(true, "Bölümler listeleniyor...");
+    try {
+        const response = await fetch(proxy + encodeURIComponent(dizi.link));
+        const html = await response.text();
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, "text/html");
+        const items = doc.querySelectorAll('.episode-item, .episodes li');
+        let episodesHTML = '';
+        items.forEach(item => {
+            const link = item.querySelector('a')?.getAttribute('href');
+            if(!link) return;
+            const title = item.querySelector('.name, .duration')?.innerText || "Bölüm";
+            const epLabel = item.querySelector('.episode, .title')?.innerText || "Yeni Bölüm";
+            const img = item.querySelector('img')?.src || dizi.img;
+            const fullLink = link.startsWith('http') ? link : "https://www.dizipal1226.com" + link;
+            episodesHTML += `
+                <div class="episode-item">
+                    <a href="javascript:void(0)" onclick="fetchEmbed('${fullLink}')">
+                        <img src="${img}">
+                        <div class="ep-info">
+                            <span class="ep-sub">${epLabel}</span>
+                            <span class="ep-title">${title}</span>
+                        </div>
+                    </a>
+                </div>`;
+        });
+        document.getElementById('episode-content').innerHTML = `
+            <div class="bolum-header">
+                <img src="${dizi.img}">
+                <div><h2>${dizi.title}</h2><p>⭐ IMDb: ${dizi.imdb}</p></div>
+            </div>
+            <div class="last-episodes">${episodesHTML || '<p style="padding:20px;">Bölüm bulunamadı.</p>'}</div>`;
+        document.getElementById('main-screen').classList.add('hidden');
+        document.getElementById('episodes-screen').classList.remove('hidden');
+        window.scrollTo(0,0);
+    } catch (e) { alert("Bağlantı hatası!"); }
+    toggleLoading(false);
+}
+
+async function fetchEmbed(bolumLink) {
+    toggleLoading(true, "Video hazırlanıyor...");
+    try {
+        const response = await fetch(proxy + encodeURIComponent(bolumLink));
+        const html = await response.text();
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, "text/html");
+        let embedUrl = doc.querySelector('#vast_new iframe')?.getAttribute('src') ||
+                       doc.querySelector('.series-player-container iframe')?.getAttribute('src');
+        if (embedUrl) {
+            if(embedUrl.startsWith('//')) embedUrl = 'https:' + embedUrl;
+            openPlayer(embedUrl);
+        } else { alert("Kaynak bulunamadı."); }
+    } catch (e) { alert("Hata oluştu."); }
+    toggleLoading(false);
+}
+
+function openPlayer(url) {
+    document.getElementById('player-screen').style.display = 'block';
+    document.getElementById('video-container').innerHTML = `<iframe src="${url}" allowfullscreen scrolling="no" allow="autoplay; encrypted-media"></iframe>`;
+}
+function closePlayer() { document.getElementById('player-screen').style.display = 'none'; document.getElementById('video-container').innerHTML = ''; }
+function showMain() { document.getElementById('main-screen').classList.remove('hidden'); document.getElementById('episodes-screen').classList.add('hidden'); }
+
+// Sayfa ilk açıldığında dizileri getir
+renderMain();
+</script>
+</body>
+</html>
