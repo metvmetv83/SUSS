@@ -3,6 +3,8 @@ import re
 import os
 import json
 import sys
+import time
+from urllib.parse import quote
 
 # Dosya Yolları
 KT_PATH = "DiziPal/src/main/kotlin/com/Pitipitii/DiziPal.kt"
@@ -11,15 +13,58 @@ PROXY_BASE = "https://api.codetabs.com/v1/proxy/?quest="
 
 def get_headers():
     return {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8'
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+        'Referer': 'https://www.dizipal1226.com/'
     }
+
+def scrape_titan_logic(base_url, category):
+    """Paylaştığın Titan TV PHP mantığını kullanarak link toplar."""
+    results = []
+    # DiziPal'da koleksiyonlar çok zengin içerik barındırır
+    target = f"{base_url}/koleksiyon/{category}"
+    print(f"\n>>> KOLEKSİYON Taranıyor: {category}")
+    
+    try:
+        # Proxy üzerinden veri çek
+        encoded_url = quote(target)
+        res = requests.get(f"{PROXY_BASE}{encoded_url}", headers=get_headers(), timeout=30)
+        res.encoding = 'utf-8'
+        html = res.text
+
+        # PHP kodundaki preg_match_all mantığı (Regex)
+        # 1. Önce li bloklarını yakala
+        items = re.findall(r'<li[^>]*>(.*?)</li>', html, re.DOTALL | re.IGNORECASE)
+        print(f"Blok Analizi: {len(items)} potansiyel içerik bulundu.")
+
+        for item in items:
+            # 2. Blok içindeki Link, Başlık ve Resim bilgilerini ayıkla
+            m_link = re.search(r'href="([^"]+)"', item, re.IGNORECASE)
+            m_title = re.search(r'class="title">([^<]+)</span>', item, re.IGNORECASE)
+            
+            if m_link and m_title:
+                link = m_link.group(1)
+                title = m_title.group(1).strip()
+                
+                # Linki tam adrese çevir
+                full_link = link if link.startswith('http') else f"{base_url.rstrip('/')}/{link.lstrip('/')}"
+                
+                if len(title) > 2:
+                    results.append({
+                        "baslik": title.upper(),
+                        "url": full_link,
+                        "kategori": category
+                    })
+
+    except Exception as e:
+        print(f"Hata oluştu ({category}): {e}")
+        
+    return results
 
 def main():
     target_url = "https://www.dizipal1226.com"
-    print(f"Hedef: {target_url} taranıyor...")
-
-    # Versiyon artırma işlemi
+    
+    # 1. Versiyon Güncelleme
     if os.path.exists(GRADLE_PATH):
         with open(GRADLE_PATH, 'r') as f: content = f.read()
         v = re.search(r'version\s*=\s*(\d+)', content)
@@ -27,49 +72,30 @@ def main():
             new_v = int(v.group(1)) + 1
             new_c = re.sub(r'version\s*=\s*\d+', f'version = {new_v}', content)
             with open(GRADLE_PATH, 'w') as f: f.write(new_c)
+            print(f"Yeni Sürüm: {new_v}")
 
-    results = []
-    # Ana sayfa, diziler ve filmler sayfalarını tara
-    endpoints = ["", "/diziler", "/filmler"]
+    # 2. Veri Toplama (Popüler Koleksiyonlar)
+    koleksiyonlar = ["exxen", "netflix", "gain", "disney", "beindizi", "diziler", "filmler"]
+    all_extracted = []
     
-    for ep in endpoints:
-        full_url = f"{PROXY_BASE}{target_url}{ep}"
-        try:
-            print(f"İstek gönderiliyor: {target_url}{ep}")
-            res = requests.get(full_url, headers=get_headers(), timeout=30)
-            res.encoding = 'utf-8'
-            
-            # HTML içindeki tüm link yapılarını regex ile yakala
-            # Örn: <a ... href="https://site.com/dizi-adi">...</a>
-            pattern = r'<a[^>]+href=["\']([^"\']+)["\'][^>]*>(.*?)</a>'
-            matches = re.findall(pattern, res.text, re.DOTALL)
-            
-            for href, text in matches:
-                # Temizlik
-                clean_t = re.sub('<[^<]+?>', '', text).strip() # HTML taglarını sil
-                
-                # Filtre: Gereksiz linkleri ele
-                bad = ['kategori', 'etiket', 'page', 'iletisim', 'yorum', 'uye', 'kayit', 'daha fazla', 'dmca']
-                if len(clean_t) > 3 and not any(x in href.lower() for x in bad) and target_url in href:
-                    if href != f"{target_url}/" and href != target_url:
-                        results.append({"baslik": clean_t, "url": href})
-            
-        except Exception as e:
-            print(f"Hata ({ep}): {e}")
+    for kol in koleksiyonlar:
+        extracted = scrape_titan_logic(target_url, kol)
+        all_extracted.extend(extracted)
+        time.sleep(1) # Ban koruması
 
-    # Tekilleştirme
+    # 3. Tekilleştirme
     unique_data = []
     seen = set()
-    for item in results:
+    for item in all_extracted:
         if item['url'] not in seen:
             unique_data.append(item)
             seen.add(item['url'])
 
-    # Kaydet
+    # 4. JSON Yazma
     with open('diziler.json', 'w', encoding='utf-8') as f:
-        json.dump(unique_list := list(unique_data), f, ensure_ascii=False, indent=4)
+        json.dump(unique_data, f, ensure_ascii=False, indent=4)
 
-    print(f"\nSonuç: {len(unique_list)} içerik bulundu ve kaydedildi.")
+    print(f"\nİşlem Tamamlandı: Toplam {len(unique_data)} içerik çekildi.")
 
 if __name__ == "__main__":
     main()
