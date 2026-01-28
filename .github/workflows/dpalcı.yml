@@ -1,0 +1,43 @@
+name: DiziPal URL Auto-Updater
+
+on:
+  schedule:
+    # Her 6 saatte bir otomatik çalışır
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+    # İstediğiniz zaman manuel olarak başlatmanızı sağlar
+
+jobs:
+  update-url:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install Dependencies
+        run: |
+          pip install requests
+
+      - name: Run Update Script
+        id: run_script
+        run: |
+          # Scriptinizin adının 'dpalcı.py' olduğunu varsayıyorum
+          python dpalcı.py
+        continue-on-error: true
+
+      - name: Commit and Push changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Auto-update: New DiziPal URL and version bump"
+            git push
+          fi
