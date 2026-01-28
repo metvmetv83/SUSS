@@ -1,71 +1,17 @@
 import requests
-import re
 import os
 import json
-import time
-from urllib.parse import quote
+import re
 
-# Dosya Yolları
 GRADLE_PATH = "DiziPal/build.gradle.kts"
 BASE_URL = "https://www.dizipal1226.com"
-# Farklı bir proxy motoru deniyoruz (AllOrigins alternatifi)
-PROXY_BASE = "https://api.codetabs.com/v1/proxy/?quest="
-
-def get_headers():
-    return {
-        'User-Agent': 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)',
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-        'Accept-Language': 'tr-TR,tr;q=0.9,en-US;q=0.8,en;q=0.7',
-        'Cache-Control': 'no-cache',
-        'Pragma': 'no-cache',
-        'Referer': 'https://www.google.com/'
-    }
-
-def scrape_smart(path):
-    results = []
-    print(f"\n>>> {path.upper()} taranıyor...")
-    
-    # Sitenin korumasını aşmak için URL'yi encode ediyoruz
-    target_url = f"{BASE_URL}/{path}/" if path else f"{BASE_URL}/"
-    proxied_url = PROXY_BASE + quote(target_url)
-    
-    try:
-        res = requests.get(proxied_url, headers=get_headers(), timeout=30)
-        res.encoding = 'utf-8'
-        html = res.text
-        
-        # 1. Strateji: Makale bloklarını yakala (Daha garantidir)
-        # <article ...> ... <h3 class="title"><a href="...">BAŞLIK</a></h3> ... </article>
-        articles = re.findall(r'<article[^>]*>(.*?)</article>', html, re.DOTALL)
-        
-        if not articles:
-            # 2. Strateji: Titan TV'nin kullandığı li yapısını yakala
-            articles = re.findall(r'<li[^>]*>(.*?)</li>', html, re.DOTALL)
-
-        for block in articles:
-            # Link ve Başlık ayıkla
-            m_link = re.search(r'href="([^"]+)"', block)
-            # Başlık bazen <h3> içinde bazen <span> içindedir
-            m_title = re.search(r'class="title">([^<]+)<', block) or re.search(r'alt="([^"]+)"', block)
-            
-            if m_link and m_title:
-                href = m_link.group(1)
-                title = m_title.group(1).strip().upper()
-                
-                # Sadece gerçek dizi/film linklerini al
-                if BASE_URL in href or href.startswith('/'):
-                    full_link = href if href.startswith('http') else f"{BASE_URL}{href}"
-                    if not any(x in href for x in ['kategori', 'etiket', 'page/']):
-                        results.append({"baslik": title, "url": full_link})
-
-        print(f"  - Bulunan: {len(results)}")
-    except Exception as e:
-        print(f"  - Hata: {e}")
-        
-    return results
+# Alternatif ve daha şeffaf bir proxy kullanıyoruz
+PROXY = "https://api.allorigins.win/get?url="
 
 def main():
-    # Versiyon Güncelle
+    print(">>> Veritabanı Sızıntısı Başlatılıyor (API Mode)...")
+    
+    # 1. Versiyon Güncelle
     if os.path.exists(GRADLE_PATH):
         with open(GRADLE_PATH, 'r') as f: content = f.read()
         v = re.search(r'version\s*=\s*(\d+)', content)
@@ -73,24 +19,62 @@ def main():
             new_v = int(v.group(1)) + 1
             with open(GRADLE_PATH, 'w') as f: f.write(re.sub(r'version\s*=\s*\d+', f'version = {new_v}', content))
 
-    # Tarama listesi
-    targets = ["diziler", "filmler", "koleksiyon/exxen", "koleksiyon/netflix"]
-    all_data = []
-    
-    for t in targets:
-        all_data.extend(scrape_smart(t))
-        time.sleep(2) # Korumayı aşmak için bekleme süresi
+    results = []
+    # WordPress API uçları: Genellikle içerikler buralarda saklanır
+    # posts = yazılar, pages = sayfalar
+    api_endpoints = [
+        f"{BASE_URL}/wp-json/wp/v2/posts?per_page=100",
+        f"{BASE_URL}/wp-json/wp/v2/pages?per_page=100",
+        f"{BASE_URL}/wp-json/wp/v2/dizi?per_page=100" # Özel post tipi
+    ]
+
+    for endpoint in api_endpoints:
+        try:
+            print(f"  - Hedef: {endpoint}")
+            # AllOrigins proxy üzerinden JSON çek
+            full_url = f"{PROXY}{requests.utils.quote(endpoint)}"
+            res = requests.get(full_url, timeout=30)
+            
+            if res.status_code == 200:
+                data = res.json()
+                # AllOrigins veriyi 'contents' içine string olarak gömer, onu parse etmeliyiz
+                if 'contents' in data:
+                    posts = json.loads(data['contents'])
+                    
+                    if isinstance(posts, list):
+                        for post in posts:
+                            title = post.get('title', {}).get('rendered', '')
+                            link = post.get('link', '')
+                            if title and link:
+                                results.append({
+                                    "baslik": title.upper(),
+                                    "url": link
+                                })
+                        print(f"    + {len(posts)} içerik API'den çekildi.")
+        except Exception as e:
+            print(f"    ! Bu uç kapalı veya korumalı.")
+
+    # Eğer API'ler kapalıysa, Arama Parametresini (s=) kullanarak brute-force dene
+    if not results:
+        print("  - API kapalı. Arama motoru simülasyonu deneniyor...")
+        search_target = f"{BASE_URL}/?s=a" # 'a' harfi içeren her şeyi ara
+        try:
+            full_url = f"{PROXY}{requests.utils.quote(search_target)}"
+            res = requests.get(full_url, timeout=30)
+            html = res.json().get('contents', '')
+            
+            # HTML içinden linkleri cımbızla çek
+            links = re.findall(r'href="(https://www.dizipal1226.com/[^/"]+/)"[^>]*>([^<]+)</a>', html)
+            for href, title in links:
+                if len(title.strip()) > 3 and "kategori" not in href:
+                    results.append({"baslik": title.strip().upper(), "url": href})
+        except: pass
 
     # Tekilleştirme
-    unique_data = []
-    seen = set()
-    for item in all_data:
-        if item['url'] not in seen:
-            unique_data.append(item)
-            seen.add(item['url'])
-
+    unique_data = {x['url']: x for x in results}.values()
+    
     with open('diziler.json', 'w', encoding='utf-8') as f:
-        json.dump(unique_data, f, ensure_ascii=False, indent=4)
+        json.dump(list(unique_data), f, ensure_ascii=False, indent=4)
 
     print(f"\nSonuç: {len(unique_data)} içerik kaydedildi.")
 
