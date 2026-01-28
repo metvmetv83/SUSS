@@ -1,15 +1,23 @@
 import requests
+import re
 import os
 import json
-import re
+import time
+from urllib.parse import quote
 
+# Dosya Yolları
 GRADLE_PATH = "DiziPal/build.gradle.kts"
 BASE_URL = "https://www.dizipal1226.com"
-# Alternatif ve daha şeffaf bir proxy kullanıyoruz
-PROXY = "https://api.allorigins.win/get?url="
+PROXY = "https://api.codetabs.com/v1/proxy/?quest="
+
+def get_headers():
+    return {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Referer': f'{BASE_URL}/'
+    }
 
 def main():
-    print(">>> Veritabanı Sızıntısı Başlatılıyor (API Mode)...")
+    print(">>> Arama Motoru Üzerinden Sızma Başlatıldı...")
     
     # 1. Versiyon Güncelle
     if os.path.exists(GRADLE_PATH):
@@ -20,63 +28,52 @@ def main():
             with open(GRADLE_PATH, 'w') as f: f.write(re.sub(r'version\s*=\s*\d+', f'version = {new_v}', content))
 
     results = []
-    # WordPress API uçları: Genellikle içerikler buralarda saklanır
-    # posts = yazılar, pages = sayfalar
-    api_endpoints = [
-        f"{BASE_URL}/wp-json/wp/v2/posts?per_page=100",
-        f"{BASE_URL}/wp-json/wp/v2/pages?per_page=100",
-        f"{BASE_URL}/wp-json/wp/v2/dizi?per_page=100" # Özel post tipi
-    ]
+    # Alfabedeki harfleri kullanarak her şeyi ara (En etkili yöntem budur)
+    search_queries = ['a', 'e', 'i', 'o', 'u', 'b', 'c', 'd'] 
 
-    for endpoint in api_endpoints:
+    for q in search_queries:
+        print(f"  - '{q}' harfi ile içerikler aranıyor...")
+        # Arama URL'si: ?s=harf
+        target = f"{BASE_URL}/?s={q}"
+        proxied_url = PROXY + quote(target)
+        
         try:
-            print(f"  - Hedef: {endpoint}")
-            # AllOrigins proxy üzerinden JSON çek
-            full_url = f"{PROXY}{requests.utils.quote(endpoint)}"
-            res = requests.get(full_url, timeout=30)
+            res = requests.get(proxied_url, headers=get_headers(), timeout=30)
+            html = res.text
             
-            if res.status_code == 200:
-                data = res.json()
-                # AllOrigins veriyi 'contents' içine string olarak gömer, onu parse etmeliyiz
-                if 'contents' in data:
-                    posts = json.loads(data['contents'])
-                    
-                    if isinstance(posts, list):
-                        for post in posts:
-                            title = post.get('title', {}).get('rendered', '')
-                            link = post.get('link', '')
-                            if title and link:
-                                results.append({
-                                    "baslik": title.upper(),
-                                    "url": link
-                                })
-                        print(f"    + {len(posts)} içerik API'den çekildi.")
+            # Senin "çekiyordu" dediğin regex mantığına en yakın yapı
+            # Link ve Başlığı ayıkla
+            items = re.findall(r'href="(https://www.dizipal1226.com/[^/"]+/)"[^>]*>(.*?)</a>', html)
+            
+            found_count = 0
+            for href, content in items:
+                # Başlığı temizle (HTML taglarını sil)
+                title = re.sub('<[^<]+?>', '', content).strip().upper()
+                
+                # Gereksiz linkleri temizle
+                bad_words = ['kategori', 'etiket', 'page', 'iletisim', 'dmca', 'yorum', 'kayit']
+                if len(title) > 3 and not any(w in href for w in bad_words):
+                    results.append({"baslik": title, "url": href})
+                    found_count += 1
+            
+            print(f"    + {found_count} içerik bulundu.")
+            time.sleep(2) # Korumaya yakalanmamak için bekle
+            
         except Exception as e:
-            print(f"    ! Bu uç kapalı veya korumalı.")
-
-    # Eğer API'ler kapalıysa, Arama Parametresini (s=) kullanarak brute-force dene
-    if not results:
-        print("  - API kapalı. Arama motoru simülasyonu deneniyor...")
-        search_target = f"{BASE_URL}/?s=a" # 'a' harfi içeren her şeyi ara
-        try:
-            full_url = f"{PROXY}{requests.utils.quote(search_target)}"
-            res = requests.get(full_url, timeout=30)
-            html = res.json().get('contents', '')
-            
-            # HTML içinden linkleri cımbızla çek
-            links = re.findall(r'href="(https://www.dizipal1226.com/[^/"]+/)"[^>]*>([^<]+)</a>', html)
-            for href, title in links:
-                if len(title.strip()) > 3 and "kategori" not in href:
-                    results.append({"baslik": title.strip().upper(), "url": href})
-        except: pass
+            print(f"    ! Hata: {e}")
 
     # Tekilleştirme
-    unique_data = {x['url']: x for x in results}.values()
-    
-    with open('diziler.json', 'w', encoding='utf-8') as f:
-        json.dump(list(unique_data), f, ensure_ascii=False, indent=4)
+    unique_data = []
+    seen = set()
+    for item in results:
+        if item['url'] not in seen:
+            unique_data.append(item)
+            seen.add(item['url'])
 
-    print(f"\nSonuç: {len(unique_data)} içerik kaydedildi.")
+    with open('diziler.json', 'w', encoding='utf-8') as f:
+        json.dump(unique_data, f, ensure_ascii=False, indent=4)
+
+    print(f"\nSonuç: {len(unique_data)} benzersiz içerik kaydedildi.")
 
 if __name__ == "__main__":
     main()
