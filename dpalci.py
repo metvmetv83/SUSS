@@ -12,47 +12,41 @@ except ImportError:
 
 KT_PATH = "DiziPal/src/main/kotlin/com/Pitipitii/DiziPal.kt"
 GRADLE_PATH = "DiziPal/build.gradle.kts"
+PROXY_BASE = "https://api.codetabs.com/v1/proxy/?quest="
 
 def get_headers():
     return {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
-        'Accept-Language': 'tr-TR,tr;q=0.8,en-US;q=0.5,en;q=0.3',
-        'Upgrade-Insecure-Requests': '1',
-        'Sec-Fetch-Dest': 'document',
-        'Sec-Fetch-Mode': 'navigate',
-        'Sec-Fetch-Site': 'none',
-        'Cache-Control': 'max-age=0',
+        'Accept-Language': 'tr-TR,tr;q=0.9',
     }
 
 def fetch_series(url):
-    """Gelişmiş seçiciler ve genişletilmiş tarama ile dizi çekme."""
+    """Proxy kullanarak dizi listesini çeker."""
     try:
-        print(f"Veriler çekiliyor: {url}")
-        session = requests.Session()
-        res = session.get(url, headers=get_headers(), timeout=20)
+        proxy_url = f"{PROXY_BASE}{url}"
+        print(f"Proxy üzerinden veriler çekiliyor: {proxy_url}")
+        
+        res = requests.get(proxy_url, headers=get_headers(), timeout=25)
+        
+        # Proxy bazen JSON hatası dönebilir, içeriği kontrol et
+        if res.status_code != 200:
+            print(f"Proxy hatası! Kod: {res.status_code}")
+            return
+
         soup = BeautifulSoup(res.text, 'html.parser')
-        
         results = []
-        
-        # 1. YÖNTEM: Spesifik Link Yapılarını tara (Genelde en garantisidir)
-        # Sitedeki tüm linkleri alıp içinde 'dizi', 'film' veya 'izle' geçenleri filtreleyelim
+
+        # DiziPal'ın güncel yapısında linkleri daha geniş tarayalım
         for a in soup.find_all('a', href=True):
             title = a.get_text(strip=True)
             href = a['href']
             
-            # Link bir dizi/izleme linki gibi görünüyorsa ve başlık varsa al
-            if len(title) > 5 and working_url in href and not any(x in href for x in ['/category/', '/etiket/', '/page/']):
-                results.append({"baslik": title, "url": href})
-
-        # 2. YÖNTEM: Klasik Seçiciler (Yedek olarak)
-        selectors = ['h2 a', 'h3 a', '.post-title a', '.entry-title a', '.video-title a']
-        for sel in selectors:
-            for item in soup.select(sel):
-                t = item.get_text(strip=True)
-                h = item.get('href')
-                if t and h:
-                    results.append({"baslik": t, "url": h})
+            # Filtreleme: Başlık anlamlı olmalı ve link dizi/film içermeli
+            if len(title) > 4 and ('dizi' in href or 'izle' in href or 'film' in href):
+                # Göreceli linkleri tam linke çevir
+                full_link = href if href.startswith('http') else f"{url.rstrip('/')}/{href.lstrip('/')}"
+                results.append({"baslik": title, "url": full_link})
 
         # Tekilleştirme
         unique_results = []
@@ -62,35 +56,36 @@ def fetch_series(url):
                 unique_results.append(item)
                 seen.add(item['baslik'])
         
-        # Sonuçları Kaydet
         with open('diziler.json', 'w', encoding='utf-8') as f:
             json.dump(unique_results, f, ensure_ascii=False, indent=4)
         
         print(f"İşlem başarılı: {len(unique_results)} içerik kaydedildi.")
-        
-        # Eğer hala 0 ise sayfa yapısını debug etmek için log basalım
         if len(unique_results) == 0:
-            print("Uyarı: Sayfa okundu ama dizi bulunamadı. HTML boyutu:", len(res.text))
+            print("Sayfa içeriği (İlk 200 karakter):", res.text[:200])
 
     except Exception as e:
         print(f"Scraping hatası: {e}")
 
 def check_url(url):
+    """Proxy üzerinden URL kontrolü."""
     try:
-        r = requests.get(url, headers=get_headers(), timeout=15, allow_redirects=True)
-        return r.url.rstrip('/') if r.status_code < 400 else None
+        proxy_url = f"{PROXY_BASE}{url}"
+        r = requests.get(proxy_url, headers=get_headers(), timeout=20)
+        return url if r.status_code == 200 else None
     except:
         return None
 
 def main():
-    global working_url
-    input_url = "https://www.dizipal1226.com"
-    working_url = check_url(input_url)
+    # Başlangıç adresi
+    target_url = "https://www.dizipal1226.com"
+    
+    print(f"Hedef URL Kontrolü: {target_url}")
+    working_url = check_url(target_url)
 
     if working_url:
-        print(f"Aktif URL: {working_url}")
+        print(f"Aktif URL Onaylandı: {working_url}")
         
-        # Dosya Güncellemeleri
+        # 1. Kotlin Dosyasını Güncelle
         if os.path.exists(KT_PATH):
             with open(KT_PATH, 'r', encoding='utf-8') as f:
                 content = f.read()
@@ -99,6 +94,7 @@ def main():
                 f.write(new_content)
             print(f"Güncellendi: {KT_PATH}")
 
+        # 2. Gradle Sürüm Artır
         if os.path.exists(GRADLE_PATH):
             with open(GRADLE_PATH, 'r', encoding='utf-8') as f:
                 g_content = f.read()
@@ -110,9 +106,10 @@ def main():
                     f.write(new_g)
                 print(f"Sürüm yükseltildi: {new_v}")
         
+        # 3. Dizileri Çek
         fetch_series(working_url)
     else:
-        print("Çalışan URL bulunamadı.")
+        print("Proxy üzerinden hedef siteye ulaşılamadı.")
         sys.exit(1)
 
 if __name__ == "__main__":
