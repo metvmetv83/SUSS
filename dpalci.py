@@ -1,133 +1,135 @@
-# Bu kod sarapcanagii ve primatzeka' ya aittir. İstediginiz gibi kullanabilirsiniz.
-
 import requests
 import re
 import os
-from urllib.parse import urlparse
-import time
-import random
+import json
 import sys
 
-def get_cloudflare_session():
-    return requests.Session()
+# BeautifulSoup'un yüklü olup olmadığını kontrol et
+try:
+    from bs4 import BeautifulSoup
+except ImportError:
+    print("HATA: beautifulsoup4 kütüphanesi yüklü değil! YAML dosyanızda 'pip install beautifulsoup4' olduğundan emin olun.")
+    sys.exit(1)
 
-def check_url(url, timeout=10):
-    session = get_cloudflare_session()
-    headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+# AYARLAR - GitHub deponuzdaki dosya yolları
+KT_PATH = "DiziPal/src/main/kotlin/com/Pitipitii/DiziPal.kt"
+GRADLE_PATH = "DiziPal/build.gradle.kts"
+
+def get_headers():
+    return {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-        'Accept-Language': 'en-US,en;q=0.5',
+        'Accept-Language': 'tr-TR,tr;q=0.9,en-US;q=0.8,en;q=0.7',
+        'Referer': 'https://www.google.com/',
+        'Cache-Control': 'no-cache',
     }
-    
+
+def check_url(url):
+    """URL'yi kontrol eder ve yönlendirmeleri (Redirect) takip eder."""
     try:
-        print(f"Checking URL: {url}")
-        response = session.get(url, headers=headers, timeout=timeout, allow_redirects=True)
-        
-        final_url = response.url
-        if final_url != url:
-            print(f"Redirected to: {final_url}")
-            final_number = int(re.search(r'dizipal(\d+)', final_url).group(1))
-            original_number = int(re.search(r'dizipal(\d+)', url).group(1))
-            
-            if final_number > original_number:
-                print(f"Found newer URL: {final_url}")
-                return False
-        
-        return response.status_code in [200, 403]
-    except requests.RequestException as e:
-        print(f"Error checking {url}: {str(e)}")
-        return False
+        print(f"Kontrol ediliyor: {url}")
+        response = requests.get(url, headers=get_headers(), timeout=15, allow_redirects=True)
+        # Site sizi nereye yönlendirirse (örn: .uk) o adresi döndürür
+        if response.status_code < 400:
+            return response.url.rstrip('/')
+        return None
+    except Exception as e:
+        print(f"Bağlantı hatası ({url}): {e}")
+        return None
 
-def update_files(kt_file_path, gradle_file_path):
+def fetch_series(url):
+    """Sitedeki son eklenen dizi ve filmleri çeker."""
     try:
-        if not os.path.exists(kt_file_path):
-            print(f"Error: {kt_file_path} not found")
-            return False
+        print(f"Veriler çekiliyor: {url}")
+        res = requests.get(url, headers=get_headers(), timeout=15)
+        soup = BeautifulSoup(res.text, 'html.parser')
         
-        if not os.path.exists(gradle_file_path):
-            print(f"Error: {gradle_file_path} not found")
-            return False
+        results = []
+        # DiziPal'ın kullandığı tüm muhtemel HTML yapıları
+        selectors = [
+            'article h2 a', 
+            '.post-title a', 
+            '.entry-title a', 
+            '.video-block a', 
+            '.list-title a'
+        ]
+        
+        for selector in selectors:
+            items = soup.select(selector)
+            for link in items:
+                title = link.get_text(strip=True)
+                href = link.get('href')
+                # Sadece gerçek dizi/film başlıklarını ve tam linkleri al
+                if title and len(title) > 3 and href and href.startswith('http'):
+                    results.append({"baslik": title, "url": href})
+        
+        # Benzersiz olanları filtrele (Aynı başlığı tekrar alma)
+        unique_results = []
+        seen = set()
+        for item in results:
+            if item['baslik'] not in seen:
+                unique_results.append(item)
+                seen.add(item['baslik'])
+        
+        with open('diziler.json', 'w', encoding='utf-8') as f:
+            json.dump(unique_results, f, ensure_ascii=False, indent=4)
+        
+        print(f"İşlem başarılı: {len(unique_results)} içerik diziler.json dosyasına kaydedildi.")
+    except Exception as e:
+        print(f"Scraping hatası: {e}")
 
-        print(f"Kotlin file path: {kt_file_path}")
-        print(f"Gradle file path: {gradle_file_path}")
+def main():
+    # 1. Başlangıç URL'si (Senin verdiğin çalışan adres)
+    input_url = "https://www.dizipal1226.com"
+    working_url = check_url(input_url)
 
-        with open(kt_file_path, 'r', encoding='utf-8') as f:
-            kt_content = f.read()
-
-        url_match = re.search(r'override var mainUrl = "(https://dizipal\d+\.com)"', kt_content)
-        if not url_match:
-            print("Error: URL pattern not found in DiziPal.kt")
-            return False
-
-        current_url = url_match.group(1)
-        print(f"Current URL: {current_url}")
-
-        if check_url(current_url):
-            print("Current URL is working fine and is the latest version")
-            return False
-
-        base_number = int(re.search(r'dizipal(\d+)', current_url).group(1))
-        max_attempts = 5
-        working_url = None
-
-        for i in range(base_number + 1, base_number + max_attempts + 1):
-            new_url = f"https://dizipal{i}.com"
-            print(f"Trying {new_url}")
-            
-            if check_url(new_url):
-                working_url = new_url
-                print(f"Found working URL: {working_url}")
+    # Eğer verdiğin adres de çalışmıyorsa brute-force yap
+    if not working_url:
+        print("Verilen URL çalışmıyor, alternatifler deneniyor...")
+        base_num = 1226
+        for i in range(base_num, base_num + 10):
+            test_url = f"https://dizipal{i}.com"
+            working_url = check_url(test_url)
+            if working_url:
                 break
 
-        if working_url:
-            # Update DiziPal.kt
-            new_kt_content = kt_content.replace(current_url, working_url)
-            with open(kt_file_path, 'w', encoding='utf-8') as f:
-                f.write(new_kt_content)
-            print(f"Updated {kt_file_path}")
-
-            # Update build.gradle.kts
-            with open(gradle_file_path, 'r', encoding='utf-8') as f:
-                gradle_content = f.read()
-                print("Current gradle content:")
-                print(gradle_content)
-
-            version_match = re.search(r'version\s*=\s*(\d+)', gradle_content)
-            if version_match:
-                current_version = int(version_match.group(1))
-                new_version = current_version + 1
-                print(f"Updating version from {current_version} to {new_version}")
-                
-                new_gradle_content = gradle_content.replace(
-                    f'version = {current_version}',
-                    f'version = {new_version}'
-                )
-                
-                with open(gradle_file_path, 'w', encoding='utf-8') as f:
-                    f.write(new_gradle_content)
-                print(f"Updated {gradle_file_path}")
-            else:
-                print("Warning: Version pattern not found in build.gradle.kts")
-            
-            return True
+    if working_url:
+        print(f"Aktif URL: {working_url}")
         
-        print("No working URL found after maximum attempts")
-        return False
+        # 2. Kotlin Dosyasını Güncelle
+        if os.path.exists(KT_PATH):
+            with open(KT_PATH, 'r', encoding='utf-8') as f:
+                content = f.read()
+            
+            # Regex ile mainUrl satırını tamamen değiştirir
+            new_content = re.sub(r'override var mainUrl = ".*?"', f'override var mainUrl = "{working_url}"', content)
+            
+            with open(KT_PATH, 'w', encoding='utf-8') as f:
+                f.write(new_content)
+            print(f"Güncellendi: {KT_PATH}")
+        else:
+            print(f"UYARI: {KT_PATH} dosyası bulunamadı, güncellenemedi.")
 
-    except Exception as e:
-        print(f"Error: {str(e)}")
-        import traceback
-        traceback.print_exc()
-        return False
+        # 3. Gradle Versiyonunu Artır
+        if os.path.exists(GRADLE_PATH):
+            with open(GRADLE_PATH, 'r', encoding='utf-8') as f:
+                g_content = f.read()
+            
+            v_match = re.search(r'version\s*=\s*(\d+)', g_content)
+            if v_match:
+                old_v = v_match.group(1)
+                new_v = str(int(old_v) + 1)
+                new_g = g_content.replace(f"version = {old_v}", f"version = {new_v}")
+                with open(GRADLE_PATH, 'w', encoding='utf-8') as f:
+                    f.write(new_g)
+                print(f"Sürüm yükseltildi: {new_v}")
+        
+        # 4. İçerikleri (Dizileri) Çek
+        fetch_series(working_url)
+        
+    else:
+        print("HATA: Hiçbir çalışan DiziPal adresi bulunamadı!")
+        sys.exit(1)
 
 if __name__ == "__main__":
-    kt_path = "DiziPal/src/main/kotlin/com/Pitipitii/DiziPal.kt"
-    gradle_path = "DiziPal/build.gradle.kts"  # Düzeltilmiş gradle dosya yolu
-    
-    print("Starting URL check process...")
-    if update_files(kt_path, gradle_path):
-        print("Files updated successfully")
-        sys.exit(0)
-    else:
-        print("No updates needed or process failed")
-        sys.exit(1)
+    main()
