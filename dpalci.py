@@ -3,18 +3,17 @@ import re
 import os
 import json
 import sys
+import time
 
-# BeautifulSoup kontrolü
 try:
     from bs4 import BeautifulSoup
 except ImportError:
-    print("HATA: beautifulsoup4 eksik. YAML dosyanıza ekleyin.")
     sys.exit(1)
 
-# YOLLAR
 KT_PATH = "DiziPal/src/main/kotlin/com/Pitipitii/DiziPal.kt"
 GRADLE_PATH = "DiziPal/build.gradle.kts"
 PROXY_BASE = "https://api.codetabs.com/v1/proxy/?quest="
+PAGE_LIMIT = 10  # Her kategori için taranacak sayfa sayısı
 
 def get_headers():
     return {
@@ -23,100 +22,98 @@ def get_headers():
     }
 
 def clean_text(text):
-    """Bozuk Türkçe karakterleri düzeltir ve tarih/puan bilgilerini ayıklar."""
     try:
-        # Bazı proxy servisleri latin-1 döner, bunu utf-8'e zorla
         text = text.encode('latin-1').decode('utf-8')
     except:
         pass
-    
-    # "Konuşanlar6. Sezon... 3 hafta önce" gibi metinleri sadece isim kalacak şekilde böler
-    clean = re.split(r'\d+\. Sezon|Henüz|Kişi|\d+ hafta|\d+ ay', text)[0]
+    # Sezon, Bölüm, puan gibi ekleri temizle
+    clean = re.split(r'\d+\. Sezon|Henüz|Kişi|\d+ hafta|\d+ ay|imdb|IMDB', text, flags=re.IGNORECASE)[0]
     return clean.strip()
 
-def fetch_series(url):
-    """Proxy üzerinden temiz dizi listesi çeker."""
-    try:
-        proxy_url = f"{PROXY_BASE}{url}"
-        print(f"Veriler çekiliyor: {proxy_url}")
-        res = requests.get(proxy_url, headers=get_headers(), timeout=30)
-        res.encoding = 'utf-8' 
+def scrape_category(base_url, category_name):
+    """Belirli bir kategorideki tüm sayfaları gezer."""
+    category_results = []
+    print(f"--- {category_name.upper()} Kategorisi Başlatılıyor ---")
+    
+    for page in range(1, PAGE_LIMIT + 1):
+        # Sayfa URL'sini oluştur (Örn: /diziler?page=2)
+        page_url = f"{base_url}/{category_name}?page={page}"
+        print(f"Sayfa {page} taranıyor...")
         
-        soup = BeautifulSoup(res.text, 'html.parser')
-        results = []
-
-        # Gereksiz linkleri elemek için anahtar kelimeler
-        bad_words = ['kategori', 'koleksiyon', 'forum', 'trendler', 'iletisim', 'email-protection', 'javascript', 'giris']
-
-        for a in soup.find_all('a', href=True):
-            href = a['href']
-            raw_title = a.get_text(strip=True)
+        try:
+            res = requests.get(f"{PROXY_BASE}{page_url}", headers=get_headers(), timeout=30)
+            res.encoding = 'utf-8'
+            soup = BeautifulSoup(res.text, 'html.parser')
             
-            # Filtrele: Link ve başlık uygun mu?
-            if any(x in href.lower() for x in bad_words) or len(raw_title) < 4:
-                continue
+            # İçerik kartlarını bul (DiziPal genellikle article veya div.post-column kullanır)
+            found_in_page = 0
+            for a in soup.find_all('a', href=True):
+                href = a['href']
+                title = clean_text(a.get_text(strip=True))
+                
+                # Sadece dizi/film linki olabilecekleri seç (kısa ve anlamsızları ele)
+                if len(title) > 3 and not any(x in href.lower() for x in ['kategori', 'forum', 'iletisim', 'page=']):
+                    full_link = href if href.startswith('http') else f"{base_url.rstrip('/')}/{href.lstrip('/')}"
+                    category_results.append({"baslik": title, "url": full_link, "tip": category_name})
+                    found_in_page += 1
             
-            title = clean_text(raw_title)
-            if title and len(title) > 2:
-                full_link = href if href.startswith('http') else f"{url.rstrip('/')}/{href.lstrip('/')}"
-                results.append({"baslik": title, "url": full_link})
-
-        # Tekilleştirme
-        unique_results = []
-        seen = set()
-        for item in results:
-            if item['baslik'].lower() not in seen:
-                unique_results.append(item)
-                seen.add(item['baslik'].lower())
-        
-        with open('diziler.json', 'w', encoding='utf-8') as f:
-            json.dump(unique_results, f, ensure_ascii=False, indent=4)
-        
-        print(f"İşlem başarılı: {len(unique_results)} içerik kaydedildi.")
-
-    except Exception as e:
-        print(f"Scraping hatası: {e}")
-
-def check_url(url):
-    try:
-        r = requests.get(f"{PROXY_BASE}{url}", headers=get_headers(), timeout=20)
-        return url if r.status_code == 200 else None
-    except:
-        return None
+            if found_in_page == 0:
+                print("Daha fazla içerik bulunamadı, bu kategori bitiriliyor.")
+                break
+                
+            time.sleep(1) # Sunucuyu yormamak için kısa bekleme
+        except Exception as e:
+            print(f"Sayfa {page} hatası: {e}")
+            break
+            
+    return category_results
 
 def main():
     target_url = "https://www.dizipal1226.com"
-    working_url = check_url(target_url)
-
-    if working_url:
-        print(f"Aktif URL: {working_url}")
-        
-        # 1. Kotlin Dosyasını Güncelle
-        if os.path.exists(KT_PATH):
-            with open(KT_PATH, 'r', encoding='utf-8') as f:
-                content = f.read()
-            new_content = re.sub(r'mainUrl\s*=\s*".*?"', f'mainUrl = "{working_url}"', content)
-            with open(KT_PATH, 'w', encoding='utf-8') as f:
-                f.write(new_content)
-            print(f"Güncellendi: {KT_PATH}")
-
-        # 2. Gradle Sürüm Artır
-        if os.path.exists(GRADLE_PATH):
-            with open(GRADLE_PATH, 'r', encoding='utf-8') as f:
-                g_content = f.read()
-            v_match = re.search(r'version\s*=\s*(\d+)', g_content)
-            if v_match:
-                new_v = int(v_match.group(1)) + 1
-                new_g = re.sub(r'version\s*=\s*\d+', f'version = {new_v}', g_content)
-                with open(GRADLE_PATH, 'w', encoding='utf-8') as f:
-                    f.write(new_g)
-                print(f"Sürüm yükseltildi: {new_v}")
-        
-        # 3. Dizileri Çek
-        fetch_series(working_url)
-    else:
-        print("Siteye ulaşılamadı.")
+    # Proxy ile sitenin ayakta olduğunu kontrol et
+    try:
+        r = requests.get(f"{PROXY_BASE}{target_url}", timeout=20)
+        if r.status_code != 200:
+            print("Siteye ulaşılamadı.")
+            sys.exit(1)
+    except:
         sys.exit(1)
+
+    print(f"Aktif URL: {target_url}")
+
+    # 1. Dosyaları Güncelle (Önceki mantıkla aynı)
+    if os.path.exists(KT_PATH):
+        with open(KT_PATH, 'r', encoding='utf-8') as f:
+            content = f.read()
+        new_content = re.sub(r'mainUrl\s*=\s*".*?"', f'mainUrl = "{target_url}"', content)
+        with open(KT_PATH, 'w', encoding='utf-8') as f: f.write(new_content)
+
+    if os.path.exists(GRADLE_PATH):
+        with open(GRADLE_PATH, 'r', encoding='utf-8') as f:
+            g_content = f.read()
+        v_match = re.search(r'version\s*=\s*(\d+)', g_content)
+        if v_match:
+            new_v = int(v_match.group(1)) + 1
+            new_g = re.sub(r'version\s*=\s*\d+', f'version = {new_v}', g_content)
+            with open(GRADLE_PATH, 'w', encoding='utf-8') as f: f.write(new_g)
+
+    # 2. Tüm Arşivi Çek (Diziler ve Filmler)
+    all_content = []
+    all_content.extend(scrape_category(target_url, "diziler"))
+    all_content.extend(scrape_category(target_url, "filmler"))
+
+    # Tekilleştirme
+    unique_data = []
+    seen = set()
+    for item in all_content:
+        if item['baslik'].lower() not in seen:
+            unique_data.append(item)
+            seen.add(item['baslik'].lower())
+
+    with open('diziler.json', 'w', encoding='utf-8') as f:
+        json.dump(unique_data, f, ensure_ascii=False, indent=4)
+
+    print(f"Toplam {len(unique_data)} içerik dev arşive kaydedildi!")
 
 if __name__ == "__main__":
     main()
