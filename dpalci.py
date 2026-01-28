@@ -14,117 +14,91 @@ KT_PATH = "DiziPal/src/main/kotlin/com/Pitipitii/DiziPal.kt"
 GRADLE_PATH = "DiziPal/build.gradle.kts"
 PROXY_BASE = "https://api.codetabs.com/v1/proxy/?quest="
 
-def get_session_and_headers(base_url):
-    """Siteden güncel çerezleri ve header bilgilerini toplar."""
-    session = requests.Session()
-    # Önce ana sayfaya gidip çerezleri alalım
-    try:
-        session.get(f"{PROXY_BASE}{base_url}", timeout=20)
-    except:
-        pass
-    
-    headers = {
-        'Accept': 'application/json, text/javascript, */*; q=0.01',
-        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-        'X-Requested-With': 'XMLHttpRequest',
-        'Origin': base_url,
-        'Referer': f"{base_url}/",
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36'
+def get_headers():
+    return {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
     }
-    return session, headers
 
-def fetch_from_api(session, headers, base_url, type_val):
-    all_extracted = []
-    current_last_id = ""
-    api_url = f"{base_url}/api/load-series"
-    
-    # CodeTabs proxy POST isteklerinde sorun çıkarabildiği için 
-    # API isteğini doğrudan ama sağlam headerlarla deniyoruz.
-    print(f"\n>>> API Taraması Başladı: Type={type_val}")
-    
-    for p in range(1, 6): # Test amaçlı 5 paket
-        payload = {
-            'date': current_last_id,
-            'tur': '',
-            'durum': '',
-            'kelime': '',
-            'type': type_val,
-            'siralama': ''
-        }
-        
+def clean_text(text):
+    try:
+        text = text.encode('latin-1').decode('utf-8')
+    except: pass
+    clean = re.split(r'\d+\. Sezon|Henüz|Kişi|\d+ hafta|\d+ ay|imdb|IMDB', text, flags=re.IGNORECASE)[0]
+    return clean.strip()
+
+def scrape_section(base_url, section_path, type_id):
+    """Hem ana bölümü hem de API parametreli versiyonunu tarar."""
+    results = []
+    # 1. Normal sayfa tarama
+    # 2. API benzeri filtre parametreli tarama (?type=1)
+    targets = [
+        f"{base_url}/{section_path}",
+        f"{base_url}/diziler?type={type_id}",
+        f"{base_url}/filmler?type={type_id}"
+    ]
+
+    for target in targets:
         try:
-            print(f"Paket {p} isteniyor... (ID: {current_last_id})")
-            # POST isteği
-            res = session.post(api_url, data=payload, headers=headers, timeout=30)
+            print(f"Hedef taranıyor: {target}")
+            res = requests.get(f"{PROXY_BASE}{target}", headers=get_headers(), timeout=30)
+            res.encoding = 'utf-8'
             
-            if res.status_code != 200:
-                print(f"Hata Kodu: {res.status_code}")
-                break
+            soup = BeautifulSoup(res.text, 'html.parser')
+            links = soup.find_all('a', href=True)
+            
+            found = 0
+            for a in links:
+                href = a['href']
+                title = clean_text(a.get_text(strip=True))
                 
-            # JSON yanıtını işle
-            try:
-                data_json = res.json()
-                # PHP kodundaki implode mantığı: gelen veri bir liste ise birleştir
-                html_content = "".join(data_json) if isinstance(data_json, list) else str(data_json)
-            except:
-                html_content = res.text
-
-            if len(html_content) < 200:
-                print("İçerik boş döndü.")
-                break
-            
-            soup = BeautifulSoup(html_content, 'html.parser')
-            items = soup.find_all('a', href=True)
-            
-            found_count = 0
-            for a in items:
-                # last_id güncellemesi için linkin id'sini al
-                if a.has_attr('id'):
-                    current_last_id = a['id']
+                bad_keywords = ['kategori', 'koleksiyon', 'forum', 'iletisim', 'giris', 'uye', 'dmca', 'filmler', 'diziler', 'page/']
                 
-                title_tag = a.find(class_='title') or a.find('h2')
-                if title_tag:
-                    title = title_tag.get_text(strip=True)
-                    href = a['href']
+                if len(title) > 4 and not any(x in href.lower() for x in bad_keywords):
                     full_link = href if href.startswith('http') else f"{base_url.rstrip('/')}/{href.lstrip('/')}"
-                    all_extracted.append({"baslik": title, "url": full_link})
-                    found_count += 1
-            
-            print(f"Başarılı: {found_count} içerik eklendi.")
-            if found_count == 0: break
-            time.sleep(1)
-
+                    results.append({"baslik": title, "url": full_link})
+                    found += 1
+            print(f"Bulunan: {found}")
         except Exception as e:
-            print(f"İstek sırasında hata: {e}")
-            break
+            print(f"Hata: {e}")
             
-    return all_extracted
+    return results
 
 def main():
     target_url = "https://www.dizipal1226.com"
-    session, headers = get_session_and_headers(target_url)
-
-    # 1. Versiyon Güncelle
+    
+    # Versiyonu artır
     if os.path.exists(GRADLE_PATH):
-        with open(GRADLE_PATH, 'r') as f: content = f.read()
+        with open(GRADLE_PATH, 'r', encoding='utf-8') as f: content = f.read()
         v = re.search(r'version\s*=\s*(\d+)', content)
         if v:
             new_v = int(v.group(1)) + 1
-            new_c = re.sub(r'version\s*=\s*\d+', f'version = {new_v}', content)
-            with open(GRADLE_PATH, 'w') as f: f.write(new_c)
-            print(f"Sürüm: {new_v}")
+            new_g = re.sub(r'version\s*=\s*\d+', f'version = {new_v}', content)
+            with open(GRADLE_PATH, 'w', encoding='utf-8') as f: f.write(new_g)
+            print(f"Sürüm Yükseltildi: {new_v}")
 
-    # 2. API Çekimi
-    results = []
-    results.extend(fetch_from_api(session, headers, target_url, '1')) # Diziler
-    results.extend(fetch_from_api(session, headers, target_url, '2')) # Filmler
+    # Kotlin URL güncelle
+    if os.path.exists(KT_PATH):
+        with open(KT_PATH, 'r', encoding='utf-8') as f: kt = f.read()
+        new_kt = re.sub(r'override var mainUrl = ".*?"', f'override var mainUrl = "{target_url}"', kt)
+        with open(KT_PATH, 'w', encoding='utf-8') as f: f.write(new_kt)
 
-    # 3. Kaydet
-    unique_data = {item['url']: item for item in results}.values()
+    # Verileri topla
+    all_data = []
+    all_data.extend(scrape_section(target_url, "diziler", "1"))
+    all_data.extend(scrape_section(target_url, "filmler", "2"))
+
+    # Tekilleştirme
+    unique_list = []
+    seen = set()
+    for item in all_data:
+        if item['url'] not in seen:
+            unique_list.append(item)
+            seen.add(item['url'])
+
     with open('diziler.json', 'w', encoding='utf-8') as f:
-        json.dump(list(unique_data), f, ensure_ascii=False, indent=4)
-    
-    print(f"\nSonuç: {len(unique_data)} içerik kaydedildi.")
+        json.dump(unique_list, f, ensure_ascii=False, indent=4)
+
+    print(f"\nSonuç: {len(unique_list)} içerik kaydedildi.")
 
 if __name__ == "__main__":
     main()
