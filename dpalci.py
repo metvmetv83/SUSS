@@ -5,15 +5,16 @@ from urllib.parse import quote
 
 # AYARLAR
 BASE_URL = "https://www.dizipal1226.com"
-# Not: AllOrigins bazen yavaş olabilir, alternatif olarak codetabs da kullanılabilir
 PROXY = "https://api.allorigins.win/get?url="
 
 def fetch_data(url):
     try:
+        # User-agent eklemek sitelerin engellemesini önlemeye yardımcı olur
         res = requests.get(PROXY + quote(url), timeout=25)
         if res.status_code == 200:
             return res.json().get('contents', '')
-    except:
+    except Exception as e:
+        print(f"Hata: {url} çekilemedi. -> {e}")
         return ""
     return ""
 
@@ -47,21 +48,20 @@ def get_content():
                     "link": full_link
                 })
     
-    # Tekilleştirme (Aynı dizi farklı kategorilerde olabilir)
     unique = {x['link']: x for x in all_items}.values()
     return list(unique)
 
 def create_html(data):
-    # Veriyi JSON string'ine çeviriyoruz (HTML içine gömmek için)
+    # Veriyi JSON string'ine çeviriyoruz (ensure_ascii=False Türkçe karakterler için önemli)
     json_data = json.dumps(data, ensure_ascii=False)
     
+    # HTML İçeriği - Python f-string çakışmalarını önlemek için JS kısımlarını {{ }} yaptık
     html_content = f"""<!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TITAN TV | Oto Portal</title>
-    <script type="module" src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.esm.js"></script>
     <style>
         :root {{ --main-bg: #0b0c10; --card-bg: #1f2833; --accent: #66fcf1; }}
         body {{ background: var(--main-bg); color: #fff; font-family: sans-serif; margin: 0; }}
@@ -99,8 +99,9 @@ def create_html(data):
     <script>
         const diziData = {json_data};
         const mainProxy = "https://api.allorigins.win/get?url=";
-
         const grid = document.getElementById('movie-grid');
+
+        // Kartları oluştur
         diziData.forEach((item, index) => {{
             grid.innerHTML += `
                 <div class="card" onclick="showEpisodes(${{index}})">
@@ -120,22 +121,23 @@ def create_html(data):
                 const res = await fetch(mainProxy + encodeURIComponent(item.link));
                 const result = await res.json();
                 const doc = new DOMParser().parseFromString(result.contents, 'text/html');
-                const links = doc.querySelectorAll('.episode-item, .episodes li');
+                const links = doc.querySelectorAll('.episode-item, .episodes li, a[href*="/bolum/"]');
                 
                 let html = '<div style="margin-top:20px;">';
                 links.forEach(el => {{
-                    const a = el.querySelector('a');
+                    const a = el.tagName === 'A' ? el : el.querySelector('a');
                     if(a) {{
                         const href = a.getAttribute('href');
-                        const title = el.innerText.trim() || "Bölüm";
+                        const title = a.innerText.trim() || "Bölüm";
                         const fullHref = href.startsWith('http') ? href : "{BASE_URL}" + href;
-                        html += `<div class="episode-item" onclick="playVideo('${{fullHref}}')">
-                                    <img src="${{item.img}}">
-                                    <div>
-                                        <div style="font-weight:bold; color:white;">${{title}}</div>
-                                        <div style="font-size:10px; color:var(--accent);">İzlemek için tıklayın</div>
-                                    </div>
-                                 </div>`;
+                        html += `
+                            <div class="episode-item" onclick="playVideo('${{fullHref}}')">
+                                <img src="${{item.img}}">
+                                <div>
+                                    <div style="font-weight:bold; color:white;">${{title}}</div>
+                                    <div style="font-size:10px; color:var(--accent);">İzlemek için tıklayın</div>
+                                </div>
+                            </div>`;
                     }}
                 }});
                 document.getElementById('episode-content').innerHTML = "<h2>" + item.title + "</h2>" + (html || '<p>Bölüm bulunamadı.</p>') + "</div>";
@@ -152,14 +154,20 @@ def create_html(data):
                 const res = await fetch(mainProxy + encodeURIComponent(url));
                 const result = await res.json();
                 const doc = new DOMParser().parseFromString(result.contents, 'text/html');
-                const iframe = doc.querySelector('#vast_new iframe, .series-player-container iframe');
+                const iframe = doc.querySelector('#vast_new iframe, .series-player-container iframe, iframe');
                 
                 if(iframe) {{
                     let src = iframe.getAttribute('src');
                     if(src.startsWith('//')) src = 'https:' + src;
                     document.getElementById('video-container').innerHTML = `<iframe src="${{src}}" allowfullscreen allow="autoplay"></iframe>`;
-                }} else {{ alert("Video bulunamadı!"); closePlayer(); }}
-            }} catch(e) {{ alert("Hata!"); closePlayer(); }}
+                }} else {{ 
+                    alert("Video oynatıcı bulunamadı!"); 
+                    closePlayer(); 
+                }}
+            } catch(e) {{ 
+                alert("Yükleme hatası!"); 
+                closePlayer(); 
+            }}
         }}
 
         function closePlayer() {{
@@ -175,8 +183,8 @@ def create_html(data):
 
 if __name__ == "__main__":
     diziler = get_content()
-    create_html(diziler)
-    # JSON yedeğini de kaydedelim (opsiyonel)
-    with open("diziler.json", "w", encoding="utf-8") as f:
-        json.dump(diziler, f, ensure_ascii=False, indent=2)
-    print(f"Bitti! {len(diziler)} içerik dpalci.html dosyasına işlendi.")
+    if diziler:
+        create_html(diziler)
+        print(f"Bitti! {len(diziler)} içerik dpalci.html dosyasına işlendi.")
+    else:
+        print("İçerik çekilemedi, lütfen internetinizi veya BASE_URL'yi kontrol edin.")
