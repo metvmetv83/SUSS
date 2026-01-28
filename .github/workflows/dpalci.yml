@@ -26,8 +26,8 @@ jobs:
       - name: Run Update Script
         id: run_script
         run: |
-          # Scriptinizin adının 'dpalcı.py' olduğunu varsayıyorum
-          python dpalcı.py
+          # Scriptinizin adının 'dpalci.py' olduğunu varsayıyorum
+          python dpalci.py
         continue-on-error: true
 
       - name: Commit and Push changes
