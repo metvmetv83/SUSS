@@ -10,83 +10,84 @@ BASE_URL = "https://www.dizipal1226.com"
 
 def get_headers():
     return {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-        'X-Requested-With': 'XMLHttpRequest',
-        'Referer': f'{BASE_URL}/',
-        'Accept': 'application/json, text/javascript, */*; q=0.01'
+        'authority': 'www.dizipal1226.com',
+        'accept': 'application/json, text/javascript, */*; q=0.01',
+        'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
+        'origin': BASE_URL,
+        'referer': f'{BASE_URL}/',
+        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
+        'x-requested-with': 'XMLHttpRequest'
     }
 
-def scrape_collection(session, category):
+def scrape_collection(category):
+    session = requests.Session()
     results = []
-    print(f"\n>>> {category.upper()} koleksiyonu derin taranıyor...")
-    
-    # 1. Aşama: Sayfanın ilk halini al (İlk 20 içerik)
+    print(f"\n>>> {category.upper()} Koleksiyonu taranıyor...")
+
     try:
-        main_page = session.get(f"{BASE_URL}/koleksiyon/{category}", headers=get_headers(), timeout=20)
-        html = main_page.text
-    except:
-        return []
-
-    # İçerik ayıklama fonksiyonu (Regex ile daha hızlı)
-    def extract_items(source):
-        found = []
-        # Link ve Başlık Yakala
-        items = re.findall(r'<a[^>]+id="([^"]+)"[^>]+href="([^"]+)"[^>]*>.*?class="title">([^<]+)</span>', source, re.S)
-        for item_id, href, title in items:
-            full_url = href if href.startswith('http') else f"{BASE_URL}{href}"
-            found.append({"id": item_id, "baslik": title.strip().upper(), "url": full_url})
-        return found
-
-    # İlk sayfa verilerini ekle
-    first_batch = extract_items(html)
-    results.extend(first_batch)
-    print(f"  - İlk sayfa: {len(first_batch)} içerik bulundu.")
-
-    # 2. Aşama: Kaydırdıkça yüklenen (AJAX) kısımları çek
-    if results:
-        last_id = results[-1]['id'] # En son dizinin ID'si (tarih/date değeri)
+        # 1. Aşama: İlk sayfayı çekip başlangıç verisini al
+        init_res = session.get(f"{BASE_URL}/koleksiyon/{category}", headers=get_headers(), timeout=20)
         
-        for p in range(1, 10): # 10 kez "aşağı kaydır"
+        # Regex ile hem ID (Date) hem Link hem Başlık çekiyoruz
+        # Kalıp: <a id="[DATE]" href="[LINK]">...<span class="title">[TITLE]</span>
+        pattern = r'<a[^>]+id="([^"]+)"[^>]+href="([^"]+)"[^>]*>.*?class="title">([^<]+)</span>'
+        initial_items = re.findall(pattern, init_res.text, re.DOTALL)
+        
+        for item_id, href, title in initial_items:
+            full_url = href if href.startswith('http') else f"{BASE_URL}{href}"
+            results.append({"id": item_id, "baslik": title.strip().upper(), "url": full_url})
+        
+        if not results:
+            print("  - İlk sayfa boş döndü. Manuel regex denemesi yapılıyor...")
+            return []
+
+        print(f"  - Başlangıç: {len(results)} içerik bulundu.")
+        
+        # 2. Aşama: Infinite Scroll (Sonsuz Kaydırma) Simülasyonu
+        # PHP kodundaki $last = $_GET['last_id'] mantığı burada 'date' olarak gider.
+        last_id = results[-1]['id']
+        
+        for p in range(1, 8): # 7 sayfa derinliğe in (~200+ içerik)
             payload = {
                 'date': last_id,
                 'tur': category,
-                'type': '',
                 'durum': '',
                 'kelime': '',
+                'type': '',
                 'siralama': ''
             }
             
-            try:
-                # API'ye POST atıyoruz
-                response = session.post(f"{BASE_URL}/api/load-series", data=payload, headers=get_headers(), timeout=20)
+            # API'den yeni partiyi iste
+            api_res = session.post(f"{BASE_URL}/api/load-series", data=payload, headers=get_headers(), timeout=20)
+            
+            if api_res.status_code == 200:
+                data = api_res.json()
+                html_chunk = "".join(data) if isinstance(data, list) else str(data)
                 
-                if response.status_code == 200:
-                    data = response.json()
-                    # Gelen JSON bir liste içindeki HTML bloklarıdır
-                    ajax_html = "".join(data) if isinstance(data, list) else str(data)
-                    
-                    new_items = extract_items(ajax_html)
-                    if not new_items:
-                        break
-                        
-                    results.extend(new_items)
-                    last_id = new_items[-1]['id'] # ID güncelle
-                    print(f"  - Kaydırma {p}: +{len(new_items)} içerik eklendi. (Yeni ID: {last_id})")
-                    time.sleep(1) # Ban yememek için
-                else:
+                new_items = re.findall(pattern, html_chunk, re.DOTALL)
+                
+                if not new_items:
                     break
-            except Exception as e:
-                print(f"  - Kaydırma hatası: {e}")
-                break
                 
+                batch_count = 0
+                for n_id, n_href, n_title in new_items:
+                    n_url = n_href if n_href.startswith('http') else f"{BASE_URL}{n_href}"
+                    results.append({"id": n_id, "baslik": n_title.strip().upper(), "url": n_url})
+                    last_id = n_id # Bir sonraki istek için en güncel ID
+                    batch_count += 1
+                
+                print(f"  - Kaydırma {p}: +{batch_count} yeni içerik.")
+                time.sleep(1)
+            else:
+                break
+
+    except Exception as e:
+        print(f"  - Hata oluştu: {e}")
+        
     return results
 
 def main():
-    session = requests.Session()
-    # Çerezleri kabul etmek için ana sayfaya bir kez git
-    session.get(BASE_URL, headers=get_headers())
-
-    # Versiyon güncelleme
+    # Versiyonu otomatik artır
     if os.path.exists(GRADLE_PATH):
         with open(GRADLE_PATH, 'r') as f: content = f.read()
         v = re.search(r'version\s*=\s*(\d+)', content)
@@ -94,21 +95,23 @@ def main():
             new_v = int(v.group(1)) + 1
             with open(GRADLE_PATH, 'w') as f: 
                 f.write(re.sub(r'version\s*=\s*\d+', f'version = {new_v}', content))
+            print(f"Versiyon Yükseltildi: {new_v}")
 
-    # Tarama
-    final_data = []
-    cats = ["exxen", "netflix", "gain", "disney", "blutv"]
+    final_results = []
+    # En popüler koleksiyonlar
+    categories = ["exxen", "netflix", "gain", "disney", "blutv", "beindizi"]
     
-    for c in cats:
-        final_data.extend(scrape_collection(session, c))
+    for cat in categories:
+        final_results.extend(scrape_collection(cat))
 
     # Tekilleştirme
-    unique = {x['url']: x for x in final_data}.values()
+    unique_data = {item['url']: item for item in final_results}.values()
     
+    # JSON Kaydet
     with open('diziler.json', 'w', encoding='utf-8') as f:
-        json.dump(list(unique), f, ensure_ascii=False, indent=4)
+        json.dump(list(unique_data), f, ensure_ascii=False, indent=4)
 
-    print(f"\nİşlem bitti! Toplam {len(unique)} içerik kaydedildi.")
+    print(f"\nİşlem Tamamlandı! Toplam {len(unique_data)} içerik dev arşive eklendi.")
 
 if __name__ == "__main__":
     main()
