@@ -2,14 +2,16 @@ name: DiziPal URL Auto-Updater
 
 on:
   schedule:
-    # Her 6 saatte bir otomatik çalışır
     - cron: '0 */6 * * *'
   workflow_dispatch:
-    # İstediğiniz zaman manuel olarak başlatmanızı sağlar
 
 jobs:
   update-url:
     runs-on: ubuntu-latest
+    # Yazma izni eklendi (Dosyaları güncelleyebilmesi için şart)
+    permissions:
+      contents: write
+      
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -21,13 +23,13 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          pip install requests
+          pip install requests beautifulsoup4
 
       - name: Run Update Script
         id: run_script
         run: |
-          # Scriptinizin adının 'dpalci.py' olduğunu varsayıyorum
           python dpalci.py
+        # Hata olsa bile commit adımına geçmesini sağlar
         continue-on-error: true
 
       - name: Commit and Push changes
@@ -35,9 +37,10 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add .
+          # Eğer değişiklik varsa commit yap ve pushla
           if git diff --staged --quiet; then
-            echo "No changes to commit"
+            echo "Değişiklik yok."
           else
-            git commit -m "Auto-update: New DiziPal URL and version bump"
+            git commit -m "Auto-update: DiziPal URL ve Dizi Listesi"
             git push
           fi
