@@ -8,13 +8,14 @@ on:
 jobs:
   update-url:
     runs-on: ubuntu-latest
-    # Yazma izni eklendi (Dosyaları güncelleyebilmesi için şart)
     permissions:
       contents: write
       
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Tüm geçmişi çekerek rebase hatalarını önler
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -29,18 +30,20 @@ jobs:
         id: run_script
         run: |
           python dpalci.py
-        # Hata olsa bile commit adımına geçmesini sağlar
         continue-on-error: true
 
       - name: Commit and Push changes
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          
           git add .
-          # Eğer değişiklik varsa commit yap ve pushla
+          
           if git diff --staged --quiet; then
-            echo "Değişiklik yok."
+            echo "Değişiklik yok, işlem atlanıyor."
           else
             git commit -m "Auto-update: DiziPal URL ve Dizi Listesi"
+            # Rebase yaparak 'rejected' hatasını kalıcı olarak çözeriz
+            git pull --rebase origin main
             git push
           fi
