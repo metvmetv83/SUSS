@@ -1,4 +1,4 @@
-name: DiziPal URL Auto-Updater
+name: DiziPal Portal Generator
 
 on:
   schedule:
@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  update-url:
+  build:
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -15,7 +15,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # Tüm geçmişi çekerek rebase hatalarını önler
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -23,27 +23,20 @@ jobs:
           python-version: '3.10'
 
       - name: Install Dependencies
-        run: |
-          pip install requests beautifulsoup4
+        run: pip install requests
 
-      - name: Run Update Script
-        id: run_script
-        run: |
-          python dpalci.py
-        continue-on-error: true
+      - name: Run Script
+        run: python dpalci.py
 
-      - name: Commit and Push changes
+      - name: Commit and Push
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          
-          git add .
-          
+          git add diziler.json dpalci.html
           if git diff --staged --quiet; then
-            echo "Değişiklik yok, işlem atlanıyor."
+            echo "Değişiklik yok."
           else
-            git commit -m "Auto-update: DiziPal URL ve Dizi Listesi"
-            # Rebase yaparak 'rejected' hatasını kalıcı olarak çözeriz
+            git commit -m "Auto-update: Dizi Listesi ve HTML Portal"
             git pull --rebase origin main
             git push
           fi
