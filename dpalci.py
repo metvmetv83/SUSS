@@ -13,59 +13,59 @@ except ImportError:
 KT_PATH = "DiziPal/src/main/kotlin/com/Pitipitii/DiziPal.kt"
 GRADLE_PATH = "DiziPal/build.gradle.kts"
 PROXY_BASE = "https://api.codetabs.com/v1/proxy/?quest="
-DEPTH_LIMIT = 5  # Her kategori için 5 sayfa derinliğe in (toplam ~500 içerik)
 
 def get_headers():
     return {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
+        'X-Requested-With': 'XMLHttpRequest'
     }
 
 def clean_text(text):
     try:
         text = text.encode('latin-1').decode('utf-8')
     except: pass
+    # Gereksiz kalabalığı ve "Daha fazla göster" metnini temizle
+    if "daha fazla" in text.lower() or text == "#":
+        return None
     clean = re.split(r'\d+\. Sezon|Henüz|Kişi|\d+ hafta|\d+ ay|imdb|IMDB', text, flags=re.IGNORECASE)[0]
     return clean.strip()
 
-def scrape_deep(base_url, section, type_id):
+def scrape_deep_with_filter(base_url, section, type_id):
     results = []
-    print(f"\n>>> {section.upper()} (Type {type_id}) derin tarama başlatıldı...")
+    print(f"\n>>> {section.upper()} taranıyor...")
     
-    for p in range(1, DEPTH_LIMIT + 1):
-        # Hem WordPress klasik hem de query parametreli sayfalama deneniyor
-        # Örn: /diziler/page/2/?type=1
+    # Sayfa yapısı üzerinden gitmek en kararlısı (Hatta URL'de # olsa bile)
+    for p in range(1, 8): # 7 sayfa derinlik
         target = f"{base_url}/{section}/page/{p}/?type={type_id}"
-        print(f"Sayfa {p} taranıyor: {target}")
+        print(f"Sayfa {p} çekiliyor...")
         
         try:
             res = requests.get(f"{PROXY_BASE}{target}", headers=get_headers(), timeout=30)
             res.encoding = 'utf-8'
             
-            if res.status_code != 200 or len(res.text) < 5000:
-                print(f"Sayfa {p} boş veya hatalı, bu kolu bitir.")
+            if res.status_code != 200 or len(res.text) < 4000:
                 break
                 
             soup = BeautifulSoup(res.text, 'html.parser')
             links = soup.find_all('a', href=True)
             
-            found_in_page = 0
+            found_count = 0
             for a in links:
                 href = a['href']
-                title = clean_text(a.get_text(strip=True))
+                raw_title = a.get_text(strip=True)
+                title = clean_text(raw_title)
                 
-                bad_keywords = ['kategori', 'koleksiyon', 'forum', 'iletisim', 'giris', 'uye', 'dmca', 'filmler', 'diziler', 'page/']
-                
-                if len(title) > 4 and not any(x in href.lower() for x in bad_keywords):
-                    full_link = href if href.startswith('http') else f"{base_url.rstrip('/')}/{href.lstrip('/')}"
-                    results.append({"baslik": title, "url": full_link})
-                    found_in_page += 1
+                # Sadece gerçek içerik linklerini al (Butonları ve kategorileri ele)
+                if title and len(title) > 3 and href != "#" and base_url in href:
+                    if not any(x in href.lower() for x in ['kategori', 'etiket', 'page/', 'iletisim']):
+                        results.append({"baslik": title, "url": href})
+                        found_count += 1
             
-            print(f"Sayfa {p} tamamlandı: +{found_in_page} içerik.")
-            if found_in_page == 0: break
-            time.sleep(1) # Siteyi yormayalım
+            print(f"Sayfa {p}: +{found_count} içerik.")
+            if found_count == 0: break
+            time.sleep(0.5)
             
-        except Exception as e:
-            print(f"Hata: {e}")
+        except:
             break
             
     return results
@@ -73,7 +73,7 @@ def scrape_deep(base_url, section, type_id):
 def main():
     target_url = "https://www.dizipal1226.com"
     
-    # 1. Versiyon & URL Güncelle
+    # Versiyon Güncelle
     if os.path.exists(GRADLE_PATH):
         with open(GRADLE_PATH, 'r', encoding='utf-8') as f: content = f.read()
         v = re.search(r'version\s*=\s*(\d+)', content)
@@ -81,17 +81,16 @@ def main():
             new_v = int(v.group(1)) + 1
             new_g = re.sub(r'version\s*=\s*\d+', f'version = {new_v}', content)
             with open(GRADLE_PATH, 'w', encoding='utf-8') as f: f.write(new_g)
-            print(f"Sürüm Yükseltildi: {new_v}")
 
-    # 2. Derin Veri Toplama
-    all_data = []
-    all_data.extend(scrape_deep(target_url, "diziler", "1"))
-    all_data.extend(scrape_deep(target_url, "filmler", "2"))
+    # Veri Topla
+    all_content = []
+    all_content.extend(scrape_deep_with_filter(target_url, "diziler", "1"))
+    all_content.extend(scrape_deep_with_filter(target_url, "filmler", "2"))
 
-    # 3. Tekilleştirme
+    # Tekilleştirme
     unique_list = []
     seen = set()
-    for item in all_data:
+    for item in all_content:
         if item['url'] not in seen:
             unique_list.append(item)
             seen.add(item['url'])
@@ -99,8 +98,7 @@ def main():
     with open('diziler.json', 'w', encoding='utf-8') as f:
         json.dump(unique_list, f, ensure_ascii=False, indent=4)
 
-    print(f"\n--- İŞLEM TAMAMLANDI ---")
-    print(f"Toplam {len(unique_list)} benzersiz içerik dev arşive eklendi.")
+    print(f"\nTamamlandı! {len(unique_list)} temiz içerik kaydedildi.")
 
 if __name__ == "__main__":
     main()
