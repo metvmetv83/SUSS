@@ -3,90 +3,96 @@ import re
 import os
 import json
 import time
+from urllib.parse import quote
 
 # Dosya Yolları
-KT_PATH = "DiziPal/src/main/kotlin/com/Pitipitii/DiziPal.kt"
 GRADLE_PATH = "DiziPal/build.gradle.kts"
 BASE_URL = "https://www.dizipal1226.com"
+# Farklı bir proxy motoru deniyoruz (AllOrigins alternatifi)
+PROXY_BASE = "https://api.codetabs.com/v1/proxy/?quest="
 
 def get_headers():
     return {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
-        'Referer': f'{BASE_URL}/'
+        'User-Agent': 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+        'Accept-Language': 'tr-TR,tr;q=0.9,en-US;q=0.8,en;q=0.7',
+        'Cache-Control': 'no-cache',
+        'Pragma': 'no-cache',
+        'Referer': 'https://www.google.com/'
     }
 
-def brute_scrape(path_suffix):
+def scrape_smart(path):
     results = []
-    print(f"\n>>> {path_suffix.upper()} taranıyor...")
+    print(f"\n>>> {path.upper()} taranıyor...")
     
-    # İlk 5 sayfayı brute-force tara (Her sayfa ~20-30 içerik)
-    for p in range(1, 6):
-        target = f"{BASE_URL}/{path_suffix}/page/{p}/"
-        if p == 1: target = f"{BASE_URL}/{path_suffix}/"
+    # Sitenin korumasını aşmak için URL'yi encode ediyoruz
+    target_url = f"{BASE_URL}/{path}/" if path else f"{BASE_URL}/"
+    proxied_url = PROXY_BASE + quote(target_url)
+    
+    try:
+        res = requests.get(proxied_url, headers=get_headers(), timeout=30)
+        res.encoding = 'utf-8'
+        html = res.text
         
-        print(f"  - Sayfa {p} zorlanıyor: {target}")
+        # 1. Strateji: Makale bloklarını yakala (Daha garantidir)
+        # <article ...> ... <h3 class="title"><a href="...">BAŞLIK</a></h3> ... </article>
+        articles = re.findall(r'<article[^>]*>(.*?)</article>', html, re.DOTALL)
         
-        try:
-            # Proxy'siz doğrudan dene (GitHub Actions bazen direkt erişebilir)
-            # Eğer hata alırsak Proxy'yi buraya tekrar ekleyebiliriz
-            res = requests.get(target, headers=get_headers(), timeout=20)
-            res.encoding = 'utf-8'
-            html = res.text
+        if not articles:
+            # 2. Strateji: Titan TV'nin kullandığı li yapısını yakala
+            articles = re.findall(r'<li[^>]*>(.*?)</li>', html, re.DOTALL)
 
-            # En kaba regex: Site içindeki tüm /dizi/ veya /film/ linklerini yakala
-            # Kalıp: href="https://.../dizi-adi" >Dizi Adı<
-            links = re.findall(r'href="([^"]+)"[^>]*>([^<]+)</a>', html)
+        for block in articles:
+            # Link ve Başlık ayıkla
+            m_link = re.search(r'href="([^"]+)"', block)
+            # Başlık bazen <h3> içinde bazen <span> içindedir
+            m_title = re.search(r'class="title">([^<]+)<', block) or re.search(r'alt="([^"]+)"', block)
             
-            found_this_page = 0
-            for href, title in links:
-                title = title.strip().upper()
-                # Filtre: Gereksiz sayfaları (kategori, sayfa, reklam) ele
-                if len(title) > 3 and BASE_URL in href:
-                    if not any(x in href.lower() for x in ['kategori', 'etiket', 'page/', 'iletisim', 'dmca']):
-                        results.append({"baslik": title, "url": href})
-                        found_this_page += 1
-            
-            print(f"    + {found_this_page} içerik bulundu.")
-            if found_this_page == 0: break
-            time.sleep(1)
-            
-        except Exception as e:
-            print(f"    ! Hata: {e}")
-            break
-            
+            if m_link and m_title:
+                href = m_link.group(1)
+                title = m_title.group(1).strip().upper()
+                
+                # Sadece gerçek dizi/film linklerini al
+                if BASE_URL in href or href.startswith('/'):
+                    full_link = href if href.startswith('http') else f"{BASE_URL}{href}"
+                    if not any(x in href for x in ['kategori', 'etiket', 'page/']):
+                        results.append({"baslik": title, "url": full_link})
+
+        print(f"  - Bulunan: {len(results)}")
+    except Exception as e:
+        print(f"  - Hata: {e}")
+        
     return results
 
 def main():
-    # 1. Versiyonu artır
+    # Versiyon Güncelle
     if os.path.exists(GRADLE_PATH):
         with open(GRADLE_PATH, 'r') as f: content = f.read()
         v = re.search(r'version\s*=\s*(\d+)', content)
         if v:
             new_v = int(v.group(1)) + 1
             with open(GRADLE_PATH, 'w') as f: f.write(re.sub(r'version\s*=\s*\d+', f'version = {new_v}', content))
-            print(f"Sürüm: {new_v}")
 
-    # 2. Ana bölümleri tara (Koleksiyon yerine doğrudan diziler/filmler)
-    all_content = []
-    sections = ["diziler", "filmler", "koleksiyon/exxen", "koleksiyon/netflix"]
+    # Tarama listesi
+    targets = ["diziler", "filmler", "koleksiyon/exxen", "koleksiyon/netflix"]
+    all_data = []
     
-    for s in sections:
-        all_content.extend(brute_scrape(s))
+    for t in targets:
+        all_data.extend(scrape_smart(t))
+        time.sleep(2) # Korumayı aşmak için bekleme süresi
 
-    # 3. Tekilleştirme
-    unique_list = []
+    # Tekilleştirme
+    unique_data = []
     seen = set()
-    for item in all_content:
+    for item in all_data:
         if item['url'] not in seen:
-            unique_list.append(item)
+            unique_data.append(item)
             seen.add(item['url'])
 
-    # 4. Kaydet
     with open('diziler.json', 'w', encoding='utf-8') as f:
-        json.dump(unique_list, f, ensure_ascii=False, indent=4)
+        json.dump(unique_data, f, ensure_ascii=False, indent=4)
 
-    print(f"\nSonuç: {len(unique_list)} içerik kaydedildi.")
+    print(f"\nSonuç: {len(unique_data)} içerik kaydedildi.")
 
 if __name__ == "__main__":
     main()
