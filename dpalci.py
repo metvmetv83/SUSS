@@ -52,10 +52,11 @@ def get_content():
     return list(unique)
 
 def create_html(data):
-    # Veriyi JSON string'ine çeviriyoruz (ensure_ascii=False Türkçe karakterler için önemli)
+    # Veriyi JSON string'ine çeviriyoruz
     json_data = json.dumps(data, ensure_ascii=False)
     
-    # HTML İçeriği - Python f-string çakışmalarını önlemek için JS kısımlarını {{ }} yaptık
+    # DİKKAT: f-string içindeki CSS ve JS süslü parantezleri {{ }} şeklinde çiftlenmiştir.
+    # JS içindeki ${item.img} gibi yapılar ise ${{item.img}} şeklinde yazılmıştır.
     html_content = f"""<!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -101,7 +102,6 @@ def create_html(data):
         const mainProxy = "https://api.allorigins.win/get?url=";
         const grid = document.getElementById('movie-grid');
 
-        // Kartları oluştur
         diziData.forEach((item, index) => {{
             grid.innerHTML += `
                 <div class="card" onclick="showEpisodes(${{index}})">
@@ -149,25 +149,17 @@ def create_html(data):
         async function playVideo(url) {{
             document.getElementById('player-screen').style.display = 'block';
             document.getElementById('video-container').innerHTML = "<div style='color:white; text-align:center; margin-top:20%'><h2>Video Hazırlanıyor...</h2></div>";
-            
             try {{
                 const res = await fetch(mainProxy + encodeURIComponent(url));
                 const result = await res.json();
                 const doc = new DOMParser().parseFromString(result.contents, 'text/html');
                 const iframe = doc.querySelector('#vast_new iframe, .series-player-container iframe, iframe');
-                
                 if(iframe) {{
                     let src = iframe.getAttribute('src');
                     if(src.startsWith('//')) src = 'https:' + src;
                     document.getElementById('video-container').innerHTML = `<iframe src="${{src}}" allowfullscreen allow="autoplay"></iframe>`;
-                }} else {{ 
-                    alert("Video oynatıcı bulunamadı!"); 
-                    closePlayer(); 
-                }}
-            } catch(e) {{ 
-                alert("Yükleme hatası!"); 
-                closePlayer(); 
-            }}
+                }} else {{ alert("Video bulunamadı!"); closePlayer(); }}
+            } catch(e) {{ alert("Hata!"); closePlayer(); }}
         }}
 
         function closePlayer() {{
@@ -177,14 +169,6 @@ def create_html(data):
     </script>
 </body>
 </html>"""
-    
+
     with open("dpalci.html", "w", encoding="utf-8") as f:
         f.write(html_content)
-
-if __name__ == "__main__":
-    diziler = get_content()
-    if diziler:
-        create_html(diziler)
-        print(f"Bitti! {len(diziler)} içerik dpalci.html dosyasına işlendi.")
-    else:
-        print("İçerik çekilemedi, lütfen internetinizi veya BASE_URL'yi kontrol edin.")
