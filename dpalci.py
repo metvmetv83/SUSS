@@ -52,7 +52,7 @@ def get_content():
     return list(unique)
 
 def create_html(data):
-    # Veriyi JSON olarak hazırla (ensure_ascii=False Türkçe karakterler için önemli)
+    # Veriyi JSON formatına çevir
     json_data = json.dumps(data, ensure_ascii=False)
     
     html_template = """<!DOCTYPE html>
@@ -70,16 +70,17 @@ def create_html(data):
         .card img { width: 100%; height: 210px; object-fit: cover; }
         .card-title { padding: 8px; font-size: 11px; text-align: center; color: var(--accent); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .badge-imdb { position: absolute; top: 5px; right: 5px; background: rgba(0,0,0,0.8); color: orange; padding: 2px 5px; border-radius: 4px; font-size: 10px; }
-        #loading { display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background:rgba(0,0,0,0.9); padding:20px; border-radius:10px; z-index:100; border:1px solid var(--accent); }
+        #loading { display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background:rgba(0,0,0,0.9); padding:20px; border-radius:10px; z-index:10000; border:1px solid var(--accent); }
         .hidden { display: none !important; }
-        .episode-item { background: #1f2833; margin: 8px; padding: 12px; border-radius: 8px; cursor: pointer; border: 1px solid #45a29e33; display: flex; align-items: center; }
+        .episode-item { background: #1f2833; margin: 8px; padding: 12px; border-radius: 8px; cursor: pointer; border: 1px solid #45a29e33; }
+        .episode-item:hover { border-color: var(--accent); }
         #player-screen { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:#000; z-index:1000; }
         iframe { width:100%; height:100%; border:none; }
     </style>
 </head>
 <body>
 
-    <div id="loading">Yükleniyor...</div>
+    <div id="loading">İşlem yapılıyor, lütfen bekleyin...</div>
 
     <div id="main-view">
         <h1 style="text-align:center; color:var(--accent);">ME TV PORTAL</h1>
@@ -87,7 +88,7 @@ def create_html(data):
     </div>
 
     <div id="episode-view" class="hidden" style="padding:20px;">
-        <button onclick="showMain()" style="background:var(--accent); padding:10px; border:none; cursor:pointer;">← ANA SAYFA</button>
+        <button onclick="showMain()" style="background:var(--accent); padding:10px; border:none; cursor:pointer; font-weight:bold;">← ANA SAYFA</button>
         <div id="episode-list"></div>
     </div>
 
@@ -97,8 +98,10 @@ def create_html(data):
     </div>
 
     <script>
-        // HATA DÜZELTİLDİ: JSON doğrudan dizi olarak atandı
-        const diziData = [JSON_DATA];
+        // Python'dan gelen JSON verisi
+        const diziData = [JSON_DATA][0]; 
+        const BASE_URL = "[BASE_URL]";
+
         const proxyList = [
             "https://api.codetabs.com/v1/proxy/?quest=",
             "https://corsproxy.io/?",
@@ -107,7 +110,6 @@ def create_html(data):
 
         const grid = document.getElementById('movie-grid');
         
-        // Ana Sayfayı Doldur
         diziData.forEach((item, index) => {
             grid.innerHTML += `
                 <div class="card" onclick="loadEpisodes(${index})">
@@ -120,53 +122,75 @@ def create_html(data):
         async function smartFetch(url) {
             for(let p of proxyList) {
                 try {
-                    const res = await fetch(p + encodeURIComponent(url));
+                    const finalUrl = p + encodeURIComponent(url);
+                    const res = await fetch(finalUrl);
                     if(!res.ok) continue;
-                    const data = await res.json();
-                    return data.contents || data;
-                } catch(e) { continue; }
+                    
+                    if(p.includes("allorigins")) {
+                        const data = await res.json();
+                        if(data.contents) return data.contents;
+                    } else {
+                        const data = await res.text();
+                        if(data && data.length > 500) return data; 
+                    }
+                } catch(e) { console.error("Proxy hatası:", p); continue; }
             }
             return null;
         }
 
         async function loadEpisodes(index) {
             const item = diziData[index];
-            document.getElementById('loading').style.display = 'block';
+            const loader = document.getElementById('loading');
+            loader.style.display = 'block';
             
             const html = await smartFetch(item.link);
-            if(!html) { alert("Bölümler çekilemedi. Proxy hatası!"); document.getElementById('loading').style.display = 'none'; return; }
+            if(!html) { 
+                alert("Bölümler çekilemedi. Lütfen bir süre sonra tekrar deneyin veya farklı bir içerik seçin."); 
+                loader.style.display = 'none'; 
+                return; 
+            }
 
             const doc = new DOMParser().parseFromString(html, 'text/html');
-            const links = doc.querySelectorAll('.episode-item a, .episodes li a, a[href*="/bolum/"]');
+            const links = doc.querySelectorAll('a[href*="/bolum/"], .episode-item a, .episodes li a');
             
-            let listHtml = '<h2>' + item.title + '</h2>';
+            let listHtml = '<h2 style="color:var(--accent)">' + item.title + '</h2>';
+            let found = false;
+
             links.forEach(a => {
                 const href = a.getAttribute('href');
                 const title = a.innerText.trim() || "Bölüm";
-                if(href && !href.includes('#')) {
-                    const fullHref = href.startsWith('http') ? href : "[BASE_URL]" + href;
+                if(href && !href.includes('#') && href.includes('bolum')) {
+                    const fullHref = href.startsWith('http') ? href : BASE_URL + (href.startsWith('/') ? '' : '/') + href;
                     listHtml += `<div class="episode-item" onclick="playVideo('${fullHref}')">${title}</div>`;
+                    found = true;
                 }
             });
+
+            if(!found) listHtml += "<p>Üzgünüz, bu içerik için aktif bölüm linki bulunamadı.</p>";
 
             document.getElementById('episode-list').innerHTML = listHtml;
             document.getElementById('main-view').classList.add('hidden');
             document.getElementById('episode-view').classList.remove('hidden');
-            document.getElementById('loading').style.display = 'none';
+            loader.style.display = 'none';
+            window.scrollTo(0,0);
         }
 
         async function playVideo(url) {
             document.getElementById('loading').style.display = 'block';
             const html = await smartFetch(url);
+            if(!html) { alert("Video sayfası yüklenemedi."); document.getElementById('loading').style.display = 'none'; return; }
+
             const doc = new DOMParser().parseFromString(html, 'text/html');
-            const iframe = doc.querySelector('#vast_new iframe, .series-player-container iframe, iframe[src*="embed"]');
+            const iframe = doc.querySelector('#vast_new iframe, .series-player-container iframe, iframe[src*="embed"], iframe[src*="m3u8"]');
             
             if(iframe) {
                 let src = iframe.getAttribute('src');
                 if(src.startsWith('//')) src = 'https:' + src;
                 document.getElementById('player-screen').style.display = 'block';
                 document.getElementById('video-container').innerHTML = `<iframe src="${src}" allowfullscreen allow="autoplay"></iframe>`;
-            } else { alert("Video kaynağı bulunamadı!"); }
+            } else { 
+                alert("Video kaynağı (iframe) bu sayfada bulunamadı."); 
+            }
             document.getElementById('loading').style.display = 'none';
         }
 
@@ -182,6 +206,12 @@ def create_html(data):
     </script>
 </body>
 </html>"""
+
+    # Veriyi enjekte et
+    final_html = html_template.replace("[JSON_DATA]", json_data).replace("[BASE_URL]", BASE_URL)
+    
+    with open("dpalci.html", "w", encoding="utf-8") as f:
+        f.write(final_html)
 
     # HATA DÜZELTİLDİ: json_data olduğu gibi (köşeli parantezlerle) gönderiliyor
     final_html = html_template.replace("[JSON_DATA]", json_data).replace("[BASE_URL]", BASE_URL)
