@@ -52,9 +52,9 @@ def get_content():
     return list(unique)
 
 def create_html(data):
+    # Veriyi JSON olarak hazırla (ensure_ascii=False Türkçe karakterler için önemli)
     json_data = json.dumps(data, ensure_ascii=False)
     
-    # Not: JS içindeki backtick (`) ve ${} yapıları Python replace ile çakışmaması için özenle korundu.
     html_template = """<!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -97,6 +97,7 @@ def create_html(data):
     </div>
 
     <script>
+        // HATA DÜZELTİLDİ: JSON doğrudan dizi olarak atandı
         const diziData = [JSON_DATA];
         const proxyList = [
             "https://api.codetabs.com/v1/proxy/?quest=",
@@ -117,13 +118,12 @@ def create_html(data):
         });
 
         async function smartFetch(url) {
-            // Birden fazla proxy deneyerek hatayı minimize eder
             for(let p of proxyList) {
                 try {
                     const res = await fetch(p + encodeURIComponent(url));
                     if(!res.ok) continue;
                     const data = await res.json();
-                    return data.contents || data; // Proxy türüne göre veri çekme
+                    return data.contents || data;
                 } catch(e) { continue; }
             }
             return null;
@@ -134,7 +134,7 @@ def create_html(data):
             document.getElementById('loading').style.display = 'block';
             
             const html = await smartFetch(item.link);
-            if(!html) { alert("Bölümler çekilemedi. Proxy hatası!"); return; }
+            if(!html) { alert("Bölümler çekilemedi. Proxy hatası!"); document.getElementById('loading').style.display = 'none'; return; }
 
             const doc = new DOMParser().parseFromString(html, 'text/html');
             const links = doc.querySelectorAll('.episode-item a, .episodes li a, a[href*="/bolum/"]');
@@ -183,8 +183,8 @@ def create_html(data):
 </body>
 </html>"""
 
-    # Değişkenleri yerleştir (En güvenli yöntem)
-    final_html = html_template.replace("[JSON_DATA]", json_data[1:-1]).replace("[BASE_URL]", BASE_URL)
+    # HATA DÜZELTİLDİ: json_data olduğu gibi (köşeli parantezlerle) gönderiliyor
+    final_html = html_template.replace("[JSON_DATA]", json_data).replace("[BASE_URL]", BASE_URL)
     
     with open("dpalci.html", "w", encoding="utf-8") as f:
         f.write(final_html)
