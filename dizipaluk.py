@@ -2,7 +2,7 @@ import asyncio
 import json
 import re
 from playwright.async_api import async_playwright
-from playwright_stealth import stealth_async
+from playwright_stealth.stealth import stealth
 
 async def main():
     async with async_playwright() as p:
@@ -23,7 +23,7 @@ async def main():
         page = await context.new_page()
 
         # ✅ DOĞRU STEALTH
-        await stealth_async(page)
+        await stealth(page)
 
         print("🚀 Dizipal'a bağlanılıyor...")
 
@@ -58,7 +58,7 @@ async def main():
                     json.dump(movies, f, ensure_ascii=False, indent=4)
                 print(f"✅ BAŞARILI: {len(movies)} film kaydedildi.")
             else:
-                print("❌ Film bulunamadı, Cloudflare geçilemedi.")
+                print("❌ Film bulunamadı (Cloudflare engeli).")
                 with open("debug_source.txt", "w", encoding="utf-8") as f:
                     f.write(content)
 
