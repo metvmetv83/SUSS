@@ -25,7 +25,7 @@ jobs:
           playwright install-deps
 
       - name: Botu Çalıştır
-        run: python scraper.py
+        run: python dizipaluk.py
 
       - name: Veriyi GitHub'a Pushla
         run: |
