@@ -1,41 +1,42 @@
-name: Dizipaluk
+name: Dizipal Scraper Bot
 
 on:
   schedule:
-    - cron: '0 0 * * *'
-  workflow_dispatch:
+    - cron: '0 0 * * *' # Her gün gece 00:00'da otomatik çalışır
+  workflow_dispatch:      # Manuel başlatma butonu sağlar
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write    # Dosyayı geri yazabilmek için izin
 
     steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v3
+      - name: Repo Kontrol
+        uses: actions/checkout@v4
 
-      - name: Python Kurulumu
-        uses: actions/setup-python@v4
+      - name: Python Kur
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.9'
+          python-version: '3.10'
 
-      - name: Bağımlılıkları Kur
+      - name: Bağımlılıkları ve Playwright Kur
         run: |
-          pip install playwright
+          pip install playwright playwright-stealth
           playwright install chromium
           playwright install-deps
 
-      - name: Botu Çalıştır
+      - name: Scraper'ı Çalıştır
         run: python dizipaluk.py
 
-      - name: Veriyi GitHub'a Pushla
+      - name: Verileri Kaydet ve Pushla
         run: |
           git config --global user.name "GitHub Action Bot"
           git config --global user.email "actions@github.com"
-          # Sadece dosya varsa ekle (hata vermemesi için)
           if [ -f filmler.json ]; then
             git add filmler.json
             git commit -m "Güncel film listesi: $(date)" || echo "Değişiklik yok"
             git push
           else
-            echo "Dosya oluşmadı, pushlanacak bir şey yok."
+            echo "Dosya bulunamadı, işlem atlanıyor."
           fi
