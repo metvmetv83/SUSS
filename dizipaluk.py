@@ -2,40 +2,36 @@ import asyncio
 import json
 import re
 from playwright.async_api import async_playwright
-from playwright_stealth import stealth_async
+from playwright_stealth import stealth # Hata veren stealth_async yerine standart stealth
 
 async def main():
     async with async_playwright() as p:
-        # Tarayıcıyı başlat (Gizli Mod)
+        # Tarayıcıyı başlat
         browser = await p.chromium.launch(headless=True)
         
-        # Gerçek bir tarayıcı profili simüle et
         context = await browser.new_context(
             user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
-            viewport={'width': 1920, 'height': 1080},
-            device_scale_factor=1,
+            viewport={'width': 1920, 'height': 1080}
         )
         
         page = await context.new_page()
         
-        # Stealth eklentisini uygula (Bot korumalarını aşmak için)
-        await stealth_async(page)
+        # Stealth korumasını uygula
+        await stealth(page)
 
         print("🚀 Dizipal'a bağlanılıyor...")
         
         try:
-            # Sayfaya git (Timeout süresini 90 saniyeye çıkardık)
+            # Sayfaya git
             await page.goto("https://dizipal.uk/filmler/", wait_until="domcontentloaded", timeout=90000)
             
-            # Cloudflare'in "İnsan mısın?" kontrolünü geçmesi için bekleme süresi
-            print("⏳ Cloudflare doğrulaması bekleniyor (20 saniye)...")
+            # Cloudflare geçişi için bekleme
+            print("⏳ Doğrulama bekleniyor (20 saniye)...")
             await asyncio.sleep(20)
 
-            # Sayfa kaynağını al
             content = await page.content()
             
-            # Film linklerini ve başlıklarını yakala
-            # Desen: href=".../film/..." ve title="..."
+            # Film yakalama deseni
             pattern = r'href="(https://dizipal\.uk/film/[^"]+)"[^>]*title="([^"]+)"'
             matches = re.findall(pattern, content)
 
@@ -52,15 +48,14 @@ async def main():
             if movies:
                 with open("filmler.json", "w", encoding="utf-8") as f:
                     json.dump(movies, f, ensure_ascii=False, indent=4)
-                print(f"✅ İŞLEM TAMAM: {len(movies)} film filmler.json dosyasına yazıldı.")
+                print(f"✅ BAŞARILI: {len(movies)} film kaydedildi.")
             else:
-                print("❌ HATA: Sayfaya girildi ama film listesi boş döndü.")
-                # Hata analizi için sayfa yapısını debug.txt olarak kaydet
-                with open("debug.txt", "w", encoding="utf-8") as f:
+                print("❌ HATA: Film listesi boş. Cloudflare geçilememiş olabilir.")
+                with open("debug_source.txt", "w", encoding="utf-8") as f:
                     f.write(content)
 
         except Exception as e:
-            print(f"🔥 KRİTİK HATA: {str(e)}")
+            print(f"🔥 HATA: {str(e)}")
         
         finally:
             await browser.close()
