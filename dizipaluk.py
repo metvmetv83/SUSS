@@ -1,45 +1,62 @@
 import asyncio
 from playwright.async_api import async_playwright
+from playwright_stealth import stealth_async
 import json
 import re
 
 async def main():
     async with async_playwright() as p:
-        # Gerçek bir tarayıcı başlat
+        # Tarayıcıyı başlat
         browser = await p.chromium.launch(headless=True)
+        # Gerçekçi bir parmak izi oluştur
         context = await browser.new_context(
-            user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36"
+            user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36",
+            viewport={'width': 1920, 'height': 1080}
         )
+        
         page = await context.new_page()
+        # Stealth modunu aktif et (Cloudflare'i kandırmak için kritik)
+        await stealth_async(page)
 
-        print("🔍 Dizipal'a gidiliyor...")
+        print("🚀 Dizipal'a sızılıyor...")
         try:
-            # Sayfayı aç ve Cloudflare'in çözülmesini bekle
-            await page.goto("https://dizipal.uk/filmler/", wait_until="networkidle", timeout=60000)
+            # networkidle yerine domcontentloaded kullanarak timeout riskini azaltıyoruz
+            await page.goto("https://dizipal.uk/filmler/", wait_until="domcontentloaded", timeout=60000)
             
-            # İçeriğin yüklenmesi için 5 saniye ekstra bekle
-            await page.wait_for_timeout(5000)
+            # Cloudflare bekleme sayfasını geçmek için zorunlu bekleme (10 saniye)
+            print("⏳ Cloudflare doğrulaması bekleniyor (10sn)...")
+            await asyncio.sleep(10)
 
             content = await page.content()
             
-            # Film bilgilerini ayıkla (Regex ile)
-            pattern = r'<div[^>]*class="[^"]*post-item[^"]*"[^>]*>.*?<a[^>]*href="([^"]+)"[^>]*title="([^"]+)"'
-            matches = re.findall(pattern, content, re.DOTALL)
+            # Seçiciyi biraz daha genişletelim (Farklı temalara uyum sağlaması için)
+            # Hem 'post-item' hem de genel 'article' yapılarını arar
+            pattern = r'href="([^"]*/film/[^"]*)"[^>]*title="([^"]+)"'
+            matches = re.findall(pattern, content, re.IGNORECASE)
             
-            movies = [{"title": m[1].strip(), "url": m[0].strip()} for m in matches]
+            if not matches:
+                # Alternatif: Title ve Href yer değiştirmiş olabilir
+                pattern = r'title="([^"]+)"[^>]*href="([^"]*/film/[^"]*)"'
+                matches = [(m[1], m[0]) for m in re.findall(pattern, content, re.IGNORECASE)]
+
+            movies = []
+            seen_urls = set()
+            for url, title in matches:
+                if url not in seen_urls:
+                    movies.append({"title": title.strip(), "url": url.strip()})
+                    seen_urls.add(url)
             
             if movies:
                 with open("filmler.json", "w", encoding="utf-8") as f:
                     json.dump(movies, f, ensure_ascii=False, indent=4)
-                print(f"✅ Başarılı: {len(movies)} film kaydedildi.")
+                print(f"✅ BAŞARILI: {len(movies)} film yakalandı.")
             else:
-                print("⚠️  Sayfa yüklendi ama film bulunamadı. Seçicileri kontrol et.")
-                # Hata ayıklama için sayfa kaynağını kaydet
+                print("⚠️  İçerik boş döndü. Cloudflare hala geçilememiş olabilir.")
                 with open("debug.html", "w", encoding="utf-8") as f:
                     f.write(content)
 
         except Exception as e:
-            print(f"❌ Bir hata oluştu: {e}")
+            print(f"❌ Hata: {str(e)}")
         
         await browser.close()
 
