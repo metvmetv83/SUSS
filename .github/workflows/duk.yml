@@ -1,0 +1,32 @@
+name: DiziPal Güncelleyici
+
+on:
+  schedule:
+    - cron: '0 * * * *' # Her saat başı çalışır
+  workflow_dispatch: # Manuel çalıştırma butonu ekler
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Kodları çek
+        uses: actions/checkout@v3
+
+      - name: Python Kur
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Kütüphaneleri Yükle
+        run: pip install requests beautifulsoup4
+
+      - name: Botu Çalıştır
+        run: python duk/bot.py
+
+      - name: Değişiklikleri GitHub'a Yükle
+        run: |
+          git config --global user.name 'GitHub Action'
+          git config --global user.email 'action@github.com'
+          git add filmler.json
+          git commit -m "Veriler güncellendi" || exit 0
+          git push
