@@ -21,7 +21,7 @@ jobs:
         run: pip install requests beautifulsoup4
 
       - name: Botu Çalıştır
-        run: python duk/bot.py
+        run: python bot.py
 
       - name: Değişiklikleri GitHub'a Yükle
         run: |
