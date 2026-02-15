@@ -6,7 +6,7 @@ def scrape_dizipal():
     # 1. YÖNTEM: AllOrigins Proxy (Daha stabil)
     # Eğer bu çalışmazsa 2. yöntemi (CodeTabs) deneyebilirsin.
     target_url = "https://dizipal.cx/filmler/"
-    proxy_url = f"https://api.allorigins.win/raw?url={target_url}"
+    proxy_url = f"https://api.codetabs.com/v1/proxy/?quest={target_url}"
     
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36"
