@@ -1,13 +1,10 @@
 import undetected_chromedriver as uc
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 import time
 import json
 import re
 import subprocess
 import os
-import html
 
 # --- AYARLAR ---
 BASE_URL = "https://dizipal.cx"
@@ -17,118 +14,84 @@ OUTPUT_FILE = "hobi.json"
 def get_chrome_version():
     try:
         output = subprocess.check_output(['google-chrome', '--version']).decode('utf-8')
-        version = re.search(r'Google Chrome (\d+)', output).group(1)
-        return int(version)
-    except:
-        return None
-
-def clean_key(text):
-    text = html.unescape(text)
-    text = re.sub(r'[\s\:\,\'’"”]+', '-', text)
-    return text.strip('-')
+        return int(re.search(r'Google Chrome (\d+)', output).group(1))
+    except: return None
 
 def scrape_hbomax():
     version = get_chrome_version()
-    print(f"Sistem Chrome Versiyonu: {version}")
-
     options = uc.ChromeOptions()
     options.add_argument('--no-sandbox')
     options.add_argument('--disable-dev-shm-usage')
-    options.add_argument('--disable-gpu')
-    # HIZLANDIRICI AYARLAR: Resimleri ve gereksiz render işlemlerini engelle
-    options.add_argument('--blink-settings=imagesEnabled=false')
-    options.page_load_strategy = 'eager' 
-
-    results = {}
-    if os.path.exists(OUTPUT_FILE):
-        try:
-            with open(OUTPUT_FILE, "r", encoding="utf-8") as f:
-                results = json.load(f)
-        except: pass
+    options.add_argument('--blink-settings=imagesEnabled=false') # Resimleri yükleme (HIZ)
+    
+    # Cloudflare'i geçmek için user-agent ekleyelim
+    options.add_argument('--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36')
 
     driver = uc.Chrome(options=options, version_main=version)
+    results = {}
+
+    if os.path.exists(OUTPUT_FILE):
+        with open(OUTPUT_FILE, "r", encoding="utf-8") as f:
+            try: results = json.load(f)
+            except: pass
 
     try:
-        print("Cloudflare gecisi bekleniyor...")
+        print("Cloudflare geciliyor...")
         driver.get(BASE_URL)
-        time.sleep(12) 
+        time.sleep(15) # İlk geçiş kritik
 
-        page_num = 1
-        while True:
-            platform_url = f"{BASE_URL}/platform/{PLATFORM_SLUG}/page/{page_num}/"
-            print(f"\n--- Sayfa {page_num} ---")
-            driver.get(platform_url)
-            
-            # Sayfa yuklenene kadar kısa bekleme
-            time.sleep(2)
+        for page in range(1, 4): # İlk 3 sayfa
+            url = f"{BASE_URL}/platform/{PLATFORM_SLUG}/page/{page}/"
+            print(f"Sayfa {page} taranıyor...")
+            driver.get(url)
+            time.sleep(5) 
 
-            items = driver.find_elements(By.CLASS_NAME, "post-item")
-            if not items:
-                print("Icerik bulunamadi veya bitti.")
-                break
+            # HTML Kaynağını al ve Regex ile tüm içerikleri saniyeler içinde bul
+            html_source = driver.page_source
+            # Dizipal'in güncel link yapısını yakalayan regex
+            content_matches = re.findall(r'<div class="post-item">.*?href="(.*?)".*?title="(.*?)".*?src="(.*?)"', html_source, re.S)
 
-            page_contents = []
-            for item in items:
-                try:
-                    anchor = item.find_element(By.TAG_NAME, "a")
-                    title = anchor.get_attribute("title")
-                    key = clean_key(title)
-                    if key in results: continue
+            if not content_matches:
+                print("⚠️ İçerik bulunamadı. Seçiciler güncelleniyor...")
+                # Alternatif regex (Eğer class değiştiyse)
+                content_matches = re.findall(r'<a href="(https://dizipal.cx/.*?/)".*?title="(.*?)"', html_source)
 
-                    page_contents.append({
-                        "title": title,
-                        "url": anchor.get_attribute("href"),
-                        "img": item.find_element(By.TAG_NAME, "img").get_attribute("src"),
-                        "key": key
-                    })
-                except: continue
+            print(f"Bulunan yeni içerik: {len(content_matches)}")
 
-            for content in page_contents:
-                try:
-                    print(f" Taraniyor: {content['title']}")
-                    driver.get(content['url'])
-                    
-                    results[content['key']] = {
-                        "isim": content['title'],
-                        "resim": content['img'],
-                        "bolumler": []
-                    }
+            for link, title, img in content_matches:
+                slug = title.replace(" ", "-").lower()
+                if slug in results: continue
 
-                    # Sayfa kaynagını tek seferde al ve Regex ile tum bolum linklerini ayıkla
-                    # Bu islem driver.find_elements'den cok daha hızlıdır
-                    source = driver.page_source
-                    all_ep_links = sorted(list(set(re.findall(r'href="(https?://[^"]+bolum[^"]+)"', source))))
+                print(f"-> {title} işleniyor...")
+                driver.get(link)
+                time.sleep(2)
+                
+                # Sayfadaki tüm bölüm linklerini ve iframe'i tek seferde al
+                inner_html = driver.page_source
+                episodes = list(set(re.findall(r'href="(https://dizipal.cx/.*?bolum.*?/)"', inner_html)))
+                
+                res = {"isim": title, "resim": img, "bolumler": []}
 
-                    if not all_ep_links:
-                        # Film senaryosu: Direkt iframe src al
-                        iframe_src = driver.execute_script("return document.querySelector('iframe')?.src")
-                        if iframe_src:
-                            results[content['key']]["bolumler"].append({"bolum_baslik": "Film", "link": iframe_src})
-                    else:
-                        # Dizi senaryosu
-                        for i, ep_url in enumerate(all_ep_links, 1):
-                            driver.get(ep_url)
-                            # Bekleme yapmadan JS ile iframe sorgula
-                            iframe_src = driver.execute_script("return document.querySelector('iframe')?.src")
-                            if iframe_src:
-                                results[content['key']]["bolumler"].append({
-                                    "bolum_baslik": f"{i}. Bolum",
-                                    "link": iframe_src
-                                })
+                if not episodes: # Film
+                    iframe = re.search(r'<iframe.*?src="(.*?)"', inner_html)
+                    if iframe:
+                        res["bolumler"].append({"bolum_baslik": "Film", "link": iframe.group(1)})
+                else:
+                    # Sadece ilk ve son bölüme bakarak veya sınırlayarak hızlandırabilirsin
+                    for i, ep_url in enumerate(sorted(episodes)[:15], 1): # İlk 15 bölüm sınırı (HIZ İÇİN)
+                        driver.get(ep_url)
+                        if_src = driver.execute_script("return document.querySelector('iframe')?.src")
+                        if if_src:
+                            res["bolumler"].append({"bolum_baslik": f"{i}. Bölüm", "link": if_src})
 
-                    # Anlık kaydet
-                    with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
-                        json.dump(results, f, ensure_ascii=False, indent=2)
-
-                except Exception as e:
-                    print(f"Hata: {content['title']} -> {e}")
-
-            page_num += 1
-            if page_num > 5: break # Sonsuz donguye girmemesi icin limit
+                results[slug] = res
+                # Her içerikte kaydet ki yarıda kalırsa veri gitmesin
+                with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
+                    json.dump(results, f, ensure_ascii=False, indent=2)
 
     finally:
         driver.quit()
-        print(f"Tamamlandi. {len(results)} icerik.")
+        print(f"İşlem bitti. Toplam: {len(results)}")
 
 if __name__ == "__main__":
     scrape_hbomax()
