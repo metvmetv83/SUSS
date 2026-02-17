@@ -5,21 +5,31 @@ import json
 import re
 import os
 import html
+import subprocess
 
 # --- AYARLAR ---
 BASE_URL = "https://dizipal.cx"
 PLATFORM_SLUG = "hbomax"
 OUTPUT_FILE = "hobii.json"
 
+def get_chrome_main_version():
+    """GitHub Actions üzerindeki Chrome sürümünü tespit eder"""
+    try:
+        output = subprocess.check_output(['google-chrome', '--version']).decode('utf-8')
+        version = re.search(r'Google Chrome (\d+)', output).group(1)
+        print(f"Sistemde bulunan Chrome versiyonu: {version}")
+        return int(version)
+    except Exception as e:
+        print(f"Versiyon tespit edilemedi: {e}")
+        return None
+
 def get_options():
     options = uc.ChromeOptions()
-    options.add_argument('--headless') # GitHub Actions için şart
+    options.add_argument('--headless')
     options.add_argument('--no-sandbox')
     options.add_argument('--disable-dev-shm-usage')
-    options.add_argument('--disable-gpu')
-    # HIZLANDIRICI AYARLAR
-    options.page_load_strategy = 'eager' 
-    options.add_argument('--blink-settings=imagesEnabled=false') # Resim yok
+    options.page_load_strategy = 'eager' # Sayfa iskeleti yüklenince devam et
+    options.add_argument('--blink-settings=imagesEnabled=false') # Resimleri yükleme (HIZ)
     return options
 
 def clean_key(text):
@@ -28,82 +38,77 @@ def clean_key(text):
     return text.strip('-')
 
 def scrape():
+    version = get_chrome_main_version()
     options = get_options()
-    driver = uc.Chrome(options=options)
+    
+    # version_main hatayı çözen kritik parametre
+    driver = uc.Chrome(options=options, version_main=version)
     
     results = {}
     if os.path.exists(OUTPUT_FILE):
-        with open(OUTPUT_FILE, "r", encoding="utf-8") as f:
-            results = json.load(f)
+        try:
+            with open(OUTPUT_FILE, "r", encoding="utf-8") as f:
+                results = json.load(f)
+        except: pass
 
     try:
-        print("Giriş yapılıyor...")
+        print("Ana sayfaya gidiliyor...")
         driver.get(BASE_URL)
-        time.sleep(10) # CF için ilk bekleyiş
+        time.sleep(10) # Cloudflare geçişi için bekleyiş
 
-        page_num = 1
-        while page_num <= 5: # Örnek: İlk 5 sayfayı tara
+        for page_num in range(1, 6): # İlk 5 sayfayı tarar
             print(f"Sayfa {page_num} taranıyor...")
             driver.get(f"{BASE_URL}/platform/{PLATFORM_SLUG}/page/{page_num}/")
             
             items = driver.find_elements(By.CLASS_NAME, "post-item")
             if not items: break
 
-            content_links = []
             for item in items:
                 try:
-                    a = item.find_element(By.TAG_NAME, "a")
-                    title = a.get_attribute("title")
+                    anchor = item.find_element(By.TAG_NAME, "a")
+                    title = anchor.get_attribute("title")
                     key = clean_key(title)
-                    if key not in results:
-                        content_links.append({
-                            "url": a.get_attribute("href"),
-                            "title": title,
-                            "key": key,
-                            "img": item.find_element(By.TAG_NAME, "img").get_attribute("src")
-                        })
-                except: continue
+                    
+                    if key in results: continue
 
-            # İçerik Detayları (Daha hızlı döngü)
-            for content in content_links:
-                print(f"İşleniyor: {content['title']}")
-                driver.get(content['url'])
-                
-                results[content['key']] = {
-                    "isim": content['title'],
-                    "resim": content['img'],
-                    "bolumler": []
-                }
+                    url = anchor.get_attribute("href")
+                    img = item.find_element(By.TAG_NAME, "img").get_attribute("src")
+                    
+                    # İçerik detayına git
+                    driver.execute_script(f"window.open('{url}', '_blank');")
+                    driver.switch_to.window(driver.window_handles[1])
+                    
+                    time.sleep(2)
+                    source = driver.page_source
+                    ep_links = list(set(re.findall(r'href="(https?://[^"]+bolum[^"]+)"', source)))
+                    
+                    content_data = {"isim": title, "resim": img, "bolumler": []}
 
-                # Sayfadaki tüm bölüm linklerini tek seferde Regex ile topla (HIZLI)
-                source = driver.page_source
-                ep_links = list(set(re.findall(r'href="(https?://[^"]+bolum[^"]+)"', source)))
-                
-                if not ep_links: # Film ise
-                    iframe_src = driver.execute_script("return document.querySelector('iframe')?.src")
-                    if iframe_src:
-                        results[content['key']]["bolumler"].append({"bolum_baslik": "Film", "link": iframe_src})
-                else:
-                    # Bölümleri gez
-                    for i, ep_url in enumerate(sorted(ep_links), 1):
-                        driver.get(ep_url)
-                        # JS ile direkt src çek (WebDriverWait'ten daha hızlıdır)
+                    if not ep_links: # Film
                         src = driver.execute_script("return document.querySelector('iframe')?.src")
-                        if src:
-                            results[content['key']]["bolumler"].append({
-                                "bolum_baslik": f"{i}. Bölüm",
-                                "link": src
-                            })
-                
-                # Her içerikten sonra kaydet (Veri kaybını önler)
-                with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
-                    json.dump(results, f, ensure_ascii=False, indent=2)
+                        if src: content_data["bolumler"].append({"bolum_baslik": "Film", "link": src})
+                    else: # Dizi
+                        for i, ep_url in enumerate(sorted(ep_links), 1):
+                            driver.get(ep_url)
+                            src = driver.execute_script("return document.querySelector('iframe')?.src")
+                            if src:
+                                content_data["bolumler"].append({"bolum_baslik": f"{i}. Bölüm", "link": src})
+                    
+                    results[key] = content_data
+                    driver.close()
+                    driver.switch_to.window(driver.window_handles[0])
 
-            page_num += 1
+                    # Her içerik sonrası kaydet
+                    with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
+                        json.dump(results, f, ensure_ascii=False, indent=2)
+                        
+                except Exception as e:
+                    print(f"Hata: {e}")
+                    continue
 
     finally:
         driver.quit()
-        print("İşlem tamam.")
+        print(f"İşlem bitti. Toplam {len(results)} içerik.")
 
 if __name__ == "__main__":
     scrape()
