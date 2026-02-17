@@ -12,7 +12,8 @@ import html
 # --- AYARLAR ---
 BASE_URL = "https://dizipal.cx"
 PLATFORM_SLUG = "hbomax"
-OUTPUT_FILE = "hobii.json"
+OUTPUT_FILE = "hbomax.json"
+
 
 def get_chrome_version():
     try:
@@ -24,11 +25,13 @@ def get_chrome_version():
     except:
         return None
 
+
 def clean_key(text):
     text = html.unescape(text)
     text = re.sub(r'[\s\:\,\'’"”]+', '-', text)
     text = re.sub(r'-+', '-', text)
     return text.strip('-')
+
 
 def get_full_res_image(srcset):
     if not srcset:
@@ -36,37 +39,54 @@ def get_full_res_image(srcset):
     links = [s.strip().split(' ')[0] for s in srcset.split(',')]
     return links[-1] if links else ""
 
+
+def wait_for_cloudflare(driver, timeout=40):
+    print("Cloudflare geçişi bekleniyor...")
+    start = time.time()
+
+    while time.time() - start < timeout:
+        if "Just a moment" not in driver.title and "Cloudflare" not in driver.title:
+            if len(driver.page_source) > 50000:
+                print("Cloudflare geçildi.")
+                return True
+        time.sleep(2)
+
+    print("Cloudflare geçilemedi.")
+    return False
+
+
 def scrape_hbomax():
 
     version = get_chrome_version()
     print(f"Sistem Chrome Versiyonu: {version}")
 
     options = uc.ChromeOptions()
-    options.page_load_strategy = 'eager'
+    options.add_argument('--headless=new')
     options.add_argument('--no-sandbox')
     options.add_argument('--disable-dev-shm-usage')
     options.add_argument('--disable-gpu')
     options.add_argument('--disable-extensions')
-    options.add_argument('--blink-settings=imagesEnabled=false')
     options.add_argument('--lang=tr')
 
     driver = uc.Chrome(options=options, version_main=version)
-    wait = WebDriverWait(driver, 10)
+    wait = WebDriverWait(driver, 15)
 
-    # Mevcut veriyi yükle
     results = {}
+
     if os.path.exists(OUTPUT_FILE):
         try:
             with open(OUTPUT_FILE, "r", encoding="utf-8") as f:
                 results = json.load(f)
-            print(f"Mevcut dosya yüklendi. {len(results)} içerik var.")
+            print(f"Mevcut dosya yüklendi: {len(results)} içerik")
         except:
             pass
 
     try:
-        print("Cloudflare geçişi bekleniyor...")
         driver.get(BASE_URL)
-        time.sleep(10)
+
+        if not wait_for_cloudflare(driver):
+            driver.quit()
+            return
 
         page_num = 1
 
@@ -75,11 +95,16 @@ def scrape_hbomax():
             print(f"\n--- Sayfa {page_num} ---")
 
             driver.get(platform_url)
-            time.sleep(2)
+            time.sleep(3)
 
             items = driver.find_elements(By.CLASS_NAME, "post-item")
 
+            # Eğer boşsa gerçekten mi boş yoksa CF mi kontrol et
             if not items:
+                if len(driver.page_source) < 50000:
+                    print("Muhtemelen CF tekrar devrede. Bekleniyor...")
+                    time.sleep(10)
+                    continue
                 print("Sayfa boş. İşlem tamam.")
                 break
 
@@ -112,6 +137,7 @@ def scrape_hbomax():
                 try:
                     print(f"> {content['title']}")
                     driver.get(content['url'])
+                    time.sleep(2)
 
                     key = content['key']
                     results[key] = {
@@ -120,12 +146,12 @@ def scrape_hbomax():
                         "bolumler": []
                     }
 
-                    # Film mi?
                     episode_elements = driver.find_elements(
                         By.CSS_SELECTOR, "a[href*='bolum']"
                     )
                     iframes = driver.find_elements(By.TAG_NAME, "iframe")
 
+                    # Film
                     if not episode_elements and iframes:
                         embed_src = iframes[0].get_attribute("src")
                         results[key]["bolumler"].append({
@@ -151,6 +177,8 @@ def scrape_hbomax():
 
                     for s_link in sorted(season_urls):
                         driver.get(s_link)
+                        time.sleep(1)
+
                         eps = driver.find_elements(
                             By.CSS_SELECTOR, "a[href*='bolum']"
                         )
@@ -203,11 +231,11 @@ def scrape_hbomax():
     finally:
         driver.quit()
 
-        # JSON en sonda tek sefer yazılır (hızlı)
         with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
             json.dump(results, f, ensure_ascii=False, indent=2)
 
         print(f"Toplam {len(results)} içerik kaydedildi.")
+
 
 if __name__ == "__main__":
     scrape_hbomax()
