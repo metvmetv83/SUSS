@@ -48,10 +48,10 @@ jobs:
           git config --global user.name "GitHub Action Bot"
           git config --global user.email "actions@github.com"
 
-          git add hobii.json
+          git add gani.json
           git diff --cached --quiet && echo "Degisiklik yok" && exit 0
 
-          git commit -m "HBO Max Guncellendi: $(date +'%Y-%m-%d %H:%M')"
+          git commit -m "Gani Guncellendi: $(date +'%Y-%m-%d %H:%M')"
 
           # Güvenli force push (bot projeleri için ideal)
           git push --force-with-lease origin main
