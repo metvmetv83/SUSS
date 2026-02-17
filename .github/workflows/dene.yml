@@ -1,0 +1,38 @@
+name: Hobi Scraper
+
+on:
+  schedule:
+    - cron: '0 0 * * *' # Her gün gece yarısı çalışır
+  workflow_dispatch: # Manuel başlatma butonu ekler
+
+jobs:
+  build:
+    runs-all-on: ubuntu-latest
+    steps:
+      - name: Checkout kod
+        uses: actions/checkout@v3
+
+      - name: Python Kurulumu
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Bağımlılıkları Yükle
+        run: |
+          pip install undetected-chromedriver selenium
+
+      - name: Chrome Kurulumu
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y google-chrome-stable
+
+      - name: Botu Çalıştır
+        run: python dene.py
+
+      - name: Veriyi Kaydet
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add hobii.json
+          git commit -m "Update: $(date)" || exit 0
+          git push
