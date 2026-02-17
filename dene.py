@@ -1,14 +1,14 @@
 import undetected_chromedriver as uc
 from selenium.webdriver.common.by import By
-from selenium.webdriver.chrome.service import Service
 import time
 import json
 import os
 import subprocess
 import re
 
-# --- AYARLAR ---
-BASE_URL = "https://dizipal.cx" # Domain değişirse burayı güncelle
+# --- KRİTİK AYAR ---
+# Eğer bu adres tarayıcıda açılmıyorsa güncel dizipal adresini buraya yazmalısın!
+BASE_URL = "https://dizipal.cx" 
 PLATFORM_SLUG = "hbomax"
 OUTPUT_FILE = "hobi.json"
 
@@ -23,85 +23,70 @@ def scrape():
     options = uc.ChromeOptions()
     options.add_argument('--no-sandbox')
     options.add_argument('--disable-dev-shm-usage')
-    
-    # HIZ İÇİN KRİTİK AYARLAR
-    options.add_argument('--disable-gpu')
-    options.add_argument('--blink-settings=imagesEnabled=false') # Resimleri yükleme
-    options.page_load_strategy = 'eager' # DOM hazır olduğunda bekleme yapma
+    options.add_argument('--window-size=1920,1080')
+    # Cloudflare için gerçekçi bir user-agent
+    options.add_argument('--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36')
 
     driver = uc.Chrome(options=options, version_main=version)
     results = {}
 
-    if os.path.exists(OUTPUT_FILE):
-        with open(OUTPUT_FILE, "r", encoding="utf-8") as f:
-            try: results = json.load(f)
-            except: pass
-
     try:
-        print(f"Giriş yapılıyor: {BASE_URL}")
+        print(f"Giris yapiliyor: {BASE_URL}")
         driver.get(BASE_URL)
-        time.sleep(15) # Cloudflare geçişi
+        time.sleep(20) # Cloudflare geçişi için uzun süre (Gerekirse artır)
 
-        for page in range(1, 3): # Test için 2 sayfa
+        for page in range(1, 3):
             target = f"{BASE_URL}/platform/{PLATFORM_SLUG}/page/{page}/"
-            print(f"Taranan Sayfa: {target}")
+            print(f"Sayfa taranıyor: {target}")
             driver.get(target)
-            time.sleep(5)
+            time.sleep(10) # Sayfanın render edilmesi için bekleme
 
-            # İçerikleri bul (Class bağımsız, link yapısından yakala)
-            items = driver.find_elements(By.CSS_SELECTOR, "div.post-item, article, .post-column")
-            print(f"Saptanan öğe: {len(items)}")
-
+            # EN GARANTİ SEÇİCİ: İçinde 'dizipal.cx/dizi' veya 'bolum' geçen tüm linkleri bul
+            links = driver.find_elements(By.XPATH, "//a[contains(@href, '/dizi/') or contains(@href, '/film/')]")
+            
+            # Tekrar eden linkleri temizle ve listeye al
             content_list = []
-            for item in items:
-                try:
-                    a = item.find_element(By.TAG_NAME, "a")
-                    link = a.get_attribute("href")
-                    title = a.get_attribute("title") or a.text
-                    if link and title:
-                        content_list.append({"url": link, "title": title.strip()})
-                except: continue
+            seen_urls = set()
+            for l in links:
+                url = l.get_attribute("href")
+                title = l.get_attribute("title") or l.text
+                if url and title and url not in seen_urls:
+                    content_list.append({"url": url, "title": title})
+                    seen_urls.add(url)
+
+            print(f"Bulunan potansiyel icerik: {len(content_list)}")
 
             for content in content_list:
                 slug = content['title'].replace(" ", "-").lower()
                 if slug in results: continue
 
-                print(f"-> Detay Alınıyor: {content['title']}")
+                print(f"-> Detay: {content['title']}")
                 driver.get(content['url'])
-                time.sleep(2)
+                time.sleep(5)
 
-                res = {"isim": content['title'], "resim": "", "bolumler": []}
+                res = {"isim": content['title'], "bolumler": []}
                 
-                # Resim bul (Opsiyonel)
-                try: res["resim"] = driver.find_element(By.TAG_NAME, "img").get_attribute("src")
-                except: pass
+                # Iframe yakala (Dizi bölümleri veya film player)
+                iframes = driver.find_elements(By.TAG_NAME, "iframe")
+                if iframes:
+                    res["bolumler"].append({"bolum_baslik": "Video", "link": iframes[0].get_attribute("src")})
 
-                # Bölümleri bul
+                # Bölüm linkleri varsa (Dizi ise)
                 eps = driver.find_elements(By.CSS_SELECTOR, "a[href*='bolum']")
-                ep_links = [e.get_attribute("href") for e in eps]
-                ep_links = list(dict.fromkeys(ep_links)) # Duplicate temizle
-
-                if not ep_links:
-                    # Film ise iframe al
-                    iframe_src = driver.execute_script("return document.querySelector('iframe')?.src")
-                    if iframe_src:
-                        res["bolumler"].append({"bolum_baslik": "Film", "link": iframe_src})
-                else:
-                    # Dizi ise bölümlere hızlıca gir (İlk 5 bölüm test)
-                    for i, url in enumerate(ep_links[:15], 1):
-                        driver.get(url)
-                        src = driver.execute_script("return document.querySelector('iframe')?.src")
-                        if src:
-                            res["bolumler"].append({"bolum_baslik": f"{i}. Bölüm", "link": src})
+                for ep in eps[:5]: # HIZ İÇİN: Şimdilik her içerikten sadece 5 bölüm
+                    res["bolumler"].append({
+                        "bolum_baslik": ep.text,
+                        "link": ep.get_attribute("href")
+                    })
 
                 results[slug] = res
-                # Her döngüde dosyayı güncelle
+                # Her icerikte dosyayı fiziksel olarak diske yaz
                 with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
                     json.dump(results, f, ensure_ascii=False, indent=2)
 
     finally:
         driver.quit()
-        print(f"Bitti. Toplam: {len(results)} içerik.")
+        print(f"Bitti. Toplam: {len(results)}")
 
 if __name__ == "__main__":
     scrape()
