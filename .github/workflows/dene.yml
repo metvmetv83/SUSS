@@ -40,7 +40,7 @@ jobs:
       # 5️⃣ Botu çalıştır
       - name: Botu Calistir
         run: |
-          xvfb-run python dne.py
+          xvfb-run python dene.py
 
       # 6️⃣ Commit + Push (Çakışma ÇÖZÜLMÜŞ)
       - name: Degisiklikleri Kaydet
