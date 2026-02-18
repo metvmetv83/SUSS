@@ -1,35 +1,59 @@
-name: Dizipal Bot Update
+name: amfl Guncelleyici
 
 on:
   schedule:
-    - cron: '0 */3 * * *' # Her 3 saatte bir otomatik çalışır
-  workflow_dispatch:      # Manuel başlatma butonu (Actions sekmesinden)
+    - cron: '0 */4 * * *' # 4 saatte bir çalışır
+  workflow_dispatch: # Manuel çalıştırma butonu ekler
+
+permissions:
+  contents: write
 
 jobs:
-  build:
+  scrape_and_update:
     runs-on: ubuntu-latest
+    concurrency: # Aynı anda iki botun çalışmasını engeller
+      group: scraper-gain
+      cancel-in-progress: true
 
     steps:
-      - name: Kodları Çek
-        uses: actions/checkout@v3
-
-      - name: Python 3.9 Kur
-        uses: actions/setup-python@v4
+      - name: Depoyu Cek
+        uses: actions/checkout@v4
         with:
-          python-version: '3.9'
+          fetch-depth: 0 # Tüm geçmişi çek (Rebase için gerekli)
 
-      - name: Gerekli Kütüphaneleri Yükle
+      - name: Python Kur
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Sistem Paketlerini Yukle
         run: |
-          python -m pip install --upgrade pip
-          pip install cloudscraper beautifulsoup4
+          sudo apt-get update
+          sudo apt-get install -y google-chrome-stable xvfb
 
-      - name: Botu Çalıştır (Scraping)
-        run: python bot.py
-
-      - name: JSON Dosyasını Kaydet ve Pushla
+      - name: Python Kutuphanelerini Yukle
         run: |
-          git config --global user.name 'GitHub Bot'
-          git config --global user.email 'bot@github.com'
+          pip install --upgrade pip
+          pip install selenium undetected-chromedriver
+
+      - name: Botu Calistir
+        run: |
+          xvfb-run python bot.py
+
+      - name: Degisiklikleri Kaydet ve Push Et
+        run: |
+          git config --global user.name "GitHub Action Bot"
+          git config --global user.email "actions@github.com"
+          
+          # 1. Uzak depodaki olası değişiklikleri çek ve kendi üstüne ekle
+          git pull --rebase origin main
+          
+          # 2. Dosyayı ekle
           git add mfl.json
-          git commit -m "Veriler güncellendi: $(date)" || echo "Değişiklik yok."
-          git push
+          
+          # 3. Eğer dosya değişmediyse işlemi durdur (hata vermez)
+          git diff --cached --quiet && echo "Degisiklik yok, atlanıyor." && exit 0
+          
+          # 4. Commit ve Push
+          git commit -m "Gani Veri Guncelleme: $(date +'%Y-%m-%d %H:%M')"
+          git push origin main
