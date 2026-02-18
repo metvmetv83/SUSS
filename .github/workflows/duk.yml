@@ -30,6 +30,6 @@ jobs:
         run: |
           git config --global user.name 'GitHub Bot'
           git config --global user.email 'bot@github.com'
-          git add filmler.json
+          git add mfl.json
           git commit -m "Veriler güncellendi: $(date)" || echo "Değişiklik yok."
           git push
