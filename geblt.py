@@ -13,7 +13,7 @@ def get_canli_tv_m3u():
         "Cache-Control": "max-age=0",
         "Connection": "keep-alive",
         "Accept-Encoding": "gzip",
-        "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJjZ2QiOiIwOTNkNzIwYS01MDJjLTQxZWQtYTgwZi0yYjgxNjk4NGZiOTUiLCJkaSI6IjBmYTAzNTlkLWExOWItNDFiMi05ZTczLTI5ZWNiNjk2OTY0MCIsImFwdiI6IjEuMC4wIiwiZW52IjoiTElWRSIsImFibiI6IjEwMDAiLCJzcGdkIjoiYTA5MDg3ODQtZDEyOC00NjFmLWI3NmItYTU3ZGViMWI4MGNjIiwiaWNoIjoiMCIsInNnZCI6ImViODc3NDRjLTk4NDItNDUwNy05YjBhLTQ0N2RmYjg2NjJhZCIsImlkbSI6IjAiLCJkY3QiOiIzRUY3NSIsImlhIjoiOjpmZmZmOjEwLjAuMC41IiwiY3NoIjoiVFJLU1QiLCJpcGIiOiIwIn0.bT8PK2SvGy2CdmbcCnwlr8RatdDiBe_08k7YlnuQqJE"
+        "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJjZ2QiOiIwOTNkNzIwYS01MDJjLTQxZWQtYTgwZi0yYjgxNjk4NGZiOTUiLCJkaSI6IjU1YjM1OGYyLTMyODctNDM0MC1iODlmLTVlYmI1YTM3NGRlMSIsImFwdiI6IjEuMC4wIiwiZW52IjoiTElWRSIsImFibiI6IjEwMDAiLCJzcGdkIjoiYTA5MDg3ODQtZDEyOC00NjFmLWI3NmItYTU3ZGViMWI4MGNjIiwiaWNoIjoiMCIsInNnZCI6ImViODc3NDRjLTk4NDItNDUwNy05YjBhLTQ0N2RmYjg2NjJhZCIsImlkbSI6IjAiLCJkY3QiOiIzRUY3NSIsImlhIjoiOjpmZmZmOjEwLjAuMC4yIiwiY3NoIjoiVFJLU1QiLCJpcGIiOiIwIn0.-VNjC94qt1AhSZNkLgTuXdCUqXVBdbqWRFxOFGjVa-8"
     }
     params = {"checkip": "false"}
 
@@ -37,8 +37,8 @@ def get_canli_tv_m3u():
         channels = data['Data']['AllChannels']
         print(f"✅ {len(channels)} kanal bulundu")
 
-        # Dosya yolu: workflow çalıştığı dizin
         m3u_path = os.path.join(os.getcwd(), "yeni.m3u")
+
         with open(m3u_path, "w", encoding="utf-8") as f:
             f.write("#EXTM3U\n")
             kanal_sayisi = 0
@@ -55,13 +55,13 @@ def get_canli_tv_m3u():
                     continue
 
                 group = categories[0].get('Name', 'Genel') if categories else 'Genel'
+
                 if group == "Bilgilendirme":
                     continue
 
                 tvg_id = str(kanal_index)
                 f.write(f'#EXTINF:-1 tvg-id="{tvg_id}" tvg-logo="{logo}" group-title="{group}",{name}\n')
                 f.write(f'{hls_url}\n')
-
                 kanal_sayisi += 1
                 kanal_index += 1
 
