@@ -1,0 +1,59 @@
+name: Yap Guncelleyici
+
+on:
+  schedule:
+    - cron: '0 */4 * * *' # 4 saatte bir çalışır
+  workflow_dispatch: # Manuel çalıştırma butonu ekler
+
+permissions:
+  contents: write
+
+jobs:
+  scrape_and_update:
+    runs-on: ubuntu-latest
+    concurrency: # Aynı anda iki botun çalışmasını engeller
+      group: scraper-gain
+      cancel-in-progress: true
+
+    steps:
+      - name: Depoyu Cek
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Tüm geçmişi çek (Rebase için gerekli)
+
+      - name: Python Kur
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Sistem Paketlerini Yukle
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y google-chrome-stable xvfb
+
+      - name: Python Kutuphanelerini Yukle
+        run: |
+          pip install --upgrade pip
+          pip install selenium undetected-chromedriver
+
+      - name: Botu Calistir
+        run: |
+          xvfb-run python yap.py
+
+      - name: Degisiklikleri Kaydet ve Push Et
+        run: |
+          git config --global user.name "GitHub Action Bot"
+          git config --global user.email "actions@github.com"
+          
+          # 1. Uzak depodaki olası değişiklikleri çek ve kendi üstüne ekle
+          git pull --rebase origin main
+          
+          # 2. Dosyayı ekle
+          git add panel.m3u
+          
+          # 3. Eğer dosya değişmediyse işlemi durdur (hata vermez)
+          git diff --cached --quiet && echo "Degisiklik yok, atlanıyor." && exit 0
+          
+          # 4. Commit ve Push
+          git commit -m "Gani Veri Guncelleme: $(date +'%Y-%m-%d %H:%M')"
+          git push origin main
