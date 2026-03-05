@@ -1,0 +1,875 @@
+#EXTM3U
+#EXTINF:-1 tvg-id="TRT1" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",TRT 1
+https://www.giniko.com/xml/secure/plist.php?ch=442
+#EXTINF:-1 tvg-id="TRT1-2" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",TRT 1-2
+https://www.giniko.com/xml/secure/plist.php?ch=1129
+#EXTINF:-1 tvg-id="TRT2" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",TRT 2
+https://www.giniko.com/xml/secure/plist.php?ch=1031
+#EXTINF:-1 tvg-id="STARTV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",STAR TV
+https://www.giniko.com/xml/secure/plist.php?ch=83
+#EXTINF:-1 tvg-id="STAR-2" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",STAR-2
+https://www.giniko.com/xml/secure/plist.php?ch=1124
+#EXTINF:-1 tvg-id="STAR-3" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",STAR-3
+https://www.giniko.com/xml/secure/plist.php?ch=1421
+#EXTINF:-1 tvg-id="NOWTV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",NOW TV
+https://www.giniko.com/xml/secure/plist.php?ch=195
+#EXTINF:-1 tvg-id="NOWTV-3" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",NOW TV-3
+https://www.giniko.com/xml/secure/plist.php?ch=1117
+#EXTINF:-1 tvg-id="TV8" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",TV8
+https://www.giniko.com/xml/secure/plist.php?ch=213
+#EXTINF:-1 tvg-id="TV8-2" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",TV8-2
+https://www.giniko.com/xml/secure/plist.php?ch=1126
+#EXTINF:-1 tvg-id="TV8-3" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",TV8-3
+https://www.giniko.com/xml/secure/plist.php?ch=1427
+#EXTINF:-1 tvg-id="TV8INT_1" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",TV8 INT
+https://www.giniko.com/xml/secure/plist.php?ch=1045
+#EXTINF:-1 tvg-id="ATV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",ATV
+https://www.giniko.com/xml/secure/plist.php?ch=98
+#EXTINF:-1 tvg-id="ATV-2" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",ATV-2
+https://www.giniko.com/xml/secure/plist.php?ch=1125
+#EXTINF:-1 tvg-id="ATV-3" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",ATV-3
+https://www.giniko.com/xml/secure/plist.php?ch=1428
+#EXTINF:-1 tvg-id="ATVEU" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",ATV EU
+https://www.giniko.com/xml/secure/plist.php?ch=699
+#EXTINF:-1 tvg-id="A2TR" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",A2 TR
+https://www.giniko.com/xml/secure/plist.php?ch=946
+#EXTINF:-1 tvg-id="SHOWTV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",SHOW TV
+https://www.giniko.com/xml/secure/plist.php?ch=96
+#EXTINF:-1 tvg-id="SHOWTV-2" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",SHOW TV-2
+https://www.giniko.com/xml/secure/plist.php?ch=1420
+#EXTINF:-1 tvg-id="SHOWTV-3" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",SHOW TV-3
+https://www.giniko.com/xml/secure/plist.php?ch=1127
+#EXTINF:-1 tvg-id="SHOWTÜRK" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",SHOW TÜRK
+https://www.giniko.com/xml/secure/plist.php?ch=391
+#EXTINF:-1 tvg-id="KANALD" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",KANAL D
+https://www.giniko.com/xml/secure/plist.php?ch=1116
+#EXTINF:-1 tvg-id="KANALD-2" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",KANAL D-2
+https://www.giniko.com/xml/secure/plist.php?ch=1138
+#EXTINF:-1 tvg-id="EUROD" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",EURO D
+https://www.giniko.com/xml/secure/plist.php?ch=164
+#EXTINF:-1 tvg-id="EUROD-2" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",EURO D-2
+https://www.giniko.com/xml/secure/plist.php?ch=1128
+#EXTINF:-1 tvg-id="360TV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",360 TV
+http://www.giniko.com/xml/secure/plist.php?ch=693
+#EXTINF:-1 tvg-id="TGRTEU" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",TGRT EU
+http://www.giniko.com/xml/secure/plist.php?ch=696
+#EXTINF:-1 tvg-id="EUROSTAR" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",EURO STAR
+https://www.giniko.com/xml/secure/plist.php?ch=680
+#EXTINF:-1 tvg-id="TEVE2" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",TEVE2
+https://www.giniko.com/xml/secure/plist.php?ch=173
+#EXTINF:-1 tvg-id="BEYAZTV_1" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",BEYAZ TV
+https://www.giniko.com/xml/secure/plist.php?ch=348
+#EXTINF:-1 tvg-id="KANAL7" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",KANAL 7
+https://www.giniko.com/xml/secure/plist.php?ch=199
+#EXTINF:-1 tvg-id="KANAL7-2" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",KANAL 7-2
+https://www.giniko.com/xml/secure/plist.php?ch=1429
+#EXTINF:-1 tvg-id="CNNTÜRK" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",CNN TÜRK
+https://www.giniko.com/xml/secure/plist.php?ch=97
+#EXTINF:-1 tvg-id="NR1TÜRK" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",NR1 TÜRK
+https://www.giniko.com/xml/secure/plist.php?ch=172
+#EXTINF:-1 tvg-id="POWERHD" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",POWER HD
+https://www.giniko.com/xml/secure/plist.php?ch=165
+#EXTINF:-1 tvg-id="KRALPOP" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",KRAL POP
+https://www.giniko.com/xml/secure/plist.php?ch=84
+#EXTINF:-1 tvg-id="HABERTÜRK_1" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",HABER TÜRK
+https://www.giniko.com/xml/secure/plist.php?ch=1137
+#EXTINF:-1 tvg-id="TGRTBELGESEL" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",TGRT BELGESEL
+https://www.giniko.com/xml/secure/plist.php?ch=698
+#EXTINF:-1 tvg-id="TGRTHABER" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",TGRT HABER
+https://www.giniko.com/xml/secure/plist.php?ch=697
+#EXTINF:-1 tvg-id="KENTRON" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",KENTRON
+https://www.giniko.com/xml/secure/plist.php?ch=690
+#EXTINF:-1 tvg-id="AFYONTÜRK" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",AFYON TÜRK
+https://www.giniko.com/xml/secure/plist.php?ch=689
+#EXTINF:-1 tvg-id="TRTDIYANET" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",TRT DIYANET
+https://www.giniko.com/xml/secure/plist.php?ch=688
+#EXTINF:-1 tvg-id="TRTBELGESEL" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",TRT BELGESEL
+https://www.giniko.com/xml/secure/plist.php?ch=687
+#EXTINF:-1 tvg-id="TRTKURDI" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",TRT KURDI
+https://www.giniko.com/xml/secure/plist.php?ch=686
+#EXTINF:-1 tvg-id="TRTAVAZ" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",TRT AVAZ
+https://www.giniko.com/xml/secure/plist.php?ch=685
+#EXTINF:-1 tvg-id="TRTARAPÇA" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",TRT ARAPÇA
+https://www.giniko.com/xml/secure/plist.php?ch=684
+#EXTINF:-1 tvg-id="TRTWORD" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",TRT WORLD
+https://www.giniko.com/xml/secure/plist.php?ch=460
+#EXTINF:-1 tvg-id="FLASHTV_1" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",FLASH TV
+https://www.giniko.com/xml/secure/plist.php?ch=1334
+#EXTINF:-1 tvg-id="TV100" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",TV100
+https://ginikoturkish.com/xml/secure/plist.php?ch=738
+#EXTINF:-1 tvg-id="YEŞILÇAM3" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",YEŞILÇAM3
+https://www.giniko.com/xml/secure/plist.php?ch=1216
+#EXTINF:-1 tvg-id="YEŞILÇAM2" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",YEŞILÇAM2
+https://www.giniko.com/xml/secure/plist.php?ch=1215
+#EXTINF:-1 tvg-id="YEŞILÇAM1" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",YEŞILÇAM1
+https://www.giniko.com/xml/secure/plist.php?ch=207
+#EXTINF:-1 tvg-id="SINEVIZYON3" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",SINEVIZYON3
+https://www.giniko.com/xml/secure/plist.php?ch=1219
+#EXTINF:-1 tvg-id="SINEVIZYON2" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",SINEVIZYON2
+https://www.giniko.com/xml/secure/plist.php?ch=1218
+#EXTINF:-1 tvg-id="SINEVIZYON1" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",SINEVIZYON1
+https://www.giniko.com/xml/secure/plist.php?ch=1217
+#EXTINF:-1 tvg-id="FBTV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",FBTV
+https://www.giniko.com/xml/secure/plist.php?ch=210
+#EXTINF:-1 tvg-id="CBSSPORT" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",CBS SPORT
+https://www.giniko.com/xml/secure/plist.php?ch=1159
+#EXTINF:-1 tvg-id="IDMANTV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",IDMAN TV
+https://www.giniko.com/xml/secure/plist.php?ch=1160
+#EXTINF:-1 tvg-id="BEINSPORTHABER" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",BEINSPORT HABER
+https://www.giniko.com/xml/secure/plist.php?ch=944
+#EXTINF:-1 tvg-id="ASPOR" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",ASPOR
+https://www.giniko.com/xml/secure/plist.php?ch=1139
+#EXTINF:-1 tvg-id="ASPOR2" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",ASPOR2
+https://www.giniko.com/xml/secure/plist.php?ch=390
+#EXTINF:-1 tvg-id="TV8BUCUK" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",TV8BUCUK
+https://www.giniko.com/xml/secure/plist.php?ch=759
+#EXTINF:-1 tvg-id="TRTSPOR3" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",TRT SPOR3
+https://www.giniko.com/xml/secure/plist.php?ch=1161
+#EXTINF:-1 tvg-id="TRTSPOR2" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",TRT SPOR2
+https://www.giniko.com/xml/secure/plist.php?ch=1036
+#EXTINF:-1 tvg-id="TRTSPOR_1" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",TRT SPOR
+https://www.giniko.com/xml/secure/plist.php?ch=1131
+#EXTINF:-1 tvg-id="TRTSPOR-1" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",TRT SPOR-1
+https://www.giniko.com/xml/secure/plist.php?ch=1431
+#EXTINF:-1 tvg-id="TRTSPOR-2" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",TRT SPOR-2
+https://www.giniko.com/xml/secure/plist.php?ch=194
+#EXTINF:-1 tvg-id="TIVIBUSPOR" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",TIVIBU SPOR
+https://www.giniko.com/xml/secure/plist.php?ch=943
+#EXTINF:-1 tvg-id="YOLTV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",YOL TV
+https://www.giniko.com/xml/secure/plist.php?ch=529
+#EXTINF:-1 tvg-id="MAVIKARADENIZ" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",MAVI KARADENIZ
+https://www.giniko.com/xml/secure/plist.php?ch=959
+#EXTINF:-1 tvg-id="TRTTÜRK" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",TRT TÜRK
+https://www.giniko.com/xml/secure/plist.php?ch=51
+#EXTINF:-1 tvg-id="TRTHABER" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",TRT HABER
+https://www.giniko.com/xml/secure/plist.php?ch=196
+#EXTINF:-1 tvg-id="BENGÜTÜRK" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",BENGÜ TÜRK
+https://www.giniko.com/xml/secure/plist.php?ch=230
+#EXTINF:-1 tvg-id="ULUSALKANAL" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",ULUSAL KANAL
+https://www.giniko.com/xml/secure/plist.php?ch=231
+#EXTINF:-1 tvg-id="24" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",24
+https://www.giniko.com/xml/secure/plist.php?ch=913
+#EXTINF:-1 tvg-id="AHABER_1" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",A HABER
+https://www.giniko.com/xml/secure/plist.php?ch=1134
+#EXTINF:-1 tvg-id="HABERGLOBAL" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",HABER GLOBAL
+https://www.giniko.com/xml/secure/plist.php?ch=1094
+#EXTINF:-1 tvg-id="KIBRISKRT" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",KIBRIS KRT
+https://www.giniko.com/xml/secure/plist.php?ch=1112
+#EXTINF:-1 tvg-id="TELE1" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",TELE1
+https://www.giniko.com/xml/secure/plist.php?ch=947
+#EXTINF:-1 tvg-id="SÖZCÜTV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",SÖZCÜ TV
+https://www.giniko.com/xml/secure/plist.php?ch=392
+#EXTINF:-1 tvg-id="HALKTV_1" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",HALK TV
+https://www.giniko.com/xml/secure/plist.php?ch=1135
+#EXTINF:-1 tvg-id="NTV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",NTV
+https://www.giniko.com/xml/secure/plist.php?ch=1133
+#EXTINF:-1 tvg-id="NTV2" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",NTV2
+https://www.giniko.com/xml/secure/plist.php?ch=131
+#EXTINF:-1 tvg-id="TV100_1" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",TV 100
+https://www.giniko.com/xml/secure/plist.php?ch=1005
+#EXTINF:-1 tvg-id="TRT1EU" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",TRT1 EU
+https://www.giniko.com/xml/secure/plist.php?ch=1129
+#EXTINF:-1 tvg-id="SAT7TÜRK" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",SAT7 TÜRK
+https://www.giniko.com/xml/secure/plist.php?ch=1419
+#EXTINF:-1 tvg-id="MINIKAÇOCUK" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",MINIKA ÇOCUK
+https://www.giniko.com/xml/secure/plist.php?ch=404
+#EXTINF:-1 tvg-id="MINIKAGO" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",MINIKA GO
+https://www.giniko.com/xml/secure/plist.php?ch=405
+#EXTINF:-1 tvg-id="4TURK" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",4 TURK
+https://www.giniko.com/xml/secure/plist.php?ch=938
+#EXTINF:-1 tvg-id="TATLISESTV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",TATLISES TV
+https://www.giniko.com/xml/secure/plist.php?ch=945
+#EXTINF:-1 tvg-id="TELE1_1" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",TELE 1
+https://www.giniko.com/xml/secure/plist.php?ch=947
+#EXTINF:-1 tvg-id="KRTKULTUR" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",KRT KULTUR
+https://www.giniko.com/xml/secure/plist.php?ch=1112
+#EXTINF:-1 tvg-id="KIBRISTV2020" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",KIBRIS TV2020
+https://www.giniko.com/xml/secure/plist.php?ch=1113
+#EXTINF:-1 tvg-id="KIBRISKANALSIM" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",KIBRIS KANAL SIM
+https://www.giniko.com/xml/secure/plist.php?ch=1114
+#EXTINF:-1 tvg-id="KIBRISGENÇTV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",KIBRIS GENÇ TV
+https://www.giniko.com/xml/secure/plist.php?ch=1115
+#EXTINF:-1 tvg-id="ASPOR_1" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",A SPOR
+https://www.giniko.com/xml/secure/plist.php?ch=1139
+#EXTINF:-1 tvg-id="ATLAŞTV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",ATLAŞ TV
+https://www.giniko.com/xml/secure/plist.php?ch=209
+#EXTINF:-1 tvg-id="KIBRISBRT3" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",KIBRIS BRT3
+https://www.giniko.com/xml/secure/plist.php?ch=1149
+#EXTINF:-1 tvg-id="KIBRISTV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",KIBRIS TV
+https://www.giniko.com/xml/secure/plist.php?ch=1150
+#EXTINF:-1 tvg-id="KIBRISADA" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",KIBRIS ADA
+https://www.giniko.com/xml/secure/plist.php?ch=1151
+#EXTINF:-1 tvg-id="KIBRISKANALT" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",KIBRIS KANAL T
+https://www.giniko.com/xml/secure/plist.php?ch=1152
+#EXTINF:-1 tvg-id="ARTITV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",ARTI TV
+https://www.giniko.com/xml/secure/plist.php?ch=912
+#EXTINF:-1 tvg-id="24_1" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",24
+https://www.giniko.com/xml/secure/plist.php?ch=913
+#EXTINF:-1 tvg-id="BIKANAL" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Türk Kanalları",BI KANAL
+https://www.giniko.com/xml/secure/plist.php?ch=748
+#EXTINF:-1 tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",Giniko Tema
+https://www.giniko.com/xml/secure/plist.php?ch=1640
+#EXTINF:-1 tvg-id="AABCTV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",AABC TV
+https://www.giniko.com/xml/secure/plist.php?ch=1280
+#EXTINF:-1 tvg-id="ABC" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",ABC
+https://www.giniko.com/xml/secure/plist.php?ch=451
+#EXTINF:-1 tvg-id="ABUDHABI" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",ABU DHABI
+https://www.giniko.com/xml/secure/plist.php?ch=80
+#EXTINF:-1 tvg-id="ABUDHABISPORT1" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",ABU DHABI SPORT1
+https://www.giniko.com/xml/secure/plist.php?ch=269
+#EXTINF:-1 tvg-id="ABUDHABITV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",ABU DHABI TV
+https://www.giniko.com/xml/secure/plist.php?ch=1075
+#EXTINF:-1 tvg-id="ACROBAT" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",ACROBAT
+https://www.giniko.com/xml/secure/plist.php?ch=1620
+#EXTINF:-1 tvg-id="ADJARATV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",ADJARA TV
+https://www.giniko.com/xml/secure/plist.php?ch=100
+#EXTINF:-1 tvg-id="AFGANINT" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",AFGAN INT
+https://www.giniko.com/xml/secure/plist.php?ch=1136
+#EXTINF:-1 tvg-id="AFGANNOBEL" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",AFGAN NOBEL
+https://www.giniko.com/xml/secure/plist.php?ch=1340
+#EXTINF:-1 tvg-id="AFGANNOBELTV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",AFGAN NOBEL TV
+https://www.giniko.com/xml/secure/plist.php?ch=1341
+#EXTINF:-1 tvg-id="AFGANPROCAST" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",AFGAN PROCAST
+https://www.giniko.com/xml/secure/plist.php?ch=518
+#EXTINF:-1 tvg-id="AFGANTHEATRE" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",AFGAN THEATRE
+https://www.giniko.com/xml/secure/plist.php?ch=1347
+#EXTINF:-1 tvg-id="AFGANTV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",AFGAN TV
+https://www.giniko.com/xml/secure/plist.php?ch=1163
+#EXTINF:-1 tvg-id="AFLAMTV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",AFLAM TV
+https://www.giniko.com/xml/secure/plist.php?ch=480
+#EXTINF:-1 tvg-id="AHLULBAYT" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",AHLULBAYT
+https://www.giniko.com/xml/secure/plist.php?ch=233
+#EXTINF:-1 tvg-id="ALAOULAMAROC" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",AL AOULA MAROC
+https://www.giniko.com/xml/secure/plist.php?ch=1407
+#EXTINF:-1 tvg-id="ALARABITV2" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",AL ARABI TV2
+https://www.giniko.com/xml/secure/plist.php?ch=773
+#EXTINF:-1 tvg-id="ALDAFRAH" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",AL DAFRAH
+https://www.giniko.com/xml/secure/plist.php?ch=1514
+#EXTINF:-1 tvg-id="ALHAYAH" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",AL HAYAH
+https://www.giniko.com/xml/secure/plist.php?ch=507
+#EXTINF:-1 tvg-id="ALHAYAHSERIES" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",AL HAYAH SERIES
+https://www.giniko.com/xml/secure/plist.php?ch=747
+#EXTINF:-1 tvg-id="ALIRAQIYA" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",AL IRAQIYA
+https://www.giniko.com/xml/secure/plist.php?ch=514
+#EXTINF:-1 tvg-id="ALIRAQIYASPORT" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",AL IRAQIYA SPORT
+https://www.giniko.com/xml/secure/plist.php?ch=516
+#EXTINF:-1 tvg-id="ALJADEED" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",AL JADEED
+https://www.giniko.com/xml/secure/plist.php?ch=748
+#EXTINF:-1 tvg-id="ALJAZEERA" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",AL JAZEERA
+https://www.giniko.com/xml/secure/plist.php?ch=2
+#EXTINF:-1 tvg-id="ALKAHERA" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",AL KAHERA
+https://www.giniko.com/xml/secure/plist.php?ch=741
+#EXTINF:-1 tvg-id="ALMAGHRIBIA" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",AL MAGHRIBIA
+https://www.giniko.com/xml/secure/plist.php?ch=386
+#EXTINF:-1 tvg-id="ALNAHAR" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",AL NAHAR
+https://www.giniko.com/xml/secure/plist.php?ch=738
+#EXTINF:-1 tvg-id="ALNAHARDRAMA" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",AL NAHAR DRAMA
+https://www.giniko.com/xml/secure/plist.php?ch=750
+#EXTINF:-1 tvg-id="ALQURANALKAREEM" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",AL QURAN AL KAREEM
+https://www.giniko.com/xml/secure/plist.php?ch=327
+#EXTINF:-1 tvg-id="ALRABIAA" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",AL RABIAA
+https://www.giniko.com/xml/secure/plist.php?ch=868
+#EXTINF:-1 tvg-id="ALRASHEED" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",AL RASHEED
+https://www.giniko.com/xml/secure/plist.php?ch=478
+#EXTINF:-1 tvg-id="ALSHARQIA" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",AL SHARQIA
+https://www.giniko.com/xml/secure/plist.php?ch=875
+#EXTINF:-1 tvg-id="ALSUMERIA" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",AL SUMERIA
+https://www.giniko.com/xml/secure/plist.php?ch=612
+#EXTINF:-1 tvg-id="ALKAASONE" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",ALKAAS ONE
+https://www.giniko.com/xml/secure/plist.php?ch=877
+#EXTINF:-1 tvg-id="ALKARMATV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",ALKARMA TV
+https://www.giniko.com/xml/secure/plist.php?ch=306
+#EXTINF:-1 tvg-id="ALRAITVKUWAIT" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",ALRAI TV KUWAIT
+https://www.giniko.com/xml/secure/plist.php?ch=920
+#EXTINF:-1 tvg-id="AMGATV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",AMGA TV
+https://www.giniko.com/xml/secure/plist.php?ch=524
+#EXTINF:-1 tvg-id="AMUTV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",AMU TV
+https://www.giniko.com/xml/secure/plist.php?ch=637
+#EXTINF:-1 tvg-id="ANGELTV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",ANGEL TV
+https://www.giniko.com/xml/secure/plist.php?ch=114
+#EXTINF:-1 tvg-id="ARABICATV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",ARABICA TV
+https://www.giniko.com/xml/secure/plist.php?ch=876
+#EXTINF:-1 tvg-id="ARBTV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",ARB TV
+https://www.giniko.com/xml/secure/plist.php?ch=844
+#EXTINF:-1 tvg-id="AREZOTV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",AREZO TV
+https://www.giniko.com/xml/secure/plist.php?ch=440
+#EXTINF:-1 tvg-id="ARIANAAFGAN" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",ARIANA AFGAN
+https://www.giniko.com/xml/secure/plist.php?ch=1164
+#EXTINF:-1 tvg-id="ARIANATV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",ARIANA TV
+https://www.giniko.com/xml/secure/plist.php?ch=309
+#EXTINF:-1 tvg-id="ARIANATVUSA" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",ARIANA TV USA
+https://www.giniko.com/xml/secure/plist.php?ch=1346
+#EXTINF:-1 tvg-id="ARMENIAPREMIUM" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",ARMENIA PREMIUM
+https://www.giniko.com/xml/secure/plist.php?ch=788
+#EXTINF:-1 tvg-id="ARMENIATV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",ARMENIA TV
+https://www.giniko.com/xml/secure/plist.php?ch=266
+#EXTINF:-1 tvg-id="ARTNSHART" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",ARTN SHART
+https://www.giniko.com/xml/secure/plist.php?ch=755
+#EXTINF:-1 tvg-id="ATNNEWS" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",ATN NEWS
+https://www.giniko.com/xml/secure/plist.php?ch=310
+#EXTINF:-1 tvg-id="ATTESSIATV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",ATTESSIA TV
+https://www.giniko.com/xml/secure/plist.php?ch=772
+#EXTINF:-1 tvg-id="ATVAZAD" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",ATV AZAD
+https://www.giniko.com/xml/secure/plist.php?ch=701
+#EXTINF:-1 tvg-id="AVAFAMILY" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",AVA FAMILY
+https://www.giniko.com/xml/secure/plist.php?ch=1011
+#EXTINF:-1 tvg-id="AVASERIES" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",AVA SERIES
+https://www.giniko.com/xml/secure/plist.php?ch=1012
+#EXTINF:-1 tvg-id="AZTV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",AZ TV
+https://www.giniko.com/xml/secure/plist.php?ch=79
+#EXTINF:-1 tvg-id="BAHARTV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",BAHAR TV
+https://www.giniko.com/xml/secure/plist.php?ch=1342
+#EXTINF:-1 tvg-id="BBCNEWS" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",BBC NEWS
+https://www.giniko.com/xml/secure/plist.php?ch=27
+#EXTINF:-1 tvg-id="BBCONE" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",BBC ONE
+https://www.giniko.com/xml/secure/plist.php?ch=189
+#EXTINF:-1 tvg-id="BBCPERSIAN" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",BBC PERSIAN
+https://www.giniko.com/xml/secure/plist.php?ch=205
+#EXTINF:-1 tvg-id="BBCTHREE_1" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",BBC THREE
+https://www.giniko.com/xml/secure/plist.php?ch=1680
+#EXTINF:-1 tvg-id="BBCTWO" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",BBC TWO
+https://www.giniko.com/xml/secure/plist.php?ch=190
+#EXTINF:-1 tvg-id="BBCWORLD" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",BBC WORLD
+https://www.giniko.com/xml/secure/plist.php?ch=216
+#EXTINF:-1 tvg-id="BEGUMTV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",BEGUM TV
+https://www.giniko.com/xml/secure/plist.php?ch=288
+#EXTINF:-1 tvg-id="BIBLEEXPLORATIONS" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",BIBLE EXPLORATIONS
+https://www.giniko.com/xml/secure/plist.php?ch=287
+#EXTINF:-1 tvg-id="BLOOMBERGEU" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",BLOOMBERG EU
+https://www.giniko.com/xml/secure/plist.php?ch=217
+#EXTINF:-1 tvg-id="BOLLYWOOD" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",BOLLYWOOD
+https://www.giniko.com/xml/secure/plist.php?ch=763
+#EXTINF:-1 tvg-id="BRAVOFARSI" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",BRAVO FARSI
+https://www.giniko.com/xml/secure/plist.php?ch=351
+#EXTINF:-1 tvg-id="BULBULTV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",BULBUL TV
+https://www.giniko.com/xml/secure/plist.php?ch=1339
+#EXTINF:-1 tvg-id="BVNTV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",BVN TV
+https://www.giniko.com/xml/secure/plist.php?ch=43
+#EXTINF:-1 tvg-id="CADDETV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",CADDE TV
+https://www.giniko.com/xml/secure/plist.php?ch=529
+#EXTINF:-1 tvg-id="CARTHAGEPLUS" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",CARTHAGE PLUS
+https://www.giniko.com/xml/secure/plist.php?ch=508
+#EXTINF:-1 tvg-id="CBCAZ" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",CBC AZ
+https://www.giniko.com/xml/secure/plist.php?ch=406
+#EXTINF:-1 tvg-id="CBCDRAMA" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",CBC DRAMA
+https://www.giniko.com/xml/secure/plist.php?ch=739
+#EXTINF:-1 tvg-id="CBS" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",CBS
+https://www.giniko.com/xml/secure/plist.php?ch=452
+#EXTINF:-1 tvg-id="CHANNELONE" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",CHANNEL ONE
+https://www.giniko.com/xml/secure/plist.php?ch=1227
+#EXTINF:-1 tvg-id="CHILDBBC" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",CHILD BBC
+https://www.giniko.com/xml/secure/plist.php?ch=974
+#EXTINF:-1 tvg-id="CINEFILM" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",CINE FILM
+https://www.giniko.com/xml/secure/plist.php?ch=1509
+#EXTINF:-1 tvg-id="CNBC" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",CNBC
+https://www.giniko.com/xml/secure/plist.php?ch=754
+#EXTINF:-1 tvg-id="CNNINT" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",CNN INT
+https://www.giniko.com/xml/secure/plist.php?ch=26
+#EXTINF:-1 tvg-id="COMEDYCHANNEL" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",COMEDY CHANNEL
+https://www.giniko.com/xml/secure/plist.php?ch=276
+#EXTINF:-1 tvg-id="DANCETV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",DANCE TV
+https://www.giniko.com/xml/secure/plist.php?ch=1608
+#EXTINF:-1 tvg-id="DATISTV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",DATIS TV
+https://www.giniko.com/xml/secure/plist.php?ch=939
+#EXTINF:-1 tvg-id="DAYSTAR" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",DAY STAR
+https://www.giniko.com/xml/secure/plist.php?ch=109
+#EXTINF:-1 tvg-id="DEUTSCHEWELLE" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",DEUTSCHE WELLE
+https://www.giniko.com/xml/secure/plist.php?ch=948
+#EXTINF:-1 tvg-id="DMC" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",DMC
+https://www.giniko.com/xml/secure/plist.php?ch=774
+#EXTINF:-1 tvg-id="DMCDRAMA" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",DMC DRAMA
+https://www.giniko.com/xml/secure/plist.php?ch=504
+#EXTINF:-1 tvg-id="DRAMA" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",DRAMA
+https://www.giniko.com/xml/secure/plist.php?ch=552
+#EXTINF:-1 tvg-id="DUBAIONE" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",DUBAI ONE
+https://www.giniko.com/xml/secure/plist.php?ch=874
+#EXTINF:-1 tvg-id="DUBAITV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",DUBAI TV
+https://www.giniko.com/xml/secure/plist.php?ch=270
+#EXTINF:-1 tvg-id="DUNYATV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",DUNYA TV
+https://www.giniko.com/xml/secure/plist.php?ch=246
+#EXTINF:-1 tvg-id="ECHANNEL" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",E CHANNEL
+https://www.giniko.com/xml/secure/plist.php?ch=926
+#EXTINF:-1 tvg-id="ECHOBEAT" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",ECHO BEAT
+https://www.giniko.com/xml/secure/plist.php?ch=1617
+#EXTINF:-1 tvg-id="ECHOROUK NEWS" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",ECHOROUK NEWS
+https://www.giniko.com/xml/secure/plist.php?ch=537
+#EXTINF:-1 tvg-id="ELFADJER" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",EL FADJER
+https://www.giniko.com/xml/secure/plist.php?ch=489
+#EXTINF:-1 tvg-id="ELMEHWAR" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",EL MEHWAR
+https://www.giniko.com/xml/secure/plist.php?ch=486
+#EXTINF:-1 tvg-id="ELWATANIA1" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",EL WATANIA 1
+https://www.giniko.com/xml/secure/plist.php?ch=1103
+#EXTINF:-1 tvg-id="ELWATANIA2" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",EL WATANIA 2
+https://www.giniko.com/xml/secure/plist.php?ch=1102
+#EXTINF:-1 tvg-id="ENLACETVLATINO" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",ENLACE TV LATINO
+https://www.giniko.com/xml/secure/plist.php?ch=333
+#EXTINF:-1 tvg-id="ENNAHARTV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",ENNAHAR TV
+https://www.giniko.com/xml/secure/plist.php?ch=888
+#EXTINF:-1 tvg-id="ESALE45" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",ESALE 45
+https://www.giniko.com/xml/secure/plist.php?ch=1684
+#EXTINF:-1 tvg-id="ESPERANZATV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",ESPERANZA TV
+https://www.giniko.com/xml/secure/plist.php?ch=1496
+#EXTINF:-1 tvg-id="EURONEWS_1" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",EURO NEWS
+https://www.giniko.com/xml/secure/plist.php?ch=675
+#EXTINF:-1 tvg-id="EWTNCATHOLIC" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",EWTN CATHOLIC
+https://www.giniko.com/xml/secure/plist.php?ch=370
+#EXTINF:-1 tvg-id="FASHION" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",FASHION
+https://www.giniko.com/xml/secure/plist.php?ch=1680
+#EXTINF:-1 tvg-id="FASHIONTV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",FASHION TV
+https://www.giniko.com/xml/secure/plist.php?ch=15
+#EXTINF:-1 tvg-id="FAZATV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",FAZA TV
+https://www.giniko.com/xml/secure/plist.php?ch=366
+#EXTINF:-1 tvg-id="FOX5" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",FOX5
+https://www.giniko.com/xml/secure/plist.php?ch=449
+#EXTINF:-1 tvg-id="FRANCE24" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",FRANCE 24
+https://www.giniko.com/xml/secure/plist.php?ch=94
+#EXTINF:-1 tvg-id="FREEDOM" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",FREEDOM
+https://www.giniko.com/xml/secure/plist.php?ch=1515
+#EXTINF:-1 tvg-id="FUNOONATVKUWAIT" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",FUNOON ATV KUWAIT
+https://www.giniko.com/xml/secure/plist.php?ch=910
+#EXTINF:-1 tvg-id="FX1" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",FX 1
+https://www.giniko.com/xml/secure/plist.php?ch=791
+#EXTINF:-1 tvg-id="FX2" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",FX 2
+https://www.giniko.com/xml/secure/plist.php?ch=847
+#EXTINF:-1 tvg-id="GDSTV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",GDS TV
+https://www.giniko.com/xml/secure/plist.php?ch=157
+#EXTINF:-1 tvg-id="GETIMES" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",GE TIMES
+https://www.giniko.com/xml/secure/plist.php?ch=1310
+#EXTINF:-1 tvg-id="GEORGIANMOVIES" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",GEORGIAN MOVIES
+https://www.giniko.com/xml/secure/plist.php?ch=1566
+#EXTINF:-1 tvg-id="GINIKOBOX" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",GINIKO BOX
+https://www.giniko.com/xml/secure/plist.php?ch=1643
+#EXTINF:-1 tvg-id="GRANDCINEMA" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",GRAND CINEMA
+https://www.giniko.com/xml/secure/plist.php?ch=493
+#EXTINF:-1 tvg-id="H2TV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",H2 TV
+https://www.giniko.com/xml/secure/plist.php?ch=789
+#EXTINF:-1 tvg-id="HANNIBALTV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",HANNIBAL TV
+https://www.giniko.com/xml/secure/plist.php?ch=590
+#EXTINF:-1 tvg-id="HAYTV_1" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",HAY TV
+https://www.giniko.com/xml/secure/plist.php?ch=1332
+#EXTINF:-1 tvg-id="HODHODTV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",HOD HOD TV
+https://www.giniko.com/xml/secure/plist.php?ch=845
+#EXTINF:-1 tvg-id="HUMPASHTO1" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",HUM PASHTO 1
+https://www.giniko.com/xml/secure/plist.php?ch=515
+#EXTINF:-1 tvg-id="ICC+" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",ICC+
+https://www.giniko.com/xml/secure/plist.php?ch=48
+#EXTINF:-1 tvg-id="IFILMENGLISH" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",IFILM ENGLISH
+https://www.giniko.com/xml/secure/plist.php?ch=1178
+#EXTINF:-1 tvg-id="IFILMSFARSI" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",IFILMS FARSI
+https://www.giniko.com/xml/secure/plist.php?ch=313
+#EXTINF:-1 tvg-id="IMANTV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",IMAN TV
+https://www.giniko.com/xml/secure/plist.php?ch=1343
+#EXTINF:-1 tvg-id="IMPACT" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",IMPACT
+https://www.giniko.com/xml/secure/plist.php?ch=236
+#EXTINF:-1 tvg-id="IRANEFARDA" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",IRAN E FARDA
+https://www.giniko.com/xml/secure/plist.php?ch=968
+#EXTINF:-1 tvg-id="IRANINT_1" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",IRAN INT
+https://www.giniko.com/xml/secure/plist.php?ch=1450
+#EXTINF:-1 tvg-id="IRANTVNWRK" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",IRAN TV NWRK
+https://www.giniko.com/xml/secure/plist.php?ch=263
+#EXTINF:-1 tvg-id="IRIB1" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",IRIB 1
+https://www.giniko.com/xml/secure/plist.php?ch=372
+#EXTINF:-1 tvg-id="IRIB2" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",IRIB 2
+https://www.giniko.com/xml/secure/plist.php?ch=373
+#EXTINF:-1 tvg-id="IRIB3_1" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",IRIB 3
+https://www.giniko.com/xml/secure/plist.php?ch=900
+#EXTINF:-1 tvg-id="IRIB4" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",IRIB 4
+https://www.giniko.com/xml/secure/plist.php?ch=375
+#EXTINF:-1 tvg-id="IRIB5" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",IRIB 5
+https://www.giniko.com/xml/secure/plist.php?ch=376
+#EXTINF:-1 tvg-id="IRIBAMOOZESH" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",IRIB AMOOZESH
+https://www.giniko.com/xml/secure/plist.php?ch=381
+#EXTINF:-1 tvg-id="IRIBAMOUZESH_1" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",IRIB AMOUZESH
+https://www.giniko.com/xml/secure/plist.php?ch=1687
+#EXTINF:-1 tvg-id="IRIBMOSTANAD" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",IRIB MOSTANAD
+https://www.giniko.com/xml/secure/plist.php?ch=397
+#EXTINF:-1 tvg-id="IRIBNAMAYESH" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",IRIB NAMAYESH
+https://www.giniko.com/xml/secure/plist.php?ch=866
+#EXTINF:-1 tvg-id="IRIBNASIM" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",IRIB NASIM
+https://www.giniko.com/xml/secure/plist.php?ch=380
+#EXTINF:-1 tvg-id="IRIBOFOGH" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",IRIB OFOGH
+https://www.giniko.com/xml/secure/plist.php?ch=382
+#EXTINF:-1 tvg-id="IRIBOMID" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",IRIB OMID
+https://www.giniko.com/xml/secure/plist.php?ch=766
+#EXTINF:-1 tvg-id="IRIBPOOJA" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",IRIB POOJA
+https://www.giniko.com/xml/secure/plist.php?ch=398
+#EXTINF:-1 tvg-id="IRIBSALAMAT" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",IRIB SALAMAT
+https://www.giniko.com/xml/secure/plist.php?ch=399
+#EXTINF:-1 tvg-id="IRIBTAMASHA" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",IRIB TAMASHA
+https://www.giniko.com/xml/secure/plist.php?ch=883
+#EXTINF:-1 tvg-id="IRIBVARZESH_1" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",IRIB VARZESH
+https://www.giniko.com/xml/secure/plist.php?ch=1448
+#EXTINF:-1 tvg-id="IRINN" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",IRINN
+https://www.giniko.com/xml/secure/plist.php?ch=264
+#EXTINF:-1 tvg-id="JAMEJAM2" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",JAMEJAM2
+https://www.giniko.com/xml/secure/plist.php?ch=268
+#EXTINF:-1 tvg-id="JAVANANTV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",JAVANAN TV
+https://www.giniko.com/xml/secure/plist.php?ch=743
+#EXTINF:-1 tvg-id="JORDANTV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",JORDAN TV
+https://www.giniko.com/xml/secure/plist.php?ch=186
+#EXTINF:-1 tvg-id="KALEMEHTV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",KALEMEH TV
+https://www.giniko.com/xml/secure/plist.php?ch=497
+#EXTINF:-1 tvg-id="KANALJADID" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",KANAL JADID
+https://www.giniko.com/xml/secure/plist.php?ch=783
+#EXTINF:-1 tvg-id="KAVKASIATV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",KAVKASIA TV
+https://www.giniko.com/xml/secure/plist.php?ch=601
+#EXTINF:-1 tvg-id="KAZAKHTV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",KAZAKH TV
+https://www.giniko.com/xml/secure/plist.php?ch=61
+#EXTINF:-1 tvg-id="KHATEREHTV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",KHATEREH TV
+https://www.giniko.com/xml/secure/plist.php?ch=779
+#EXTINF:-1 tvg-id="KSASPORT2" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",KSA SPORT 2
+https://www.giniko.com/xml/secure/plist.php?ch=765
+#EXTINF:-1 tvg-id="KSASPORT1" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",KSASPORT1
+https://www.giniko.com/xml/secure/plist.php?ch=481
+#EXTINF:-1 tvg-id="KURDMAX" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",KURD MAX
+https://www.giniko.com/xml/secure/plist.php?ch=761
+#EXTINF:-1 tvg-id="KURDSAT" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",KURDSAT
+https://www.giniko.com/xml/secure/plist.php?ch=104
+#EXTINF:-1 tvg-id="KUWAITTV1" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",KUWAIT TV1
+https://www.giniko.com/xml/secure/plist.php?ch=604
+#EXTINF:-1 tvg-id="LANATV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",LANA TV
+https://www.giniko.com/xml/secure/plist.php?ch=1321
+#EXTINF:-1 tvg-id="LBC2INT" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",LBC 2 INT
+https://www.giniko.com/xml/secure/plist.php?ch=873
+#EXTINF:-1 tvg-id="LBCINT" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",LBC INT
+https://www.giniko.com/xml/secure/plist.php?ch=865
+#EXTINF:-1 tvg-id="LESURENWRK" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",LE SURE NWRK
+https://www.giniko.com/xml/secure/plist.php?ch=657
+#EXTINF:-1 tvg-id="LEMAR TV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",LEMAR TV
+https://www.giniko.com/xml/secure/plist.php?ch=281
+#EXTINF:-1 tvg-id="LIBYAALWATAN" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",LIBYA AL WATAN
+https://www.giniko.com/xml/secure/plist.php?ch=185
+#EXTINF:-1 tvg-id="MAAHTV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",MAAH TV
+https://www.giniko.com/xml/secure/plist.php?ch=350
+#EXTINF:-1 tvg-id="MANOTO" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",MANOTO
+https://www.giniko.com/xml/secure/plist.php?ch=260
+#EXTINF:-1 tvg-id="MARAOTV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",MARAO TV
+https://www.giniko.com/xml/secure/plist.php?ch=255
+#EXTINF:-1 tvg-id="MBCPERSIA" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",MBC PERSIA
+https://www.giniko.com/xml/secure/plist.php?ch=1235
+#EXTINF:-1 tvg-id="MCHANNEL2" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",MCHANNEL2
+https://www.giniko.com/xml/secure/plist.php?ch=650
+#EXTINF:-1 tvg-id="MCHANNEL3" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",MCHANNEL3
+https://www.giniko.com/xml/secure/plist.php?ch=651
+#EXTINF:-1 tvg-id="MCHANNELA" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",MCHANNELA
+https://www.giniko.com/xml/secure/plist.php?ch=659
+#EXTINF:-1 tvg-id="MCHANNELM" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",MCHANNELM
+https://www.giniko.com/xml/secure/plist.php?ch=661
+#EXTINF:-1 tvg-id="MELODY" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",MELODY
+https://www.giniko.com/xml/secure/plist.php?ch=1614
+#EXTINF:-1 tvg-id="MIAMITV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",MIAMI TV
+https://www.giniko.com/xml/secure/plist.php?ch=95
+#EXTINF:-1 tvg-id="MIAMITVLATINO" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",MIAMI TV LATINO
+https://www.giniko.com/xml/secure/plist.php?ch=1498
+#EXTINF:-1 tvg-id="MODELX" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",MODELX
+https://www.giniko.com/xml/secure/plist.php?ch=1677
+#EXTINF:-1 tvg-id="MTC" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",MTC
+https://www.giniko.com/xml/secure/plist.php?ch=841
+#EXTINF:-1 tvg-id="MTVLEBANON" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",MTV LEBANON
+https://www.giniko.com/xml/secure/plist.php?ch=749
+#EXTINF:-1 tvg-id="NBC" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",NBC
+https://www.giniko.com/xml/secure/plist.php?ch=450
+#EXTINF:-1 tvg-id="NEGAHTV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",NEGAH TV
+https://www.giniko.com/xml/secure/plist.php?ch=487
+#EXTINF:-1 tvg-id="NESSMATV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",NESSMA TV
+https://www.giniko.com/xml/secure/plist.php?ch=880
+#EXTINF:-1 tvg-id="NOORTV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",NOOR TV
+https://www.giniko.com/xml/secure/plist.php?ch=414
+#EXTINF:-1 tvg-id="NORHAJESTAN" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",NOR HAJESTAN
+https://www.giniko.com/xml/secure/plist.php?ch=495
+#EXTINF:-1 tvg-id="NOURTV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",NOUR TV
+https://www.giniko.com/xml/secure/plist.php?ch=855
+#EXTINF:-1 tvg-id="ObieqtiviTV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",Obieqtivi TV
+https://www.giniko.com/xml/secure/plist.php?ch=226
+#EXTINF:-1 tvg-id="OMANTV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",OMAN TV
+https://www.giniko.com/xml/secure/plist.php?ch=184
+#EXTINF:-1 tvg-id="OMIDEIRAN" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",OMID E IRAN
+https://www.giniko.com/xml/secure/plist.php?ch=522
+#EXTINF:-1 tvg-id="ONBIZ" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",ON BIZ
+https://www.giniko.com/xml/secure/plist.php?ch=925
+#EXTINF:-1 tvg-id="ONDRAMA" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",ON DRAMA
+https://www.giniko.com/xml/secure/plist.php?ch=488
+#EXTINF:-1 tvg-id="ONE" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",ON E
+https://www.giniko.com/xml/secure/plist.php?ch=525
+#EXTINF:-1 tvg-id="ONFILM" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",ON FILM
+https://www.giniko.com/xml/secure/plist.php?ch=924
+#EXTINF:-1 tvg-id="ONFOOTBALL" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",ON FOOTBALL
+https://www.giniko.com/xml/secure/plist.php?ch=932
+#EXTINF:-1 tvg-id="ONTIMESPORT1" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",ON TIME SPORT 1
+https://www.giniko.com/xml/secure/plist.php?ch=1058
+#EXTINF:-1 tvg-id="ONTIMESPORT2" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",ON TIME SPORT 2
+https://www.giniko.com/xml/secure/plist.php?ch=867
+#EXTINF:-1 tvg-id="ORTMTV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",ORTM TV
+https://www.giniko.com/xml/secure/plist.php?ch=7
+#EXTINF:-1 tvg-id="OTVLEBANON" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",OTV LEBANON
+https://www.giniko.com/xml/secure/plist.php?ch=744
+#EXTINF:-1 tvg-id="OXIRTV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",OXIR TV
+https://www.giniko.com/xml/secure/plist.php?ch=919
+#EXTINF:-1 tvg-id="PAJAMEAFGAN" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",PAJAM E AFGAN
+https://www.giniko.com/xml/secure/plist.php?ch=1165
+#EXTINF:-1 tvg-id="PAJAMJAWAN" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",PAJAM JAWAN
+https://www.giniko.com/xml/secure/plist.php?ch=456
+#EXTINF:-1 tvg-id="PALESTINETV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",PALESTINE TV
+https://www.giniko.com/xml/secure/plist.php?ch=872
+#EXTINF:-1 tvg-id="PALITRANEWS" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",PALITRA NEWS
+https://www.giniko.com/xml/secure/plist.php?ch=1516
+#EXTINF:-1 tvg-id="PAMIRTV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",PAMIR TV
+https://www.giniko.com/xml/secure/plist.php?ch=937
+#EXTINF:-1 tvg-id="PANARMENIAN" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",PAN ARMENIAN
+https://www.giniko.com/xml/secure/plist.php?ch=776
+#EXTINF:-1 tvg-id="PARSTV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",PARS TV
+https://www.giniko.com/xml/secure/plist.php?ch=262
+#EXTINF:-1 tvg-id="PBCTAPESH" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",PBC TAPESH
+https://www.giniko.com/xml/secure/plist.php?ch=1177
+#EXTINF:-1 tvg-id="PEACHTREE" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",PEACH TREE
+https://www.giniko.com/xml/secure/plist.php?ch=454
+#EXTINF:-1 tvg-id="PERSIANFILM" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",PERSIAN FILM
+https://www.giniko.com/xml/secure/plist.php?ch=790
+#EXTINF:-1 tvg-id="PERSIANA" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",PERSIANA
+https://www.giniko.com/xml/secure/plist.php?ch=740
+#EXTINF:-1 tvg-id="PERSIANACOMEDY" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",PERSIANA COMEDY
+https://www.giniko.com/xml/secure/plist.php?ch=940
+#EXTINF:-1 tvg-id="PERSIANAINRANIAN" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",PERSIANA INRANIAN
+https://www.giniko.com/xml/secure/plist.php?ch=534
+#EXTINF:-1 tvg-id="PERSIANAJR" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",PERSIANA JR
+https://www.giniko.com/xml/secure/plist.php?ch=941
+#EXTINF:-1 tvg-id="PERSIANASERIES" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",PERSIANA SERIES
+https://www.giniko.com/xml/secure/plist.php?ch=506
+#EXTINF:-1 tvg-id="PERSIANASPORT" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",PERSIANA SPORT
+https://www.giniko.com/xml/secure/plist.php?ch=519
+#EXTINF:-1 tvg-id="PMCTV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",PMC TV
+https://www.giniko.com/xml/secure/plist.php?ch=229
+#EXTINF:-1 tvg-id="PNCDRAMA" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",PNC DRAMA
+https://www.giniko.com/xml/secure/plist.php?ch=526
+#EXTINF:-1 tvg-id="POSITV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",POSI TV
+https://www.giniko.com/xml/secure/plist.php?ch=1154
+#EXTINF:-1 tvg-id="PUBLICTV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",PUBLIC TV
+https://www.giniko.com/xml/secure/plist.php?ch=970
+#EXTINF:-1 tvg-id="PULSESTREAM" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",PULSE STREAM
+https://www.giniko.com/xml/secure/plist.php?ch=1668
+#EXTINF:-1 tvg-id="QARTULITV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",QARTULI TV
+https://www.giniko.com/xml/secure/plist.php?ch=1517
+#EXTINF:-1 tvg-id="QATARTV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",QATAR TV
+https://www.giniko.com/xml/secure/plist.php?ch=11
+#EXTINF:-1 tvg-id="RADIOFARDA" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",RADIO FARDA
+https://www.giniko.com/xml/secure/plist.php?ch=676
+#EXTINF:-1 tvg-id="ROTANACINEMA_1" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",ROTANA CINEMA
+https://www.giniko.com/xml/secure/plist.php?ch=1108
+#EXTINF:-1 tvg-id="ROTANADRAMA" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",ROTANA DRAMA
+https://www.giniko.com/xml/secure/plist.php?ch=1051
+#EXTINF:-1 tvg-id="ROTANAKHALIJA" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",ROTANA KHALIJA
+https://www.giniko.com/xml/secure/plist.php?ch=1092
+#EXTINF:-1 tvg-id="ROTANALBC" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",ROTANA LBC
+https://www.giniko.com/xml/secure/plist.php?ch=887
+#EXTINF:-1 tvg-id="ROYATV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",ROYA TV
+https://www.giniko.com/xml/secure/plist.php?ch=907
+#EXTINF:-1 tvg-id="ROYALTIME" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",ROYAL TIME
+https://www.giniko.com/xml/secure/plist.php?ch=267
+#EXTINF:-1 tvg-id="RTAMILI" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",RTA MILI
+https://www.giniko.com/xml/secure/plist.php?ch=388
+#EXTINF:-1 tvg-id="RTASPORTS" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",RTA SPORTS
+https://www.giniko.com/xml/secure/plist.php?ch=387
+#EXTINF:-1 tvg-id="RTI1" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",RTI 1
+https://www.giniko.com/xml/secure/plist.php?ch=971
+#EXTINF:-1 tvg-id="RTPI" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",RTP I
+https://www.giniko.com/xml/secure/plist.php?ch=63
+#EXTINF:-1 tvg-id="RTS1" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",RTS1
+https://www.giniko.com/xml/secure/plist.php?ch=20
+#EXTINF:-1 tvg-id="RUSTAVI2" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",RUSTAVI2
+https://www.giniko.com/xml/secure/plist.php?ch=42
+#EXTINF:-1 tvg-id="SADAEHAQ" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",SADA E HAQ
+https://www.giniko.com/xml/secure/plist.php?ch=1345
+#EXTINF:-1 tvg-id="SAHARAFGAN" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",SAHAR AFGAN
+https://www.giniko.com/xml/secure/plist.php?ch=950
+#EXTINF:-1 tvg-id="SAHARURDU" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",SAHAR URDU
+https://www.giniko.com/xml/secure/plist.php?ch=1010
+#EXTINF:-1 tvg-id="SAIGONTV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",SAIGON TV
+https://www.giniko.com/xml/secure/plist.php?ch=922
+#EXTINF:-1 tvg-id="SALAAMTV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",SALAAM TV
+https://www.giniko.com/xml/secure/plist.php?ch=292
+#EXTINF:-1 tvg-id="SAMATV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",SAMA TV
+https://www.giniko.com/xml/secure/plist.php?ch=734
+#EXTINF:-1 tvg-id="SAT7ARABI" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",SAT7 ARABI
+https://www.giniko.com/xml/secure/plist.php?ch=997
+#EXTINF:-1 tvg-id="SAT7KIDS" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",SAT7 KIDS
+https://www.giniko.com/xml/secure/plist.php?ch=996
+#EXTINF:-1 tvg-id="SAT7PARS" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",SAT7 PARS
+https://www.giniko.com/xml/secure/plist.php?ch=995
+#EXTINF:-1 tvg-id="SAUDISUNNAH" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",SAUDI SUNNAH
+https://www.giniko.com/xml/secure/plist.php?ch=326
+#EXTINF:-1 tvg-id="SAUDITV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",SAUDI TV
+https://www.giniko.com/xml/secure/plist.php?ch=3
+#EXTINF:-1 tvg-id="SBCTV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",SBC TV
+https://www.giniko.com/xml/secure/plist.php?ch=639
+#EXTINF:-1 tvg-id="SBN" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",SBN
+https://www.giniko.com/xml/secure/plist.php?ch=331
+#EXTINF:-1 tvg-id="SCTV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",SCTV
+https://www.giniko.com/xml/secure/plist.php?ch=927
+#EXTINF:-1 tvg-id="SCTVPIM" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",SCTV PHIM
+https://www.giniko.com/xml/secure/plist.php?ch=928
+#EXTINF:-1 tvg-id="SCTVSANKHAU" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",SCTV SAN KHAU
+https://www.giniko.com/xml/secure/plist.php?ch=929
+#EXTINF:-1 tvg-id="SHAMSHADTV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",SHAMSHAD TV
+https://www.giniko.com/xml/secure/plist.php?ch=379
+#EXTINF:-1 tvg-id="SHANTSERIAL" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",SHANT SERIAL
+https://www.giniko.com/xml/secure/plist.php?ch=753
+#EXTINF:-1 tvg-id="SHARYAHTV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",SHARYAH TV
+https://www.giniko.com/xml/secure/plist.php?ch=183
+#EXTINF:-1 tvg-id="SHOGHAKAT" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",SHOGHAKAT
+https://www.giniko.com/xml/secure/plist.php?ch=494
+#EXTINF:-1 tvg-id="SILKUNIVERSAL" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",SILK UNIVERSAL
+https://www.giniko.com/xml/secure/plist.php?ch=603
+#EXTINF:-1 tvg-id="SIMAYEAZADINTV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",SIMAYE AZADIN TV
+https://www.giniko.com/xml/secure/plist.php?ch=846
+#EXTINF:-1 tvg-id="SKYNEWS" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",SKY NEWS
+https://www.giniko.com/xml/secure/plist.php?ch=1518
+#EXTINF:-1 tvg-id="SKYNEWSARABIA" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",SKY NEWS ARABIA
+https://www.giniko.com/xml/secure/plist.php?ch=271
+#EXTINF:-1 tvg-id="SMILEOFACHILD" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",SMILE OF A CHILD
+https://www.giniko.com/xml/secure/plist.php?ch=289
+#EXTINF:-1 tvg-id="SOMALILAND" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",SOMALI LAND
+https://www.giniko.com/xml/secure/plist.php?ch=462
+#EXTINF:-1 tvg-id="SOMALINAT" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",SOMALI NAT
+https://www.giniko.com/xml/secure/plist.php?ch=305
+#EXTINF:-1 tvg-id="SOUTHSUDAN" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",SOUTH SUDAN
+https://www.giniko.com/xml/secure/plist.php?ch=188
+#EXTINF:-1 tvg-id="STERKTV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",STERK TV
+https://www.giniko.com/xml/secure/plist.php?ch=412
+#EXTINF:-1 tvg-id="STYLETV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",STYLE TV
+https://www.giniko.com/xml/secure/plist.php?ch=930
+#EXTINF:-1 tvg-id="SUDANTV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",SUDAN TV
+https://www.giniko.com/xml/secure/plist.php?ch=187
+#EXTINF:-1 tvg-id="SUPERTL" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",SUPER RTL
+https://www.giniko.com/xml/secure/plist.php?ch=1156
+#EXTINF:-1 tvg-id="SYRIADRAMA" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",SYRIA DRAMA
+https://www.giniko.com/xml/secure/plist.php?ch=389
+#EXTINF:-1 tvg-id="SYRIASATELLITE" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",SYRIA SATELLITE
+https://www.giniko.com/xml/secure/plist.php?ch=870
+#EXTINF:-1 tvg-id="SYRIATV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",SYRIA TV
+https://www.giniko.com/xml/secure/plist.php?ch=145
+#EXTINF:-1 tvg-id="SYRIATV2" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",SYRIA TV2
+https://www.giniko.com/xml/secure/plist.php?ch=918
+#EXTINF:-1 tvg-id="TAMADON" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",TAMADON
+https://www.giniko.com/xml/secure/plist.php?ch=649
+#EXTINF:-1 tvg-id="TAMAZIGHTTV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",TAMAZIGHT TV
+https://www.giniko.com/xml/secure/plist.php?ch=517
+#EXTINF:-1 tvg-id="TBNINSPIRE" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",TBN INSPIRE
+https://www.giniko.com/xml/secure/plist.php?ch=1508
+#EXTINF:-1 tvg-id="TBNTV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",TBN TV
+https://www.giniko.com/xml/secure/plist.php?ch=301
+#EXTINF:-1 tvg-id="TELECONGO" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",TELE CONGO
+https://www.giniko.com/xml/secure/plist.php?ch=6
+#EXTINF:-1 tvg-id="TELELIBAN" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",TELE LIBAN
+https://www.giniko.com/xml/secure/plist.php?ch=737
+#EXTINF:-1 tvg-id="TELEMAROC" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",TELE MAROC
+https://www.giniko.com/xml/secure/plist.php?ch=871
+#EXTINF:-1 tvg-id="TENTV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",TENTV
+https://www.giniko.com/xml/secure/plist.php?ch=479
+#EXTINF:-1 tvg-id="TFM" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",TFM
+https://www.giniko.com/xml/secure/plist.php?ch=192
+#EXTINF:-1 tvg-id="TOLONEWS" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",TOLO NEWS
+https://www.giniko.com/xml/secure/plist.php?ch=272
+#EXTINF:-1 tvg-id="TOLOTV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",TOLO TV
+https://www.giniko.com/xml/secure/plist.php?ch=647
+#EXTINF:-1 tvg-id="TUNISNATV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",TUNISNA TV
+https://www.giniko.com/xml/secure/plist.php?ch=742
+#EXTINF:-1 tvg-id="TVGAINT" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",TV GAINT
+https://www.giniko.com/xml/secure/plist.php?ch=18
+#EXTINF:-1 tvg-id="TVPIRVELI" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",TV PIRVELI
+https://www.giniko.com/xml/secure/plist.php?ch=602
+#EXTINF:-1 tvg-id="TV1ALGERIA" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",TV1 ALGERIA
+https://www.giniko.com/xml/secure/plist.php?ch=521
+#EXTINF:-1 tvg-id="TV2ALGERIA" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",TV2 ALGERIA
+https://www.giniko.com/xml/secure/plist.php?ch=328
+#EXTINF:-1 tvg-id="TV3ALGERIA" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",TV3 ALGERIA
+https://www.giniko.com/xml/secure/plist.php?ch=530
+#EXTINF:-1 tvg-id="TV4ALGERIA" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",TV4 ALGERIA
+https://www.giniko.com/xml/secure/plist.php?ch=521
+#EXTINF:-1 tvg-id="TV6ALGERIA" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",TV6 ALGERIA
+https://www.giniko.com/xml/secure/plist.php?ch=500
+#EXTINF:-1 tvg-id="TV25" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",TV25
+https://www.giniko.com/xml/secure/plist.php?ch=234
+#EXTINF:-1 tvg-id="TVCNEWS" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",TVC NEWS
+https://www.giniko.com/xml/secure/plist.php?ch=68
+#EXTINF:-1 tvg-id="UNIVERSALSOMALI" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",UNIVERSAL SOMALI
+https://www.giniko.com/xml/secure/plist.php?ch=400
+#EXTINF:-1 tvg-id="USAARMENIATV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",USA ARMENIA TV
+https://www.giniko.com/xml/secure/plist.php?ch=781
+#EXTINF:-1 tvg-id="VARZISH" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",VARZISH
+https://www.giniko.com/xml/secure/plist.php?ch=786
+#EXTINF:-1 tvg-id="VBSTV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",VBS TV
+https://www.giniko.com/xml/secure/plist.php?ch=562
+#EXTINF:-1 tvg-id="VCAB7" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",VCAB7
+https://www.giniko.com/xml/secure/plist.php?ch=1333
+#EXTINF:-1 tvg-id="VIBEVOLLECTION" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",VIBE VOLLECTION
+https://www.giniko.com/xml/secure/plist.php?ch=1613
+#EXTINF:-1 tvg-id="VIETODAY" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",VIE TODAY
+https://www.giniko.com/xml/secure/plist.php?ch=921
+#EXTINF:-1 tvg-id="VIETNAMNET" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",VIETNAM NET
+https://www.giniko.com/xml/secure/plist.php?ch=197
+#EXTINF:-1 tvg-id="VOAFARSI" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",VOA FARSI
+https://www.giniko.com/xml/secure/plist.php?ch=1449
+#EXTINF:-1 tvg-id="VOAPASHTO" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",VOA PASHTO
+https://www.giniko.com/xml/secure/plist.php?ch=1337
+#EXTINF:-1 tvg-id="VOXAFRICA" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",VOX AFRICA
+https://www.giniko.com/xml/secure/plist.php?ch=81
+#EXTINF:-1 tvg-id="VOXUP" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",VOX UP
+https://www.giniko.com/xml/secure/plist.php?ch=1176
+#EXTINF:-1 tvg-id="VSTV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",VS TV
+https://www.giniko.com/xml/secure/plist.php?ch=923
+#EXTINF:-1 tvg-id="WAPTV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",WAP TV
+https://www.giniko.com/xml/secure/plist.php?ch=1358
+#EXTINF:-1 tvg-id="WASATTV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",WASAT TV
+https://www.giniko.com/xml/secure/plist.php?ch=1415
+#EXTINF:-1 tvg-id="WATANEMMAA" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",WATAN E MAA
+https://www.giniko.com/xml/secure/plist.php?ch=277
+#EXTINF:-1 tvg-id="WORDNETWORK" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",WORD NETWORK
+https://www.giniko.com/xml/secure/plist.php?ch=58
+#EXTINF:-1 tvg-id="YEMENTV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",YEMEN TV
+https://www.giniko.com/xml/secure/plist.php?ch=5
+#EXTINF:-1 tvg-id="YERKIRMEDIA" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",YERKIR MEDIA
+https://www.giniko.com/xml/secure/plist.php?ch=1276
+#EXTINF:-1 tvg-id="ZARINTV_1" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",ZARIN TV
+https://www.giniko.com/xml/secure/plist.php?ch=455
+#EXTINF:-1 tvg-id="ZARINTV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",ZARINTV
+https://www.giniko.com/xml/secure/plist.php?ch=455
+#EXTINF:-1 tvg-id="ZEEAFLAM" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",ZEE AFLAM
+https://www.giniko.com/xml/secure/plist.php?ch=551
+#EXTINF:-1 tvg-id="ZEEALWAN" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",ZEE ALWAN
+https://www.giniko.com/xml/secure/plist.php?ch=520
+#EXTINF:-1 tvg-id="ZEEPLUS(MBC)" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",ZEE PLUS (MBC)
+https://www.giniko.com/xml/secure/plist.php?ch=533
+#EXTINF:-1 tvg-id="ZHWANDOONTV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",ZHWANDOON TV
+https://www.giniko.com/xml/secure/plist.php?ch=339
+#EXTINF:-1 tvg-id="1HD" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",1 HD
+https://www.giniko.com/xml/secure/plist.php?ch=393
+#EXTINF:-1 tvg-id="1MUSICRU" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",1 MUSIC RU
+https://www.giniko.com/xml/secure/plist.php?ch=1043
+#EXTINF:-1 tvg-id="1+1" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",1+1
+https://www.giniko.com/xml/secure/plist.php?ch=1391
+#EXTINF:-1 tvg-id="1STTV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",1ST TV
+https://www.giniko.com/xml/secure/plist.php?ch=87
+#EXTINF:-1 tvg-id="1STTVSPORT" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",1ST TV SPORT
+https://www.giniko.com/xml/secure/plist.php?ch=1684
+#EXTINF:-1 tvg-id="1TVAFGAN" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",1TV AFGAN
+https://www.giniko.com/xml/secure/plist.php?ch=307
+#EXTINF:-1 tvg-id="1TVARMENIA" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",1TV ARMENIA
+https://www.giniko.com/xml/secure/plist.php?ch=1056
+#EXTINF:-1 tvg-id="1TVGANATLEBA" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",1TV GANATLEBA
+https://www.giniko.com/xml/secure/plist.php?ch=1107
+#EXTINF:-1 tvg-id="2MONDE" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",2 MONDE
+https://www.giniko.com/xml/secure/plist.php?ch=4
+#EXTINF:-1 tvg-id="2MMONDE" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",2M MONDE
+https://www.giniko.com/xml/secure/plist.php?ch=490
+#EXTINF:-1 tvg-id="3ABN" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",3ABN
+https://www.giniko.com/xml/secure/plist.php?ch=23
+#EXTINF:-1 tvg-id="4HD" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",4 HD
+https://www.giniko.com/xml/secure/plist.php?ch=531
+#EXTINF:-1 tvg-id="4KMOVIES" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",4K MOVIES
+https://www.giniko.com/xml/secure/plist.php?ch=1570
+#EXTINF:-1 tvg-id="4UTV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",4U TV
+https://www.giniko.com/xml/secure/plist.php?ch=864
+#EXTINF:-1 tvg-id="5HD" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",5 HD
+https://www.giniko.com/xml/secure/plist.php?ch=501
+#EXTINF:-1 tvg-id="5TV" tvg-logo="https://play-lh.googleusercontent.com/QjD_G89pX3-uMZqSmqYTBnYCPzkA5f-GP3j4Qwba2bbWZNquIWzhIg6UqXePUDiIPVkX" group-title="Yabancı Kanallar",5 TV
+https://www.giniko.com/xml/secure/plist.php?ch=787
