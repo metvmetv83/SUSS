@@ -47,7 +47,7 @@ async def main():
 
             content = await page.content()
 
-            pattern = r'href="(https://dizipal\.uk/film/[^"]+)"[^>]*title="([^"]+)"'
+            pattern = r'href="(https://dizipal\.bar/film/[^"]+)"[^>]*title="([^"]+)"'
             matches = re.findall(pattern, content)
 
             movies = []
