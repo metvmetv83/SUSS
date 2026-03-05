@@ -31,7 +31,7 @@ async def main():
         try:
             # ❗ networkidle YOK
             await page.goto(
-                "https://dizipal.uk/filmler/",
+                "https://dizipal.bar/filmler/",
                 wait_until="domcontentloaded",
                 timeout=90000
             )
