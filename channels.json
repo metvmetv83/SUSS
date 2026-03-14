@@ -1,1 +1,926 @@
-[]
+[
+  {
+    "id": 714,
+    "name": "CNN International - Live",
+    "logo": "https://www.giniko.com/logos/190x110/714.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=714"
+  },
+  {
+    "id": 718,
+    "name": "NOW TV (EPG) - Live",
+    "logo": "https://www.giniko.com/logos/190x110/718.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=718"
+  },
+  {
+    "id": 723,
+    "name": "Star TV (EPG) - Live",
+    "logo": "https://www.giniko.com/logos/190x110/723.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=723"
+  },
+  {
+    "id": 724,
+    "name": "TV8 (EPG) - Live",
+    "logo": "https://www.giniko.com/logos/190x110/724.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=724"
+  },
+  {
+    "id": 732,
+    "name": "TYTTURK - Live",
+    "logo": "https://www.giniko.com/logos/190x110/732.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=732"
+  },
+  {
+    "id": 733,
+    "name": "TV8.5 (EPG) - Live",
+    "logo": "https://www.giniko.com/logos/190x110/733.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=733"
+  },
+  {
+    "id": 734,
+    "name": "Kanal D (EPG) - Live",
+    "logo": "https://www.giniko.com/logos/190x110/734.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=734"
+  },
+  {
+    "id": 735,
+    "name": "Show TV (EPG) - Live",
+    "logo": "https://www.giniko.com/logos/190x110/735.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=735"
+  },
+  {
+    "id": 736,
+    "name": "Show Max (EPG) - Live",
+    "logo": "https://www.giniko.com/logos/190x110/736.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=736"
+  },
+  {
+    "id": 738,
+    "name": "TV100 (EPG) - Live",
+    "logo": "https://www.giniko.com/logos/190x110/738.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=738"
+  },
+  {
+    "id": 739,
+    "name": "Beyaz TV (EPG) - Live",
+    "logo": "https://www.giniko.com/logos/190x110/739.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=739"
+  },
+  {
+    "id": 740,
+    "name": "Kanal 7 (EPG) - Live",
+    "logo": "https://www.giniko.com/logos/190x110/740.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=740"
+  },
+  {
+    "id": 741,
+    "name": "Ulke TV (EPG) - Live",
+    "logo": "https://www.giniko.com/logos/190x110/741.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=741"
+  },
+  {
+    "id": 742,
+    "name": "Sky 360 (EPG) - Live",
+    "logo": "https://www.giniko.com/logos/190x110/742.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=742"
+  },
+  {
+    "id": 743,
+    "name": "TRT Turk (EPG) - Live",
+    "logo": "https://www.giniko.com/logos/190x110/743.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=743"
+  },
+  {
+    "id": 744,
+    "name": "A2 (EPG) - Live",
+    "logo": "https://www.giniko.com/logos/190x110/744.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=744"
+  },
+  {
+    "id": 745,
+    "name": "TLC Turkiye (EPG) - Live",
+    "logo": "https://www.giniko.com/logos/190x110/745.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=745"
+  },
+  {
+    "id": 746,
+    "name": "DMAX Turkiye - Live",
+    "logo": "https://www.giniko.com/logos/190x110/746.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=746"
+  },
+  {
+    "id": 747,
+    "name": "TRT Avaz (EPG) - Live",
+    "logo": "https://www.giniko.com/logos/190x110/747.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=747"
+  },
+  {
+    "id": 749,
+    "name": "TRT Spor Yildiz (EPG) - Live",
+    "logo": "https://www.giniko.com/logos/190x110/749.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=749"
+  },
+  {
+    "id": 750,
+    "name": "A News - Live",
+    "logo": "https://www.giniko.com/logos/190x110/750.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=750"
+  },
+  {
+    "id": 751,
+    "name": "beIN Sports Haber (EPG) - Live",
+    "logo": "https://www.giniko.com/logos/190x110/751.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=751"
+  },
+  {
+    "id": 752,
+    "name": "Fenerbahce TV (EPG) - Live",
+    "logo": "https://www.giniko.com/logos/190x110/752.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=752"
+  },
+  {
+    "id": 753,
+    "name": "Ekol TV - Live",
+    "logo": "https://www.giniko.com/logos/190x110/753.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=753"
+  },
+  {
+    "id": 754,
+    "name": "Sports TV (EPG) - Live",
+    "logo": "https://www.giniko.com/logos/190x110/754.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=754"
+  },
+  {
+    "id": 755,
+    "name": "beIN Sports Lig Tv1 - Live",
+    "logo": "https://www.giniko.com/logos/190x110/755.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=755"
+  },
+  {
+    "id": 756,
+    "name": "beIN Sports Lig Tv2 - Live",
+    "logo": "https://www.giniko.com/logos/190x110/756.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=756"
+  },
+  {
+    "id": 757,
+    "name": "beIN Sports Lig Tv3 - Live",
+    "logo": "https://www.giniko.com/logos/190x110/757.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=757"
+  },
+  {
+    "id": 758,
+    "name": "TRT Muzik (EPG). - Live",
+    "logo": "https://www.giniko.com/logos/190x110/758.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=758"
+  },
+  {
+    "id": 760,
+    "name": "Diyanet TV (EPG) - Live",
+    "logo": "https://www.giniko.com/logos/190x110/760.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=760"
+  },
+  {
+    "id": 761,
+    "name": "Yaban TV (EPG) - Live",
+    "logo": "https://www.giniko.com/logos/190x110/761.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=761"
+  },
+  {
+    "id": 762,
+    "name": "TRT Belgesel (EPG) - Live",
+    "logo": "https://www.giniko.com/logos/190x110/762.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=762"
+  },
+  {
+    "id": 764,
+    "name": "TRT Cocuk (EPG) - Live",
+    "logo": "https://www.giniko.com/logos/190x110/764.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=764"
+  },
+  {
+    "id": 765,
+    "name": "minika Cocuk (EPG) - Live",
+    "logo": "https://www.giniko.com/logos/190x110/765.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=765"
+  },
+  {
+    "id": 766,
+    "name": "minika GO (EPG) - Live",
+    "logo": "https://www.giniko.com/logos/190x110/766.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=766"
+  },
+  {
+    "id": 768,
+    "name": "Cartoon Network TR (EPG) - Live",
+    "logo": "https://www.giniko.com/logos/190x110/768.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=768"
+  },
+  {
+    "id": 769,
+    "name": "NTV (EPG) - Live",
+    "logo": "https://www.giniko.com/logos/190x110/769.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=769"
+  },
+  {
+    "id": 770,
+    "name": "CNN Turk (EPG) - Live",
+    "logo": "https://www.giniko.com/logos/190x110/770.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=770"
+  },
+  {
+    "id": 771,
+    "name": "Haber Turk (EPG) - Live",
+    "logo": "https://www.giniko.com/logos/190x110/771.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=771"
+  },
+  {
+    "id": 772,
+    "name": "Haber Global (EPG) - Live",
+    "logo": "https://www.giniko.com/logos/190x110/772.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=772"
+  },
+  {
+    "id": 773,
+    "name": "KRT Kultur TV (EPG) - Live",
+    "logo": "https://www.giniko.com/logos/190x110/773.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=773"
+  },
+  {
+    "id": 774,
+    "name": "Ulusal TV (EPG) - Live",
+    "logo": "https://www.giniko.com/logos/190x110/774.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=774"
+  },
+  {
+    "id": 775,
+    "name": "A Haber - (EPG) - Live",
+    "logo": "https://www.giniko.com/logos/190x110/775.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=775"
+  },
+  {
+    "id": 776,
+    "name": "EkoTurk(EPG) - Live",
+    "logo": "https://www.giniko.com/logos/190x110/776.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=776"
+  },
+  {
+    "id": 777,
+    "name": "Kanal 24 (EPG) - Live",
+    "logo": "https://www.giniko.com/logos/190x110/777.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=777"
+  },
+  {
+    "id": 778,
+    "name": "TRT Haber (EPG) - Live",
+    "logo": "https://www.giniko.com/logos/190x110/778.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=778"
+  },
+  {
+    "id": 779,
+    "name": "TRT World (EPG) - Live",
+    "logo": "https://www.giniko.com/logos/190x110/779.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=779"
+  },
+  {
+    "id": 780,
+    "name": "TVNET (EPG) - Live",
+    "logo": "https://www.giniko.com/logos/190x110/780.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=780"
+  },
+  {
+    "id": 781,
+    "name": "Idman TV (EPG) - Live",
+    "logo": "https://www.giniko.com/logos/190x110/781.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=781"
+  },
+  {
+    "id": 782,
+    "name": "CBC Sport Azerbaijan (EPG) - Live",
+    "logo": "https://www.giniko.com/logos/190x110/782.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=782"
+  },
+  {
+    "id": 785,
+    "name": "TRT Spor (EPG) - Live",
+    "logo": "https://www.giniko.com/logos/190x110/785.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=785"
+  },
+  {
+    "id": 786,
+    "name": "TRT 4K - Live",
+    "logo": "https://www.giniko.com/logos/190x110/786.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=786"
+  },
+  {
+    "id": 787,
+    "name": "TRT 1 (EPG) - Live",
+    "logo": "https://www.giniko.com/logos/190x110/787.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=787"
+  },
+  {
+    "id": 788,
+    "name": " - Live",
+    "logo": "https://www.giniko.com/logos/190x110/788.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=788"
+  },
+  {
+    "id": 790,
+    "name": "Spor Smart HD - Live",
+    "logo": "https://www.giniko.com/logos/190x110/790.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=790"
+  },
+  {
+    "id": 791,
+    "name": "S SPORT - Live",
+    "logo": "https://www.giniko.com/logos/190x110/791.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=791"
+  },
+  {
+    "id": 793,
+    "name": "Spor Smart 2 HD - Live",
+    "logo": "https://www.giniko.com/logos/190x110/793.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=793"
+  },
+  {
+    "id": 797,
+    "name": "Tivibu Spor - Live",
+    "logo": "https://www.giniko.com/logos/190x110/797.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=797"
+  },
+  {
+    "id": 800,
+    "name": "Power Turk - Live",
+    "logo": "https://www.giniko.com/logos/190x110/800.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=800"
+  },
+  {
+    "id": 801,
+    "name": "Exxen 1 - Live",
+    "logo": "https://www.giniko.com/logos/190x110/801.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=801"
+  },
+  {
+    "id": 802,
+    "name": "Halk TV (EPG) - Live",
+    "logo": "https://www.giniko.com/logos/190x110/802.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=802"
+  },
+  {
+    "id": 805,
+    "name": "ATV Avrupa (EPG) - Live",
+    "logo": "https://www.giniko.com/logos/190x110/805.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=805"
+  },
+  {
+    "id": 806,
+    "name": "TV8  Int (EPG) - Live",
+    "logo": "https://www.giniko.com/logos/190x110/806.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=806"
+  },
+  {
+    "id": 807,
+    "name": "TRT 1 TV (EPG) - Live",
+    "logo": "https://www.giniko.com/logos/190x110/807.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=807"
+  },
+  {
+    "id": 808,
+    "name": "TRT Turk (EPG) - Live",
+    "logo": "https://www.giniko.com/logos/190x110/808.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=808"
+  },
+  {
+    "id": 809,
+    "name": "TRT Spor HD (EPG) - Live",
+    "logo": "https://www.giniko.com/logos/190x110/809.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=809"
+  },
+  {
+    "id": 811,
+    "name": "TRT Muzik (EPG) - Live",
+    "logo": "https://www.giniko.com/logos/190x110/811.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=811"
+  },
+  {
+    "id": 812,
+    "name": "TRT Cocuk (EPG) - Live",
+    "logo": "https://www.giniko.com/logos/190x110/812.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=812"
+  },
+  {
+    "id": 813,
+    "name": "NTV (EPG) - Live",
+    "logo": "https://www.giniko.com/logos/190x110/813.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=813"
+  },
+  {
+    "id": 814,
+    "name": "Kanal 7 (EPG) - Live",
+    "logo": "https://www.giniko.com/logos/190x110/814.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=814"
+  },
+  {
+    "id": 815,
+    "name": "Ulke TV (EPG) - Live",
+    "logo": "https://www.giniko.com/logos/190x110/815.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=815"
+  },
+  {
+    "id": 816,
+    "name": "ATV (EPG) - Live",
+    "logo": "https://www.giniko.com/logos/190x110/816.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=816"
+  },
+  {
+    "id": 817,
+    "name": "Star TV (EPG) - Live",
+    "logo": "https://www.giniko.com/logos/190x110/817.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=817"
+  },
+  {
+    "id": 818,
+    "name": "TV8 (EPG) - Live",
+    "logo": "https://www.giniko.com/logos/190x110/818.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=818"
+  },
+  {
+    "id": 819,
+    "name": "TRT Haber (EPG) - Live",
+    "logo": "https://www.giniko.com/logos/190x110/819.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=819"
+  },
+  {
+    "id": 820,
+    "name": " - Live",
+    "logo": "https://www.giniko.com/logos/190x110/820.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=820"
+  },
+  {
+    "id": 822,
+    "name": "A Spor (EPG) - Live",
+    "logo": "https://www.giniko.com/logos/190x110/822.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=822"
+  },
+  {
+    "id": 824,
+    "name": "Announcement / Duyuru - Live",
+    "logo": "https://www.giniko.com/logos/190x110/824.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=824"
+  },
+  {
+    "id": 825,
+    "name": "TV8 - Live",
+    "logo": "https://www.giniko.com/logos/190x110/825.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=825"
+  },
+  {
+    "id": 826,
+    "name": "StarTV - Live",
+    "logo": "https://www.giniko.com/logos/190x110/826.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=826"
+  },
+  {
+    "id": 828,
+    "name": "Bein Sports Xtra - Live",
+    "logo": "https://www.giniko.com/logos/190x110/828.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=828"
+  },
+  {
+    "id": 829,
+    "name": " - Live",
+    "logo": "https://www.giniko.com/logos/190x110/829.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=829"
+  },
+  {
+    "id": 830,
+    "name": "TRT Spor HD - Live",
+    "logo": "https://www.giniko.com/logos/190x110/830.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=830"
+  },
+  {
+    "id": 831,
+    "name": "TRT 1 - Live",
+    "logo": "https://www.giniko.com/logos/190x110/831.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=831"
+  },
+  {
+    "id": 834,
+    "name": " - Live",
+    "logo": "https://www.giniko.com/logos/190x110/834.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=834"
+  },
+  {
+    "id": 835,
+    "name": "Install New Roku App - Watch - Live",
+    "logo": "https://www.giniko.com/logos/190x110/835.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=835"
+  },
+  {
+    "id": 845,
+    "name": " - Live",
+    "logo": "https://www.giniko.com/logos/190x110/845.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=845"
+  },
+  {
+    "id": 847,
+    "name": " - Live",
+    "logo": "https://www.giniko.com/logos/190x110/847.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=847"
+  },
+  {
+    "id": 849,
+    "name": " - Live",
+    "logo": "https://www.giniko.com/logos/190x110/849.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=849"
+  },
+  {
+    "id": 850,
+    "name": " - Live",
+    "logo": "https://www.giniko.com/logos/190x110/850.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=850"
+  },
+  {
+    "id": 852,
+    "name": " - Live",
+    "logo": "https://www.giniko.com/logos/190x110/852.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=852"
+  },
+  {
+    "id": 854,
+    "name": " - Live",
+    "logo": "https://www.giniko.com/logos/190x110/854.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=854"
+  },
+  {
+    "id": 855,
+    "name": " - Live",
+    "logo": "https://www.giniko.com/logos/190x110/855.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=855"
+  },
+  {
+    "id": 857,
+    "name": " - Live",
+    "logo": "https://www.giniko.com/logos/190x110/857.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=857"
+  },
+  {
+    "id": 860,
+    "name": " - Live",
+    "logo": "https://www.giniko.com/logos/190x110/860.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=860"
+  },
+  {
+    "id": 862,
+    "name": "Anadolu Dernek TV - Live",
+    "logo": "https://www.giniko.com/logos/190x110/862.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=862"
+  },
+  {
+    "id": 863,
+    "name": "TIVI6 - Live",
+    "logo": "https://www.giniko.com/logos/190x110/863.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=863"
+  },
+  {
+    "id": 868,
+    "name": "AZNEWS Azerbayzan - Live",
+    "logo": "https://www.giniko.com/logos/190x110/868.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=868"
+  },
+  {
+    "id": 869,
+    "name": "Gebele TV  - Live",
+    "logo": "https://www.giniko.com/logos/190x110/869.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=869"
+  },
+  {
+    "id": 870,
+    "name": " - Live",
+    "logo": "https://www.giniko.com/logos/190x110/870.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=870"
+  },
+  {
+    "id": 871,
+    "name": " - Live",
+    "logo": "https://www.giniko.com/logos/190x110/871.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=871"
+  },
+  {
+    "id": 872,
+    "name": "Sozcu TV (EPG) - Live",
+    "logo": "https://www.giniko.com/logos/190x110/872.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=872"
+  },
+  {
+    "id": 873,
+    "name": " - Live",
+    "logo": "https://www.giniko.com/logos/190x110/873.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=873"
+  },
+  {
+    "id": 875,
+    "name": "Berat TV - Live",
+    "logo": "https://www.giniko.com/logos/190x110/875.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=875"
+  },
+  {
+    "id": 876,
+    "name": "Sat7 Turk - Live",
+    "logo": "https://www.giniko.com/logos/190x110/876.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=876"
+  },
+  {
+    "id": 879,
+    "name": "LUYS TV - Live",
+    "logo": "https://www.giniko.com/logos/190x110/879.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=879"
+  },
+  {
+    "id": 880,
+    "name": "Kentron TV - Live",
+    "logo": "https://www.giniko.com/logos/190x110/880.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=880"
+  },
+  {
+    "id": 881,
+    "name": "1TV Armenia H1 - Live",
+    "logo": "https://www.giniko.com/logos/190x110/881.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=881"
+  },
+  {
+    "id": 882,
+    "name": "Al Jazeera - Live",
+    "logo": "https://www.giniko.com/logos/190x110/882.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=882"
+  },
+  {
+    "id": 883,
+    "name": "BBC World News - Live",
+    "logo": "https://www.giniko.com/logos/190x110/883.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=883"
+  },
+  {
+    "id": 884,
+    "name": "France 24 English - Live",
+    "logo": "https://www.giniko.com/logos/190x110/884.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=884"
+  },
+  {
+    "id": 885,
+    "name": "Deutsche Welle (DW) - Live",
+    "logo": "https://www.giniko.com/logos/190x110/885.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=885"
+  },
+  {
+    "id": 886,
+    "name": "Euro News - Live",
+    "logo": "https://www.giniko.com/logos/190x110/886.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=886"
+  },
+  {
+    "id": 891,
+    "name": "TRT 2 (EPG) - Live",
+    "logo": "https://www.giniko.com/logos/190x110/891.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=891"
+  },
+  {
+    "id": 894,
+    "name": " - Live",
+    "logo": "https://www.giniko.com/logos/190x110/894.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=894"
+  },
+  {
+    "id": 895,
+    "name": " - Live",
+    "logo": "https://www.giniko.com/logos/190x110/895.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=895"
+  },
+  {
+    "id": 896,
+    "name": " - Live",
+    "logo": "https://www.giniko.com/logos/190x110/896.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=896"
+  },
+  {
+    "id": 898,
+    "name": " - Live",
+    "logo": "https://www.giniko.com/logos/190x110/898.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=898"
+  },
+  {
+    "id": 899,
+    "name": "Armnews TV  - Live",
+    "logo": "https://www.giniko.com/logos/190x110/899.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=899"
+  },
+  {
+    "id": 900,
+    "name": "Song TV - Live",
+    "logo": "https://www.giniko.com/logos/190x110/900.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=900"
+  },
+  {
+    "id": 901,
+    "name": "5 TV Channel - Live",
+    "logo": "https://www.giniko.com/logos/190x110/901.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=901"
+  },
+  {
+    "id": 902,
+    "name": " - Live",
+    "logo": "https://www.giniko.com/logos/190x110/902.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=902"
+  },
+  {
+    "id": 903,
+    "name": "Baku TV - Live",
+    "logo": "https://www.giniko.com/logos/190x110/903.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=903"
+  },
+  {
+    "id": 904,
+    "name": "ARB 24 TV - Live",
+    "logo": "https://www.giniko.com/logos/190x110/904.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=904"
+  },
+  {
+    "id": 905,
+    "name": "ARB TV - Live",
+    "logo": "https://www.giniko.com/logos/190x110/905.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=905"
+  },
+  {
+    "id": 906,
+    "name": "Ictimai TV - Live",
+    "logo": "https://www.giniko.com/logos/190x110/906.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=906"
+  },
+  {
+    "id": 907,
+    "name": "Medeniyyet TV - Live",
+    "logo": "https://www.giniko.com/logos/190x110/907.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=907"
+  },
+  {
+    "id": 908,
+    "name": "Real TV - Live",
+    "logo": "https://www.giniko.com/logos/190x110/908.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=908"
+  },
+  {
+    "id": 909,
+    "name": "Zexer Xeber - Live",
+    "logo": "https://www.giniko.com/logos/190x110/909.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=909"
+  },
+  {
+    "id": 910,
+    "name": "AzStar TV - Live",
+    "logo": "https://www.giniko.com/logos/190x110/910.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=910"
+  },
+  {
+    "id": 911,
+    "name": "Kepez TV - Live",
+    "logo": "https://www.giniko.com/logos/190x110/911.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=911"
+  },
+  {
+    "id": 912,
+    "name": "Space TV - Live",
+    "logo": "https://www.giniko.com/logos/190x110/912.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=912"
+  },
+  {
+    "id": 913,
+    "name": "Start TV - Live",
+    "logo": "https://www.giniko.com/logos/190x110/913.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=913"
+  },
+  {
+    "id": 915,
+    "name": "Kibris BRT1 - Live",
+    "logo": "https://www.giniko.com/logos/190x110/915.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=915"
+  },
+  {
+    "id": 916,
+    "name": "TIVI6 - Live",
+    "logo": "https://www.giniko.com/logos/190x110/916.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=916"
+  },
+  {
+    "id": 917,
+    "name": "TV4 - Live",
+    "logo": "https://www.giniko.com/logos/190x110/917.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=917"
+  },
+  {
+    "id": 918,
+    "name": "Dream Turk - Live",
+    "logo": "https://www.giniko.com/logos/190x110/918.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=918"
+  },
+  {
+    "id": 919,
+    "name": "Bengu Turk - Live",
+    "logo": "https://www.giniko.com/logos/190x110/919.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=919"
+  },
+  {
+    "id": 920,
+    "name": "Kibris BRT2 - Live",
+    "logo": "https://www.giniko.com/logos/190x110/920.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=920"
+  },
+  {
+    "id": 921,
+    "name": "A Para - Live",
+    "logo": "https://www.giniko.com/logos/190x110/921.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=921"
+  },
+  {
+    "id": 922,
+    "name": "Bloomberg Haber Turk - Live",
+    "logo": "https://www.giniko.com/logos/190x110/922.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=922"
+  },
+  {
+    "id": 924,
+    "name": "Bosnia Hayat - Live",
+    "logo": "https://www.giniko.com/logos/190x110/924.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=924"
+  },
+  {
+    "id": 925,
+    "name": "Bosnia BHT1 - Live",
+    "logo": "https://www.giniko.com/logos/190x110/925.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=925"
+  },
+  {
+    "id": 926,
+    "name": "Bosnia Arena Sport1 - Live",
+    "logo": "https://www.giniko.com/logos/190x110/926.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=926"
+  },
+  {
+    "id": 928,
+    "name": " - Live",
+    "logo": "https://www.giniko.com/logos/190x110/928.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=928"
+  },
+  {
+    "id": 929,
+    "name": "Fresh TV - Live",
+    "logo": "https://www.giniko.com/logos/190x110/929.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=929"
+  },
+  {
+    "id": 934,
+    "name": " - Live",
+    "logo": "https://www.giniko.com/logos/190x110/934.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=934"
+  },
+  {
+    "id": 937,
+    "name": " - Live",
+    "logo": "https://www.giniko.com/logos/190x110/937.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=937"
+  },
+  {
+    "id": 940,
+    "name": "Turkmeneli TV - Live",
+    "logo": "https://www.giniko.com/logos/190x110/940.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=940"
+  },
+  {
+    "id": 941,
+    "name": " - Live",
+    "logo": "https://www.giniko.com/logos/190x110/941.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=941"
+  },
+  {
+    "id": 944,
+    "name": " - Live",
+    "logo": "https://www.giniko.com/logos/190x110/944.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=944"
+  },
+  {
+    "id": 945,
+    "name": "EuroStar - Live",
+    "logo": "https://www.giniko.com/logos/190x110/945.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=945"
+  },
+  {
+    "id": 949,
+    "name": " - Live",
+    "logo": "https://www.giniko.com/logos/190x110/949.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=949"
+  },
+  {
+    "id": 950,
+    "name": " - Live",
+    "logo": "https://www.giniko.com/logos/190x110/950.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=950"
+  }
+]
