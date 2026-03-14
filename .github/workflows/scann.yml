@@ -2,8 +2,8 @@ name: Giniko Kanal Tarama
 
 on:
   schedule:
-    - cron: '0 3 * * *'   # Her gün saat 03:00 UTC
-  workflow_dispatch:        # Manuel tetikleme
+    - cron: '0 3 * * *'
+  workflow_dispatch:
 
 jobs:
   scan:
@@ -20,23 +20,15 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Bağımlılıkları Kur
-        run: pip install -r requirements.txt
+      - name: Bagımlılıkları Kur
+        run: pip install aiohttp
 
       - name: Kanalları Tara
         run: python scan.py
 
-      - name: channels.json Değişti mi?
-        id: diff
+      - name: Commit ve Push
         run: |
-          git diff --quiet channels.json && echo "changed=false" >> $GITHUB_OUTPUT || echo "changed=true" >> $GITHUB_OUTPUT
-
-      - name: Commit & Push
-        if: steps.diff.outputs.changed == 'true'
-        run: |
-          git config user.name  "github-actions[bot]"
+          git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add channels.json
-          COUNT=$(python3 -c "import json; d=json.load(open('channels.json')); print(len(d))")
-          git commit -m "🔄 Kanal tarama: ${COUNT} kanal [$(date +'%Y-%m-%d')]"
-          git push
+          git diff --staged --quiet || git commit -m "Kanal tarama: $(date +'%Y-%m-%d')" && git push
