@@ -1,0 +1,42 @@
+name: Giniko Kanal Tarama
+
+on:
+  schedule:
+    - cron: '0 3 * * *'   # Her gün saat 03:00 UTC
+  workflow_dispatch:        # Manuel tetikleme
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Python Setup
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Bağımlılıkları Kur
+        run: pip install -r requirements.txt
+
+      - name: Kanalları Tara
+        run: python scan.py
+
+      - name: channels.json Değişti mi?
+        id: diff
+        run: |
+          git diff --quiet channels.json && echo "changed=false" >> $GITHUB_OUTPUT || echo "changed=true" >> $GITHUB_OUTPUT
+
+      - name: Commit & Push
+        if: steps.diff.outputs.changed == 'true'
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add channels.json
+          COUNT=$(python3 -c "import json; d=json.load(open('channels.json')); print(len(d))")
+          git commit -m "🔄 Kanal tarama: ${COUNT} kanal [$(date +'%Y-%m-%d')]"
+          git push
