@@ -1,8 +1,4 @@
 #!/usr/bin/env python3
-"""
-Giniko 1-1000 kanal tarayıcı
-Çalışan kanalları channels.json olarak kaydeder
-"""
 import asyncio
 import aiohttp
 import json
@@ -11,9 +7,11 @@ import sys
 
 TOTAL = 1000
 BATCH = 50
-TIMEOUT = 8
+TIMEOUT = 10
 HEADERS = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+    "Accept-Language": "en-US,en;q=0.5",
     "Referer": "https://www.ginikoturkish.com/"
 }
 
@@ -23,7 +21,6 @@ def parse_channel(text, ch_id):
 
     lines = [l.strip() for l in text.split("\n") if l.strip()]
     
-    # isVOD=false olan bloğun stream URL'sini bul
     stream_url = None
     name = None
     logo = None
@@ -42,7 +39,6 @@ def parse_channel(text, ch_id):
         if line == "logoUrlHD" and i+1 < len(lines) and lines[i+1].startswith("http") and logo is None:
             logo = lines[i+1]
 
-    # Fallback: ilk HlsStreamURL
     if not stream_url:
         m = re.search(r'HlsStreamURL\s+(https?://\S+)', text)
         if m:
@@ -62,16 +58,33 @@ async def check_channel(session, ch_id):
     url = f"https://ginikoturkish.com/xml/secure/plist.php?ch={ch_id}"
     try:
         async with session.get(url, headers=HEADERS, timeout=aiohttp.ClientTimeout(total=TIMEOUT)) as r:
+            print(f"  ID {ch_id}: HTTP {r.status}", flush=True)
             if r.status != 200:
                 return None
             text = await r.text()
+            print(f"  ID {ch_id}: {len(text)} bytes, HLS={'HlsStreamURL' in text}", flush=True)
             return parse_channel(text, ch_id)
-    except Exception:
+    except Exception as e:
+        print(f"  ID {ch_id}: HATA {e}", flush=True)
         return None
 
+async def test_single():
+    """Önce tek kanal test et"""
+    connector = aiohttp.TCPConnector(limit=5)
+    async with aiohttp.ClientSession(connector=connector) as session:
+        print("=== TEST: ID 755 ===")
+        result = await check_channel(session, 755)
+        print(f"Sonuç: {result}")
+        print("=== TEST: ID 4 ===")
+        result = await check_channel(session, 4)
+        print(f"Sonuç: {result}")
+
 async def main():
+    # Önce test
+    await test_single()
+    
     results = []
-    connector = aiohttp.TCPConnector(limit=50)
+    connector = aiohttp.TCPConnector(limit=30)
     async with aiohttp.ClientSession(connector=connector) as session:
         for start in range(1, TOTAL+1, BATCH):
             end = min(start + BATCH - 1, TOTAL)
@@ -82,7 +95,6 @@ async def main():
             results.extend(found)
             print(f"[{start:4d}-{end:4d}] {len(found):2d} kanal | Toplam: {len(results)}", flush=True)
 
-    # Sırala
     results.sort(key=lambda x: x["id"])
 
     with open("channels.json", "w", encoding="utf-8") as f:
