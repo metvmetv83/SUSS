@@ -5,7 +5,7 @@ import re
 def scan_channels():
     active_channels = []
     # Tarama aralığı (Örn: 700-950 arası en aktif yerdir)
-    for ch_id in range(700, 951):
+    for ch_id in range(1, 1050):
         url = f"https://ginikoturkish.com/xml/secure/plist.php?ch={ch_id}"
         try:
             r = requests.get(url, timeout=5)
