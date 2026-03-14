@@ -1,0 +1,26 @@
+name: Giniko Channel Scanner
+on:
+  schedule:
+    - cron: '0 0 * * *' # Her gece 00:00'da çalışır
+  workflow_dispatch: # Manuel başlatma butonu ekler
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+      - name: Install dependencies
+        run: pip install requests
+      - name: Run Scanner
+        run: python scanner.py
+      - name: Commit and Push
+        run: |
+          git config --global user.name "GitHub Action"
+          git config --global user.email "action@github.com"
+          git add channels.json
+          git commit -m "Kanallar güncellendi" || exit 0
+          git push
