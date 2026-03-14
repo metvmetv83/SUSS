@@ -1,0 +1,32 @@
+name: ME-TV Global Scanner
+
+on:
+  schedule:
+    - cron: '0 12 * * *' # Her gün öğlen 12:00'de otomatik tarar
+  workflow_dispatch: # İstediğin an manuel başlatma butonu
+
+jobs:
+  scanner_job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Depoyu kopyala
+        uses: actions/checkout@v3
+
+      - name: Python ayarla
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Gereksinimleri yukle
+        run: pip install requests
+
+      - name: 1-1500 Arasi Kanallari Tara
+        run: python metv_scanner.py
+
+      - name: Degisiklikleri GitHub'a Gonder
+        run: |
+          git config --global user.name "METV-Scanner-Bot"
+          git config --global user.email "scanner@metv.com"
+          git add metv_list_full.json
+          git commit -m "Kanal listesi (1-1500) güncellendi: $(date)" || exit 0
+          git push
