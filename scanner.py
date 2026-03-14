@@ -4,7 +4,7 @@ import json
 import re
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-TOTAL = 1900
+TOTAL = 5000
 WORKERS = 40
 
 HEADERS = {
@@ -24,10 +24,18 @@ def check_channel(ch):
 
         text = r.text
 
-        if "HlsStreamURL" not in text:
+        # canlı yayın
+        if "<string>false</string>" not in text:
             return None
 
-        if "<string>false</string>" not in text:
+        stream = re.search(r"<key>HlsStreamURL</key>\s*<string>(.*?)</string>", text)
+        if not stream:
+            return None
+
+        stream = stream.group(1)
+
+        # sadece bozzTV CDN
+        if "tgn.bozztv.com" not in stream:
             return None
 
         name = re.search(r"<key>name</key>\s*<string>(.*?)</string>", text)
@@ -42,6 +50,7 @@ def check_channel(ch):
             "id": ch,
             "name": name,
             "logo": logo,
+            "stream": stream,
             "plist": url
         }
 
