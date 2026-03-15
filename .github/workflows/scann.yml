@@ -32,8 +32,9 @@ jobs:
         run: |
           COUNT=$(python3 -c "import json; d=json.load(open('channels5.json')); print(len(d))")
           echo "Bulunan kanal: $COUNT"
-          if [ "$COUNT" -lt "0" ]; then
-            echo "Kanal sayısı çok az ($COUNT), commit yapılmıyor!"
+          # Eğer kanal sayısı 1'den azsa hata ver (Boş dosya koruması)
+          if (( COUNT < 1 )); then
+            echo "Kanal sayısı çok az ($COUNT), hata oluşmuş olabilir!"
             exit 1
           fi
 
