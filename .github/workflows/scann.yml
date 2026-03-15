@@ -30,7 +30,7 @@ jobs:
 
       - name: Kanal sayısını kontrol et
         run: |
-          COUNT=$(python3 -c "import json; d=json.load(open('channels.json')); print(len(d))")
+          COUNT=$(python3 -c "import json; d=json.load(open('channels5.json')); print(len(d))")
           echo "Bulunan kanal: $COUNT"
           if [ "$COUNT" -lt "10" ]; then
             echo "Kanal sayısı çok az ($COUNT), commit yapılmıyor!"
