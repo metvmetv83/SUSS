@@ -117,7 +117,7 @@ def main():
 
     results.sort(key=lambda x: x["id"])
 
-    with open("channels.json","w",encoding="utf-8") as f:
+    with open("channels5.json","w",encoding="utf-8") as f:
         json.dump(results,f,ensure_ascii=False,indent=2)
 
     print(f"\nToplam {len(results)} kanal bulundu")
