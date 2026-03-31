@@ -84,12 +84,6 @@
     "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=93"
   },
   {
-    "id": 94,
-    "name": "Kanal 24",
-    "logo": "https://www.giniko.com/logos/190x110/94.jpg",
-    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=94"
-  },
-  {
     "id": 95,
     "name": "Kanal A (Ankara)",
     "logo": "https://www.giniko.com/logos/190x110/95.jpg",
@@ -292,12 +286,6 @@
     "name": "TVNET",
     "logo": "https://www.giniko.com/logos/190x110/153.jpg",
     "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=153"
-  },
-  {
-    "id": 156,
-    "name": "Bloomberg HT",
-    "logo": "https://www.giniko.com/logos/190x110/156.jpg",
-    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=156"
   },
   {
     "id": 157,
@@ -574,12 +562,6 @@
     "name": "TBMM Meclis TV",
     "logo": "https://www.giniko.com/logos/190x110/270.jpg",
     "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=270"
-  },
-  {
-    "id": 273,
-    "name": "TV Kayseri",
-    "logo": "https://www.giniko.com/logos/190x110/273.jpg",
-    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=273"
   },
   {
     "id": 275,
