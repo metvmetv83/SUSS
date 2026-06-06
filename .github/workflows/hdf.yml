@@ -1,95 +1,46 @@
-name: Otomatik Film/Dizi Güncelleyici (SUSS HDF)
+name: HDFilm Dizi Kazıyıcı
 
 on:
   schedule:
-    - cron: '0 */6 * * *'
+    - cron: '0 */12 * * *'
   workflow_dispatch:
     inputs:
-      tip:
-        description: 'Ne kazınsın? (dizi/film/herikisi)'
-        required: false
-        default: 'herikisi'
-        type: choice
-        options:
-          - dizi
-          - film
-          - herikisi
-      max_sayfa:
+      max_pages:
         description: 'Kaç sayfa taranacak? (boş bırak=tümü)'
         required: false
         type: number
       max_episodes:
-        description: 'Her dizi için max bölüm (varsayılan: 20)'
+        description: 'Her dizi için max bölüm'
         required: false
+        default: 10
         type: number
-        default: 20
-
-permissions:
-  contents: write
 
 jobs:
-  build:
+  scrape:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    permissions:
+      contents: write
     
     steps:
-    - name: Depoyu Klonla
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 1
+    - uses: actions/checkout@v4
     
-    - name: Python Kurulumu
-      uses: actions/setup-python@v4
+    - uses: actions/setup-python@v5
       with:
         python-version: '3.10'
     
-    - name: Bağımlılıkları Yükle
+    - name: Bağımlılıkları yükle
       run: |
-        python -m pip install --upgrade pip
+        pip install --upgrade pip
         pip install curl_cffi pyyaml
     
-    - name: Botu Çalıştır (Her İkisi)
-      if: github.event.inputs.tip == 'herikisi' || github.event_name == 'schedule'
+    - name: Dizileri kazı
       run: |
-        python hdf/hdf.py --both --max-episodes ${{ github.event.inputs.max_episodes || 20 }}
-      env:
-        PYTHONUNBUFFERED: 1
+        python hdf/dizi_kazici.py --max-pages ${{ github.event.inputs.max_pages }} --max-episodes ${{ github.event.inputs.max_episodes || 10 }}
     
-    - name: Botu Çalıştır (Sadece Dizi)
-      if: github.event.inputs.tip == 'dizi'
+    - name: GitHub'a gönder
       run: |
-        python hdf/hdf.py --dizi --max-episodes ${{ github.event.inputs.max_episodes || 20 }}
-    
-    - name: Botu Çalıştır (Sadece Film)
-      if: github.event.inputs.tip == 'film'
-      run: |
-        python hdf/hdf.py --film
-    
-    - name: JSON Validasyonu
-      run: |
-        if [ -f "hdf/data.json" ]; then
-          echo "✅ JSON dosyası kontrol ediliyor..."
-          python -c "import json; json.load(open('hdf/data.json'))"
-          echo "✅ JSON geçerli"
-        fi
-    
-    - name: Değişiklikleri GitHub'a Geri Yükle
-      run: |
-        git config --global user.name "GitHub Otomasyonu"
-        git config --global user.email "actions@github.com"
-        git add hdf/data.json hdf/data.yaml 2>/dev/null || true
-        if ! git diff --quiet && ! git diff --staged --quiet; then
-          git commit -m "🤖 Otomatik güncelleme: Film/Dizi verileri"
-          git push
-          echo "✅ Değişiklikler GitHub'a gönderildi"
-        else
-          echo "ℹ️ Yeni değişiklik yok"
-        fi
-    
-    - name: Başarılı Güncelleme Bildirimi
-      if: success()
-      run: echo "🎉 Güncelleme başarıyla tamamlandı!"
-    
-    - name: Hata Bildirimi
-      if: failure()
-      run: echo "❌ Güncelleme sırasında hata oluştu!"
+        git config user.name "github-actions"
+        git config user.email "actions@github.com"
+        git add hdf/*.json hdf/*.yaml
+        git diff --quiet && git diff --staged --quiet || git commit -m "🤖 Dizi verileri güncellendi $(date '+%Y-%m-%d')"
+        git push
