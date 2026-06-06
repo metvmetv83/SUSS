@@ -1,4 +1,4 @@
-name: Dizi Kazıyıcı
+name: DIZI-KAZIYICI-V1
 
 on:
   workflow_dispatch:
