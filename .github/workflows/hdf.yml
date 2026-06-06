@@ -2,8 +2,8 @@ name: Otomatik Film/Dizi Güncelleyici (SUSS HDF)
 
 on:
   schedule:
-    - cron: '0 */6 * * *' # 6 saatte bir çalışır
-  workflow_dispatch: # Manuel çalıştırma butonu aktif
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -21,11 +21,13 @@ jobs:
       with:
         python-version: '3.10'
 
-    - name: Bağımlılıkları Yükle
+    - name: Bağımlılıkları Yükle (curl_cffi Temiz Kurulum)
       run: |
-        pip install requests
+        python -m pip install --upgrade pip
+        # Önbellek kullanmadan ve en güncel bağımlılıklarla kurulum yapıyoruz
+        pip install --no-cache-dir curl_cffi
 
-    - name: Botu Çalıştır (hdf/hdf.py dosyasını tetikler)
+    - name: Botu Çalıştır
       run: |
         python hdf/hdf.py
 
