@@ -1,18 +1,14 @@
-name: HDFilm Dizi Kazıyıcı
+name: Dizi Kazıyıcı (Worker)
 
 on:
   schedule:
-    - cron: '0 */12 * * *'
+    - cron: '0 */6 * * *'
   workflow_dispatch:
     inputs:
       max_pages:
-        description: 'Kaç sayfa taranacak? (boş bırak=tümü)'
+        description: 'Kaç sayfa çekilsin?'
         required: false
-        type: number
-      max_episodes:
-        description: 'Her dizi için max bölüm'
-        required: false
-        default: 10
+        default: 5
         type: number
 
 jobs:
@@ -29,24 +25,43 @@ jobs:
         python-version: '3.10'
     
     - name: Bağımlılıkları yükle
-      run: |
-        pip install --upgrade pip
-        pip install curl_cffi pyyaml
+      run: pip install requests
     
-    - name: Dizileri kazı (hdf.py)
+    - name: Worker'dan dizileri çek
       run: |
-        python hdf/hdf.py --max-pages ${{ github.event.inputs.max_pages }} --max-episodes ${{ github.event.inputs.max_episodes || 10 }}
-      continue-on-error: false
+        python -c "
+import json, requests
+from datetime import datetime
+
+WORKER = 'https://hdfilmdizijson.64fetih.workers.dev'
+tum_diziler = []
+
+for sayfa in range(1, ${{ github.event.inputs.max_pages || 5 }} + 1):
+    print(f'Sayfa {sayfa}...')
+    r = requests.get(f'{WORKER}/?tip=dizi&sayfa={sayfa}', timeout=30)
+    if r.status_code == 200:
+        veri = r.json()
+        for dizi in veri.get('veriler', []):
+            if not dizi.get('hata'):
+                tum_diziler.append(dizi)
+
+sonuc = {
+    'metadata': {
+        'tarih': datetime.now().isoformat(),
+        'toplam': len(tum_diziler)
+    },
+    'diziler': tum_diziler
+}
+
+with open('hdf/diziler.json', 'w', encoding='utf-8') as f:
+    json.dump(sonuc, f, ensure_ascii=False, indent=2)
+
+print(f'Toplam {len(tum_diziler)} dizi kaydedildi')
+"
     
     - name: GitHub'a gönder
       run: |
         git config user.name "github-actions"
         git config user.email "actions@github.com"
-        git add hdf/*.json hdf/*.yaml 2>/dev/null || true
-        if ! git diff --quiet && ! git diff --staged --quiet; then
-          git commit -m "🤖 Dizi verileri güncellendi $(date '+%Y-%m-%d %H:%M')"
-          git push
-          echo "✅ Değişiklikler gönderildi"
-        else
-          echo "ℹ️ Yeni değişiklik yok"
-        fi
+        git add hdf/diziler.json
+        git diff --quiet && git diff --staged --quiet || (git commit -m "🤖 Diziler güncellendi" && git push)
