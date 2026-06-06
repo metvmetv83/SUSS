@@ -1,282 +1,283 @@
-import requests
-import re
+import os
 import json
+import re
 import time
-from typing import Dict, List, Optional
-from concurrent.futures import ThreadPoolExecutor, as_completed
-from urllib.parse import urljoin
+import random
+from typing import List, Dict, Optional
+from curl_cffi import requests
+import yaml
 
-class HDFilmIzleAPI:
-    def __init__(self):
-        self.base_url = "https://www.hdfilmizle.now"
-        self.headers = {
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
-            "Accept-Language": "tr-TR,tr;q=0.9,en;q=0.8",
-            "Referer": self.base_url
-        }
-        self.session = requests.Session()
-        self.session.headers.update(self.headers)
+BASE_URL = "https://www.hdfilmizle.now"
+
+def get_headers():
+    """Dinamik headers oluştur"""
+    random_ip = f"{random.randint(1,254)}.{random.randint(1,255)}.{random.randint(1,255)}.{random.randint(1,254)}"
+    return {
+        "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8",
+        "accept-language": "tr-TR,tr;q=0.9,en-US;q=0.8,en;q=0.7",
+        "referer": BASE_URL + "/",
+        "x-forwarded-for": random_ip,
+        "cf-connecting-ip": random_ip,
+        "true-client-ip": random_ip,
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+    }
+
+def get_total_pages(tip: str = "dizi") -> int:
+    """Toplam sayfa sayısını bul"""
+    if tip == "dizi":
+        url = f"{BASE_URL}/yabanci-dizi-izle-3/"
+    else:
+        url = f"{BASE_URL}/"
     
-    def get_list(self, tip: str = "film", sayfa: int = 1, sadece_liste: bool = False) -> Dict:
-        """
-        Film veya dizi listesini çeker
-        
-        Args:
-            tip: "film" veya "dizi"
-            sayfa: Sayfa numarası
-            sadece_liste: True ise sadece liste döner (detayları çekmez)
-        """
-        if tip == "dizi":
-            target_url = f"{self.base_url}/yabanci-dizi-izle-3/page/{sayfa}/"
-        else:
-            target_url = f"{self.base_url}/page/{sayfa}/"
-        
+    try:
+        res = requests.get(url, headers=get_headers(), impersonate="chrome", timeout=30)
+        if res.status_code == 200:
+            page_links = re.findall(r'/page/(\d+)/', res.text)
+            if page_links:
+                return max(int(p) for p in page_links)
+    except Exception as e:
+        print(f"⚠️ Sayfa sayısı bulunamadı: {e}")
+    
+    return 10
+
+def extract_episodes(detay_html: str, base_url: str) -> List[Dict]:
+    """Bölümleri extracted et (gelişmiş)"""
+    bolumler = []
+    
+    patterns = [
+        r'<a[^>]+href="([^"]*/sezon-\d+/bolum-\d+/[^"]*)"[^>]*>[\s\S]*?<h3[^>]*>([\s\S]*?)</h3>',
+        r'<a[^>]+href="([^"]*/bolum-\d+/[^"]*)"[^>]*>[\s\S]*?<h3[^>]*>([\s\S]*?)</h3>',
+        r'<a[^>]+href="([^"]*/bolum[^"]*)"[^>]+title="([^"]+)"[^>]*>',
+        r'<a\s+href="([^"]*(?:sezon|bolum)[^"]*)"[^>]*>([^<]+(?:Bölüm|Episode)[^<]*)</a>'
+    ]
+    
+    for pattern in patterns:
+        matches = re.findall(pattern, detay_html, re.IGNORECASE)
+        for match in matches:
+            bolum_url = match[0] if match[0].startswith("http") else base_url + match[0]
+            bolum_title = re.sub(r'<[^>]*>', '', match[1]).strip() if len(match) > 1 else f"Bölüm {len(bolumler)+1}"
+            bolumler.append({"title": bolum_title, "url": bolum_url})
+    
+    unique = {}
+    for b in bolumler:
+        if b["url"] not in unique:
+            unique[b["url"]] = b
+    
+    return list(unique.values())
+
+def get_episode_video(episode_url: str) -> Optional[str]:
+    """Bölümün video linkini bul"""
+    for deneme in range(2):
         try:
-            response = self.session.get(target_url, timeout=30)
-            response.raise_for_status()
-            html = response.text
+            res = requests.get(episode_url, headers=get_headers(), impersonate="chrome", timeout=20)
+            if res.status_code != 200:
+                continue
             
-            # Ana içeriği al
-            main_content_match = re.search(r'id="moviesListResult"([\s\S]*?)</nav>', html)
-            if not main_content_match:
-                return {"durum": "hata", "mesaj": "Ana içerik alanı bulunamadı"}
+            patterns = [
+                r'<iframe[^>]+(?:data-src|src)="([^"]*vidrame\.pro/vr/([a-zA-Z0-9]+)[^"]*)"',
+                r'<iframe[^>]+(?:data-src|src)="([^"]*\.(?:m3u8|mp4)[^"]*)"',
+                r'(?:file|source):\s*["\']([^"\']*\.m3u8[^"\']*)["\']'
+            ]
             
-            list_html = main_content_match.group(1)
+            for pattern in patterns:
+                match = re.search(pattern, res.text, re.IGNORECASE)
+                if match:
+                    if match.group(2):
+                        return f"https://vidrame.pro/vr/get/{match.group(2)}/master.m3u8"
+                    elif match.group(1):
+                        return match.group(1)
             
-            # Kartları bul
-            card_pattern = r'<a\s+href="([^"]+)"\s+title="([^"]+)"[^>]*class="([^"]*poster[^"]*)"[^>]*>([\s\S]*?)</a>'
-            matches = re.findall(card_pattern, list_html, re.IGNORECASE)
-            
-            kartlar = []
-            seen_urls = set()
-            
-            for match in matches:
-                link, title, _, card_inner = match
-                title = title.strip()
-                
-                # Poster URL
-                poster = ""
-                data_src_match = re.search(r'data-src="([^"]+)"', card_inner)
-                if data_src_match:
-                    poster = data_src_match.group(1)
-                else:
-                    src_match = re.search(r'src="([^"]+)"', card_inner)
-                    if src_match:
-                        poster = src_match.group(1)
-                
-                # URL temizleme
-                clean_url = link if link.startswith("http") else urljoin(self.base_url, link)
-                
-                if tip == "dizi":
-                    dizi_match = re.match(r'(https://www\.hdfilmizle\.now/dizi/[^/]+/)', clean_url)
-                    if dizi_match:
-                        clean_url = dizi_match.group(1)
-                
-                if poster and not poster.startswith("http"):
-                    poster = urljoin(self.base_url, poster)
-                
-                if clean_url not in seen_urls:
-                    seen_urls.add(clean_url)
-                    kartlar.append({
-                        "url": clean_url,
-                        "title": title,
-                        "poster": poster
-                    })
-            
-            if sadece_liste:
-                return {
-                    "durum": "basarili",
-                    "tip": tip,
-                    "sayfa": sayfa,
-                    "toplam_kart": len(kartlar),
-                    "veriler": kartlar
-                }
-            
-            # Detayları çek
-            sonuclar = []
-            for i, kart in enumerate(kartlar):
-                print(f"İşleniyor ({i+1}/{len(kartlar)}): {kart['title']}")
-                detay = self.get_detail(kart["url"], tip, kart["title"], kart["poster"])
-                if detay:
-                    sonuclar.append(detay)
-                time.sleep(0.5)  # Rate limiting
-            
-            return {
-                "durum": "basarili",
-                "tip": tip,
-                "sayfa": sayfa,
-                "toplam_kart": len(kartlar),
-                "basarili_cekme": len(sonuclar),
-                "basarisiz_cekme": len(kartlar) - len(sonuclar),
-                "veriler": sonuclar
-            }
-            
-        except Exception as e:
-            return {"durum": "hata", "mesaj": str(e)}
+            time.sleep(0.5)
+        except Exception:
+            pass
     
-    def get_detail(self, url: str, tip: str, title: str, poster: str) -> Optional[Dict]:
-        """Film veya dizi detaylarını çeker"""
-        
-        for deneme in range(3):  # 3 kez dene
-            try:
-                response = self.session.get(url, timeout=20)
-                if response.status_code != 200:
-                    time.sleep(1 * (deneme + 1))
-                    continue
-                
-                html = response.text
-                
-                # Cloudflare kontrolü
-                if "cf-browser-verification" in html or "Attention Required" in html:
-                    print(f"  ⚠️ Cloudflare koruması (deneme {deneme + 1})")
-                    time.sleep(2 * (deneme + 1))
-                    continue
-                
-                if tip == "film":
-                    return self._parse_film(html, title, poster, url)
-                else:
-                    return self._parse_dizi(html, title, poster, url)
-                
-            except Exception as e:
-                print(f"  ⚠️ Hata (deneme {deneme + 1}): {str(e)}")
-                time.sleep(1 * (deneme + 1))
-        
-        return None
+    return None
+
+def process_series(series_url: str, title: str, poster: str, max_episodes: int = 20) -> Optional[Dict]:
+    """Tek bir dizinin tüm bölümlerini işle"""
+    print(f"   🎬 İşleniyor: {title}")
     
-    def _parse_film(self, html: str, title: str, poster: str, url: str) -> Dict:
-        """Film detaylarını parse et"""
-        patterns = [
-            r'<iframe[^>]+(?:data-src|src)="([^"]*vidrame\.pro/vr/([a-zA-Z0-9]+)[^"]*)"',
-            r'<iframe[^>]+(?:data-src|src)="([^"]*\.(?:m3u8|mp4)[^"]*)"',
-            r'(?:file|source):\s*["\']([^"\']*\.m3u8[^"\']*)["\']'
-        ]
-        
-        for pattern in patterns:
-            match = re.search(pattern, html, re.IGNORECASE)
-            if match:
-                if match.group(2):  # vidrame.pro pattern
-                    m3u8 = f"https://vidrame.pro/vr/get/{match.group(2)}/master.m3u8"
-                else:
-                    m3u8 = match.group(1)
-                
-                return {
-                    "title": title,
-                    "poster": poster,
-                    "url": url,
-                    "m3u8": m3u8
-                }
-        
-        return None
-    
-    def _parse_dizi(self, html: str, title: str, poster: str, url: str) -> Optional[Dict]:
-        """Dizi detaylarını parse et"""
-        bolumler = []
-        
-        # Farklı pattern'lerle bölümleri bul
-        patterns = [
-            r'<a[^>]+href="([^"]*/sezon-\d+/bolum-\d+/[^"]*)"[^>]*>[\s\S]*?<h3[^>]*>([\s\S]*?)</h3>[\s\S]*?</a>',
-            r'<a[^>]+href="([^"]*/bolum-\d+/[^"]*)"[^>]*>[\s\S]*?<h3[^>]*>([\s\S]*?)</h3>[\s\S]*?</a>',
-            r'<a[^>]+href="([^"]*/sezon[^"]*/bolum[^"]*)"[^>]+title="([^"]+)"[^>]*>',
-        ]
-        
-        for pattern in patterns:
-            matches = re.findall(pattern, html, re.IGNORECASE)
-            for match in matches:
-                bolum_url = match[0] if match[0].startswith("http") else urljoin(self.base_url, match[0])
-                bolum_title = re.sub(r'<[^>]*>', '', match[1]).strip() if len(match) > 1 else f"Bölüm {len(bolumler)+1}"
-                bolumler.append({"title": bolum_title, "url": bolum_url})
-        
-        # Benzersiz bölümler
-        seen = set()
-        unique_bolumler = []
-        for bolum in bolumler:
-            if bolum["url"] not in seen:
-                seen.add(bolum["url"])
-                unique_bolumler.append(bolum)
-        
-        if not unique_bolumler:
+    try:
+        res = requests.get(series_url, headers=get_headers(), impersonate="chrome", timeout=30)
+        if res.status_code != 200:
             return None
         
-        # İlk 15 bölümü al
-        max_episodes = min(len(unique_bolumler), 15)
-        bolum_detaylari = []
+        bolumler = extract_episodes(res.text, BASE_URL)
         
-        for i, bolum in enumerate(unique_bolumler[:max_episodes]):
-            m3u8 = self._get_episode_video(bolum["url"])
+        if not bolumler:
+            print(f"      ⚠️ Bölüm bulunamadı: {title}")
+            return None
+        
+        print(f"      📺 {len(bolumler)} bölüm bulundu, işleniyor...")
+        
+        bolum_detaylari = []
+        for i, bolum in enumerate(bolumler[:max_episodes]):
+            print(f"         Bölüm {i+1}/{min(len(bolumler), max_episodes)}: {bolum['title']}")
+            
+            m3u8 = get_episode_video(bolum["url"])
             if m3u8:
                 bolum_detaylari.append({
                     "bolum_adi": bolum["title"],
                     "bolum_url": bolum["url"],
                     "m3u8": m3u8
                 })
-            time.sleep(0.1)  # Rate limiting
+            
+            time.sleep(random.uniform(0.5, 1.0))
         
         if bolum_detaylari:
+            bolum_detaylari.sort(key=lambda x: [int(s) if s.isdigit() else s for s in re.split(r'(\d+)', x['bolum_adi'])])
+            
             return {
                 "title": title,
                 "poster": poster,
-                "url": url,
-                "toplam_bolum": len(unique_bolumler),
+                "url": series_url,
+                "toplam_bolum": len(bolumler),
                 "cekilen_bolum": len(bolum_detaylari),
                 "bolumler": bolum_detaylari
             }
-        
-        return None
     
-    def _get_episode_video(self, url: str) -> Optional[str]:
-        """Bölümün video linkini bul"""
-        for deneme in range(2):
-            try:
-                response = self.session.get(url, timeout=10)
-                if response.status_code != 200:
-                    continue
-                
-                html = response.text
-                
-                patterns = [
-                    r'<iframe[^>]+(?:data-src|src)="([^"]*vidrame\.pro/vr/([a-zA-Z0-9]+)[^"]*)"',
-                    r'<iframe[^>]+(?:data-src|src)="([^"]*\.(?:m3u8|mp4)[^"]*)"',
-                    r'(?:file|source):\s*["\']([^"\']*\.m3u8[^"\']*)["\']'
-                ]
-                
-                for pattern in patterns:
-                    match = re.search(pattern, html, re.IGNORECASE)
-                    if match:
-                        if match.group(2):
-                            return f"https://vidrame.pro/vr/get/{match.group(2)}/master.m3u8"
-                        else:
-                            return match.group(1)
-                
-            except Exception:
-                pass
+    except Exception as e:
+        print(f"      ❌ Hata: {e}")
+    
+    return None
+
+def dizi_kazı(max_sayfa: int = None, max_episodes: int = 20):
+    """Tüm dizileri kazı"""
+    if max_sayfa is None:
+        max_sayfa = get_total_pages("dizi")
+        print(f"📊 Toplam {max_sayfa} sayfa bulundu")
+    
+    tüm_diziler = []
+    basarili = 0
+    basarisiz = 0
+    
+    for sayfa in range(1, max_sayfa + 1):
+        print(f"\n🔄 [DİZİ] Sayfa {sayfa}/{max_sayfa} taranıyor...")
+        target_url = f"{BASE_URL}/yabanci-dizi-izle-3/page/{sayfa}/"
+        
+        try:
+            res = requests.get(target_url, headers=get_headers(), impersonate="chrome", timeout=30)
+            if res.status_code != 200:
+                print(f"⚠️ Sayfa {sayfa} yüklenemedi. HTTP: {res.status_code}")
+                basarisiz += 1
+                continue
             
-            time.sleep(0.5)
+            html = res.text
+            main_match = re.search(r'id="moviesListResult"([\s\S]*?)</nav>', html)
+            if not main_match:
+                print(f"⚠️ Sayfa {sayfa}: 'moviesListResult' bulunamadı")
+                continue
+            
+            list_html = main_match.group(1)
+            card_regex = r'<a\s+href="([^"]+)"\s+title="([^"]+)"[^>]*class="([^"]*poster[^"]*)"[^>]*>([\s\S]*?)</a>'
+            matches = re.findall(card_regex, list_html, re.IGNORECASE)
+            
+            print(f"   📋 {len(matches)} dizi bulundu")
+            
+            for match in matches:
+                link, title, _, card_inner = match
+                title = title.strip()
+                
+                poster = ""
+                ds_match = re.search(r'data-src="([^"]+)"', card_inner)
+                if ds_match:
+                    poster = ds_match.group(1)
+                else:
+                    s_match = re.search(r'src="([^"]+)"', card_inner)
+                    if s_match:
+                        poster = s_match.group(1)
+                
+                temiz_url = link if link.startswith("http") else BASE_URL + link
+                dizi_ana = re.match(r'(https://www\.hdfilmizle\.now/dizi/[^/]+/)', temiz_url)
+                if dizi_ana:
+                    temiz_url = dizi_ana.group(1)
+                
+                if poster and not poster.startswith("http"):
+                    poster = BASE_URL + poster
+                
+                time.sleep(random.uniform(1.0, 2.0))
+                
+                dizi_data = process_series(temiz_url, title, poster, max_episodes)
+                
+                if dizi_data:
+                    tüm_diziler.append(dizi_data)
+                    basarili += 1
+                    print(f"      ✅ Başarılı! Toplam bölüm: {dizi_data['toplam_bolum']}")
+                else:
+                    basarisiz += 1
+                    print(f"      ❌ Başarısız")
         
-        return None
+        except Exception as e:
+            print(f"❌ Sayfa {sayfa} genel hatası: {e}")
+            basarisiz += 1
+        
+        if sayfa < max_sayfa:
+            wait_time = random.uniform(2, 4)
+            print(f"   ⏳ {wait_time:.1f} saniye bekleniyor...")
+            time.sleep(wait_time)
+    
+    print(f"\n📊 İstatistikler:")
+    print(f"   ✅ Başarılı: {basarili} dizi")
+    print(f"   ❌ Başarısız: {basarisiz} dizi")
+    print(f"   📈 Toplam: {len(tüm_diziler)} dizi")
+    
+    return tüm_diziler
 
+def save_as_yaml(data: Dict, filename: str):
+    """YAML formatında kaydet"""
+    with open(filename, 'w', encoding='utf-8') as f:
+        yaml.dump(data, f, allow_unicode=True, default_flow_style=False, sort_keys=False)
+    print(f"✅ YAML dosyası kaydedildi: {filename}")
 
-# Kullanım örneği
+def save_as_json(data: Dict, filename: str):
+    """JSON formatında kaydet"""
+    with open(filename, 'w', encoding='utf-8') as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+    print(f"✅ JSON dosyası kaydedildi: {filename}")
+
 if __name__ == "__main__":
-    api = HDFilmIzleAPI()
+    print("🎬 HDFilmIzle Kazıyıcı Başlatılıyor...")
+    print("=" * 50)
     
-    # Film listesi al
-    print("=== Film Listesi (Sayfa 1) ===")
-    filmler = api.get_list(tip="film", sayfa=1, sadece_liste=True)
-    print(json.dumps(filmler, indent=2, ensure_ascii=False))
+    # Kullanıcıdan input al
+    secim = input("Ne kazımak istersiniz?\n1 - Diziler\n2 - Filmler\nSeçiminiz (1/2): ").strip()
     
-    # Dizi listesi al (detaylı)
-    print("\n=== Dizi Listesi (Sayfa 9) ===")
-    diziler = api.get_list(tip="dizi", sayfa=9)
-    print(json.dumps(diziler, indent=2, ensure_ascii=False))
+    if secim == "1":
+        sayfa_input = input("Kaç sayfa taranacak? (Boş bırakırsanız tüm sayfalar): ").strip()
+        max_sayfa = int(sayfa_input) if sayfa_input else None
+        
+        episode_input = input("Her dizi için maksimum bölüm sayısı (varsayılan 20): ").strip()
+        max_episodes = int(episode_input) if episode_input else 20
+        
+        # Format seçimi
+        format_secim = input("Hangi formatta kaydedilsin?\n1 - YAML\n2 - JSON\n3 - Her ikisi\nSeçiminiz (1/2/3): ").strip()
+        
+        veri = {
+            "diziler": dizi_kazı(max_sayfa=max_sayfa, max_episodes=max_episodes),
+            "metadata": {
+                "toplam_dizi_sayisi": 0,  # Sonra doldurulacak
+                "kazıma_tarihi": time.strftime("%Y-%m-%d %H:%M:%S"),
+                "kaynak": BASE_URL
+            }
+        }
+        veri["metadata"]["toplam_dizi_sayisi"] = len(veri["diziler"])
+        
+        # Klasör oluştur
+        hedef_klasor = "hdf"
+        if not os.path.exists(hedef_klasor):
+            os.makedirs(hedef_klasor)
+        
+        # Seçilen formatta kaydet
+        if format_secim == "1":
+            save_as_yaml(veri, os.path.join(hedef_klasor, "data.yaml"))
+        elif format_secim == "2":
+            save_as_json(veri, os.path.join(hedef_klasor, "data.json"))
+        else:
+            save_as_yaml(veri, os.path.join(hedef_klasor, "data.yaml"))
+            save_as_json(veri, os.path.join(hedef_klasor, "data.json"))
+        
+        print(f"\n✅ Tüm işlemler tamamlandı!")
+        print(f"📁 Veriler '{hedef_klasor}/' klasörüne kaydedildi.")
     
-    # Tek bir film detayı al
-    print("\n=== Tek Film Detayı ===")
-    film_detay = api.get_detail(
-        "https://www.hdfilmizle.now/film/example-film/",
-        "film",
-        "Örnek Film",
-        "https://www.hdfilmizle.now/poster.jpg"
-    )
-    if film_detay:
-        print(json.dumps(film_detay, indent=2, ensure_ascii=False))
+    else:
+        print("Film modu henüz hazır değil...")
