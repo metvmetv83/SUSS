@@ -1,142 +1,188 @@
 #!/usr/bin/env python3
-import os
 import json
 import re
 import time
 import random
-import argparse
-from curl_cffi import requests
-import yaml
+import requests
 from datetime import datetime
 
 BASE_URL = "https://www.hdfilmizle.now"
+WORKER_URL = "https://hdfilmdizijson.64fetih.workers.dev"  # Worker'ınızın adresi
 
-def get_headers():
-    random_ip = f"{random.randint(1,254)}.{random.randint(1,255)}.{random.randint(1,255)}.{random.randint(1,254)}"
-    return {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-        "Referer": BASE_URL,
-        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
-        "Accept-Language": "tr-TR,tr;q=0.9,en;q=0.8",
-        "X-Forwarded-For": random_ip,
-        "CF-Connecting-IP": random_ip,
-        "True-Client-IP": random_ip
-    }
+def worker_istek(tip="dizi", sayfa=1):
+    """Worker üzerinden veri çek"""
+    url = f"{WORKER_URL}/?tip={tip}&sayfa={sayfa}"
+    
+    try:
+        response = requests.get(url, timeout=30)
+        if response.status_code == 200:
+            return response.json()
+        else:
+            print(f"Worker hatası: HTTP {response.status_code}")
+            return None
+    except Exception as e:
+        print(f"Worker bağlantı hatası: {e}")
+        return None
 
-def fetch_with_retry(url, max_retries=3, timeout=15):
-    for deneme in range(1, max_retries + 1):
-        try:
-            headers = get_headers()
-            headers["Cookie"] = f"__cf_bm={random.randint(100000, 999999)}"
-            
-            response = requests.get(url, headers=headers, impersonate="chrome", timeout=timeout)
-            
-            if response.status_code == 200:
-                html = response.text
-                if "cf-browser-verification" not in html and "Attention Required" not in html:
-                    return html
-            print(f"      Deneme {deneme}: HTTP {response.status_code}")
-            time.sleep(1 * deneme)
-        except Exception as e:
-            print(f"      Deneme {deneme}: {str(e)[:50]}")
-            time.sleep(1 * deneme)
-    return None
-
-def dizi_kazı(max_sayfa=2, max_episodes=10):
-    print(f"📊 {max_sayfa} sayfa taranacak, max {max_episodes} bölüm/dizi")
+def direkt_kazı(max_sayfa=5, max_episodes=10):
+    """Worker kullanmadan direkt kazı (Worker çalışmazsa yedek)"""
+    print("📡 Worker kullanılmadan direkt kazı yapılıyor...")
     
     tüm_diziler = []
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+        "Referer": BASE_URL
+    }
     
     for sayfa in range(1, max_sayfa + 1):
         print(f"\n🔄 Sayfa {sayfa}/{max_sayfa}")
-        target_url = f"{BASE_URL}/yabanci-dizi-izle-3/page/{sayfa}/"
+        url = f"{BASE_URL}/yabanci-dizi-izle-3/page/{sayfa}/"
         
-        html = fetch_with_retry(target_url)
-        if not html:
-            continue
-        
-        main_match = re.search(r'id="moviesListResult"([\s\S]*?)</nav>', html)
-        if not main_match:
-            continue
-        
-        card_regex = r'<a\s+href="([^"]+)"\s+title="([^"]+)"'
-        matches = re.findall(card_regex, main_match.group(1))
-        
-        print(f"   📋 {len(matches)} dizi bulundu")
-        
-        for link, title in matches:
-            print(f"\n   🎬 {title}")
-            
-            temiz_url = link if link.startswith("http") else BASE_URL + link
-            dizi_match = re.match(r'(https://www\.hdfilmizle\.now/dizi/[^/]+/)', temiz_url)
-            if dizi_match:
-                temiz_url = dizi_match.group(1)
-            
-            detay_html = fetch_with_retry(temiz_url, max_retries=2)
-            if not detay_html:
+        try:
+            response = requests.get(url, headers=headers, timeout=20)
+            if response.status_code != 200:
                 continue
             
-            # Bölümleri bul
-            bolum_pattern = r'<a[^>]+href="([^"]*/sezon-\d+/bolum-\d+/[^"]*)"'
-            bolum_links = re.findall(bolum_pattern, detay_html)
+            html = response.text
+            main_match = re.search(r'id="moviesListResult"([\s\S]*?)</nav>', html)
+            if not main_match:
+                continue
             
-            if not bolum_links:
-                bolum_pattern = r'<a[^>]+href="([^"]*/bolum-\d+/[^"]*)"'
-                bolum_links = re.findall(bolum_pattern, detay_html)
+            # Kartları bul
+            card_pattern = r'<a\s+href="([^"]+)"\s+title="([^"]+)"'
+            matches = re.findall(card_pattern, main_match.group(1))
             
-            print(f"      📺 {len(bolum_links)} bölüm bulundu")
+            print(f"   📋 {len(matches)} dizi bulundu")
             
-            bolumler = []
-            for b_link in bolum_links[:max_episodes]:
-                b_url = b_link if b_link.startswith("http") else BASE_URL + b_link
-                b_html = fetch_with_retry(b_url, max_retries=1, timeout=8)
+            for link, title in matches:
+                print(f"\n   🎬 {title[:50]}")
                 
-                if b_html:
-                    v_match = re.search(r'vidrame\.pro/vr/([a-zA-Z0-9]+)', b_html)
-                    if v_match:
-                        bolumler.append({
-                            "bolum_adi": f"Bölüm {len(bolumler)+1}",
-                            "m3u8": f"https://vidrame.pro/vr/get/{v_match.group(1)}/master.m3u8"
+                dizi_url = link if link.startswith("http") else BASE_URL + link
+                dizi_match = re.match(r'(https://www\.hdfilmizle\.now/dizi/[^/]+/)', dizi_url)
+                if dizi_match:
+                    dizi_url = dizi_match.group(1)
+                
+                try:
+                    detay_response = requests.get(dizi_url, headers=headers, timeout=15)
+                    if detay_response.status_code != 200:
+                        continue
+                    
+                    detay_html = detay_response.text
+                    
+                    # Bölümleri bul
+                    bolum_pattern = r'<a[^>]+href="([^"]*/sezon-\d+/bolum-\d+/[^"]*)"'
+                    bolum_links = re.findall(bolum_pattern, detay_html)
+                    
+                    if not bolum_links:
+                        bolum_pattern = r'<a[^>]+href="([^"]*/bolum-\d+/[^"]*)"'
+                        bolum_links = re.findall(bolum_pattern, detay_html)
+                    
+                    print(f"      📺 {len(bolum_links)} bölüm bulundu")
+                    
+                    bolumler = []
+                    for b_link in bolum_links[:max_episodes]:
+                        b_url = b_link if b_link.startswith("http") else BASE_URL + b_link
+                        b_response = requests.get(b_url, headers=headers, timeout=10)
+                        
+                        if b_response.status_code == 200:
+                            v_match = re.search(r'vidrame\.pro/vr/([a-zA-Z0-9]+)', b_response.text)
+                            if v_match:
+                                bolumler.append({
+                                    "bolum_adi": f"Bölüm {len(bolumler)+1}",
+                                    "m3u8": f"https://vidrame.pro/vr/get/{v_match.group(1)}/master.m3u8"
+                                })
+                        
+                        time.sleep(0.3)
+                    
+                    if bolumler:
+                        tüm_diziler.append({
+                            "title": title,
+                            "url": dizi_url,
+                            "toplam_bolum": len(bolum_links),
+                            "cekilen_bolum": len(bolumler),
+                            "bolumler": bolumler
                         })
-                        print(f"         ✅ Bölüm {len(bolumler)} eklendi")
-                
-                time.sleep(0.3)
+                        print(f"      ✅ {len(bolumler)} bölüm eklendi")
+                    
+                    time.sleep(0.5)
+                    
+                except Exception as e:
+                    print(f"      ❌ Hata: {str(e)[:50]}")
+                    continue
             
-            if bolumler:
-                tüm_diziler.append({
-                    "title": title,
-                    "url": temiz_url,
-                    "toplam_bolum": len(bolum_links),
-                    "cekilen_bolum": len(bolumler),
-                    "bolumler": bolumler
-                })
+            time.sleep(2)
             
-            time.sleep(0.5)
+        except Exception as e:
+            print(f"   ❌ Sayfa hatası: {e}")
+            continue
+    
+    return tüm_diziler
+
+def worker_kazı(max_sayfa=10):
+    """Worker üzerinden tüm sayfaları çek"""
+    print("📡 Worker üzerinden veri çekiliyor...")
+    print(f"   Worker: {WORKER_URL}")
+    
+    tüm_diziler = []
+    basarili = 0
+    basarisiz = 0
+    
+    for sayfa in range(1, max_sayfa + 1):
+        print(f"\n🔄 Sayfa {sayfa}/{max_sayfa} çekiliyor...")
         
-        time.sleep(2)
+        veri = worker_istek("dizi", sayfa)
+        
+        if veri and veri.get("durum") == "basarili":
+            print(f"   📋 {veri.get('toplam_kart', 0)} kart, {veri.get('basarili_cekme', 0)} başarılı")
+            
+            for dizi in veri.get("veriler", []):
+                if dizi.get("hata"):
+                    basarisiz += 1
+                    print(f"   ❌ {dizi.get('title', '?')} - {dizi.get('mesaj', 'Hata')}")
+                else:
+                    basarili += 1
+                    tüm_diziler.append(dizi)
+                    print(f"   ✅ {dizi.get('title', '?')} - {dizi.get('cekilen_bolum', 0)}/{dizi.get('toplam_bolum', 0)} bölüm")
+        else:
+            print(f"   ⚠️ Sayfa {sayfa} alınamadı")
+        
+        time.sleep(0.5)  # Rate limiting
+    
+    print(f"\n📊 İSTATİSTİKLER:")
+    print(f"   ✅ Başarılı: {basarili} dizi")
+    print(f"   ❌ Başarısız: {basarisiz} dizi")
+    print(f"   📈 Toplam: {len(tüm_diziler)} dizi")
     
     return tüm_diziler
 
 def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--max-pages', type=int, default=2)
-    parser.add_argument('--max-episodes', type=int, default=10)
-    args = parser.parse_args()
-    
-    print("🎬 HDFilmIzle Dizi Kazıyıcı")
+    print("🎬 HDFilm Dizi Kazıyıcı")
     print("=" * 40)
     
-    diziler = dizi_kazı(args.max_pages, args.max_episodes)
+    # Önce Worker'ı dene
+    print("\n🔍 Worker test ediliyor...")
+    test = worker_istek("dizi", 1)
     
+    if test and test.get("durum") == "basarili":
+        print("✅ Worker çalışıyor!")
+        max_sayfa = int(input("Kaç sayfa çekilsin? (1-20, varsayılan 5): ") or "5")
+        max_sayfa = min(max_sayfa, 20)
+        diziler = worker_kazı(max_sayfa)
+    else:
+        print("⚠️ Worker çalışmıyor, direkt kazı yapılacak...")
+        max_sayfa = int(input("Kaç sayfa taranacak? (varsayılan 2): ") or "2")
+        max_episodes = int(input("Her dizi için max bölüm? (varsayılan 10): ") or "10")
+        diziler = direkt_kazı(max_sayfa, max_episodes)
+    
+    # Kaydet
     veri = {
         "metadata": {
             "tarih": datetime.now().isoformat(),
-            "toplam": len(diziler)
+            "kaynak": WORKER_URL if test else "DIRECT",
+            "toplam_dizi": len(diziler)
         },
         "diziler": diziler
     }
-    
-    os.makedirs("hdf", exist_ok=True)
     
     with open("hdf/diziler.json", "w", encoding="utf-8") as f:
         json.dump(veri, f, ensure_ascii=False, indent=2)
