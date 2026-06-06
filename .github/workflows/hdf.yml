@@ -2,9 +2,7 @@ name: Otomatik Film/Dizi Güncelleyici (SUSS HDF)
 
 on:
   schedule:
-    # Her 6 saatte bir (Türkiye saatiyle 03:00, 09:00, 15:00, 21:00)
     - cron: '0 */6 * * *'
-  # Manuel tetikleme için
   workflow_dispatch:
     inputs:
       tip:
@@ -32,51 +30,40 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 30  # Timeout limiti
+    timeout-minutes: 30
     
     steps:
     - name: Depoyu Klonla
       uses: actions/checkout@v3
       with:
-        fetch-depth: 1  # Sadece son commit'i al (hız için)
+        fetch-depth: 1
     
     - name: Python Kurulumu
       uses: actions/setup-python@v4
       with:
         python-version: '3.10'
-        cache: 'pip'  # Pip önbelleğini aktifleştir
     
     - name: Bağımlılıkları Yükle
       run: |
         python -m pip install --upgrade pip
-        pip install --no-cache-dir curl_cffi pyyaml
+        pip install curl_cffi pyyaml
     
     - name: Botu Çalıştır (Her İkisi)
       if: github.event.inputs.tip == 'herikisi' || github.event_name == 'schedule'
       run: |
-        python hdf/hdf.py --both --max-episodes ${{
-          github.event.inputs.max_episodes || 20
-        }} --max-pages ${{
-          github.event.inputs.max_sayfa || ''
-        }}
+        python hdf/hdf.py --both --max-episodes ${{ github.event.inputs.max_episodes || 20 }}
       env:
-        PYTHONUNBUFFERED: 1  # Gerçek zamanlı log
+        PYTHONUNBUFFERED: 1
     
     - name: Botu Çalıştır (Sadece Dizi)
       if: github.event.inputs.tip == 'dizi'
       run: |
-        python hdf/hdf.py --dizi --max-episodes ${{
-          github.event.inputs.max_episodes || 20
-        }} --max-pages ${{
-          github.event.inputs.max_sayfa || ''
-        }}
+        python hdf/hdf.py --dizi --max-episodes ${{ github.event.inputs.max_episodes || 20 }}
     
     - name: Botu Çalıştır (Sadece Film)
       if: github.event.inputs.tip == 'film'
       run: |
-        python hdf/hdf.py --film --max-pages ${{
-          github.event.inputs.max_sayfa || ''
-        }}
+        python hdf/hdf.py --film
     
     - name: JSON Validasyonu
       run: |
@@ -86,63 +73,23 @@ jobs:
           echo "✅ JSON geçerli"
         fi
     
-    - name: YAML Validasyonu
-      run: |
-        if [ -f "hdf/data.yaml" ]; then
-          echo "✅ YAML dosyası kontrol ediliyor..."
-          python -c "import yaml; yaml.safe_load(open('hdf/data.yaml'))"
-          echo "✅ YAML geçerli"
-        fi
-    
-    - name: İstatistikleri Çıkar
-      run: |
-        if [ -f "hdf/data.json" ]; then
-          echo "📊 İSTATİSTİKLER:"
-          python -c "
-import json
-with open('hdf/data.json', encoding='utf-8') as f:
-    data = json.load(f)
-    if 'diziler' in data:
-        print(f'Dizi sayısı: {len(data[\"diziler\"])}')
-        toplam_bolum = sum(d.get('toplam_bolum', 0) for d in data['diziler'])
-        print(f'Toplam bölüm: {toplam_bolum}')
-    if 'filmler' in data:
-        print(f'Film sayısı: {len(data[\"filmler\"])}')
-"
-        fi
-    
     - name: Değişiklikleri GitHub'a Geri Yükle
       run: |
         git config --global user.name "GitHub Otomasyonu"
         git config --global user.email "actions@github.com"
-        
-        # Eğer README varsa ve değişiklik varsa güncelleme zamanını ekle
-        if [ -f "README.md" ]; then
-          echo "" >> README.md
-          echo "🕐 Son güncelleme: $(date '+%Y-%m-%d %H:%M:%S') (UTC)" >> README.md
-          git add README.md
-        fi
-        
-        # JSON ve YAML dosyalarını ekle
-        git add hdf/*.json hdf/*.yaml hdf/*.yml 2>/dev/null || true
-        
-        # Değişiklik varsa commit ve push
+        git add hdf/data.json hdf/data.yaml 2>/dev/null || true
         if ! git diff --quiet && ! git diff --staged --quiet; then
-          git commit -m "🤖 Otomatik güncelleme: Film/Dizi verileri $(date '+%Y-%m-%d %H:%M:%S')"
+          git commit -m "🤖 Otomatik güncelleme: Film/Dizi verileri"
           git push
           echo "✅ Değişiklikler GitHub'a gönderildi"
         else
-          echo "ℹ️ Yeni değişiklik yok, commit yapılmadı"
+          echo "ℹ️ Yeni değişiklik yok"
         fi
     
     - name: Başarılı Güncelleme Bildirimi
       if: success()
-      run: |
-        echo "🎉 Güncelleme başarıyla tamamlandı!"
-        echo "📁 Dosyalar: hdf/data.json, hdf/data.yaml"
+      run: echo "🎉 Güncelleme başarıyla tamamlandı!"
     
     - name: Hata Bildirimi
       if: failure()
-      run: |
-        echo "❌ Güncelleme sırasında hata oluştu!"
-        echo "🔧 Logları kontrol edin ve manuel olarak çalıştırın"
+      run: echo "❌ Güncelleme sırasında hata oluştu!"
