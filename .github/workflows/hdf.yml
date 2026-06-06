@@ -1,15 +1,9 @@
 name: Dizi Kazıyıcı (Worker)
 
 on:
+  workflow_dispatch:
   schedule:
     - cron: '0 */6 * * *'
-  workflow_dispatch:
-    inputs:
-      max_pages:
-        description: 'Kaç sayfa çekilsin?'
-        required: false
-        default: 5
-        type: number
 
 jobs:
   scrape:
@@ -18,57 +12,45 @@ jobs:
       contents: write
     
     steps:
-    - name: Depoyu klonla
-      uses: actions/checkout@v4
+    - uses: actions/checkout@v4
     
-    - name: Python kurulumu
-      uses: actions/setup-python@v5
+    - uses: actions/setup-python@v5
       with:
         python-version: '3.10'
     
-    - name: Worker'dan dizileri çek
+    - name: Kurulum
+      run: pip install requests
+    
+    - name: Dizileri çek
       run: |
         python -c "
-import json, requests, os
+import requests, json, os
 from datetime import datetime
 
 WORKER = 'https://hdfilmdizijson.64fetih.workers.dev'
 tum_diziler = []
-MAX_PAGES = ${{ github.event.inputs.max_pages || 5 }}
 
-for sayfa in range(1, MAX_PAGES + 1):
-    print(f'📡 Sayfa {sayfa}/{MAX_PAGES} çekiliyor...')
+for sayfa in range(1, 6):
+    print(f'Sayfa {sayfa}...')
     try:
         r = requests.get(f'{WORKER}/?tip=dizi&sayfa={sayfa}', timeout=30)
         if r.status_code == 200:
             veri = r.json()
-            if veri.get('durum') == 'basarili':
-                sayfa_dizileri = [d for d in veri.get('veriler', []) if not d.get('hata')]
-                tum_diziler.extend(sayfa_dizileri)
-                print(f'   ✅ {len(sayfa_dizileri)} dizi eklendi')
-            else:
-                print(f'   ⚠️ Worker hata döndü')
-        else:
-            print(f'   ❌ HTTP {r.status_code}')
+            for dizi in veri.get('veriler', []):
+                if not dizi.get('hata'):
+                    tum_diziler.append(dizi)
     except Exception as e:
-        print(f'   ❌ Hata: {e}')
+        print(f'Hata: {e}')
 
-# Sonuçları kaydet
 os.makedirs('hdf', exist_ok=True)
-sonuc = {
-    'metadata': {
-        'tarih': datetime.now().isoformat(),
-        'kaynak': WORKER,
-        'toplam_sayfa': MAX_PAGES,
-        'toplam_dizi': len(tum_diziler)
-    },
-    'diziler': tum_diziler
-}
-
 with open('hdf/diziler.json', 'w', encoding='utf-8') as f:
-    json.dump(sonuc, f, ensure_ascii=False, indent=2)
+    json.dump({
+        'tarih': datetime.now().isoformat(),
+        'toplam': len(tum_diziler),
+        'diziler': tum_diziler
+    }, f, ensure_ascii=False, indent=2)
 
-print(f'\n✅ Toplam {len(tum_diziler)} dizi kaydedildi: hdf/diziler.json')
+print(f'Toplam {len(tum_diziler)} dizi kaydedildi')
 "
     
     - name: GitHub'a gönder
@@ -76,10 +58,4 @@ print(f'\n✅ Toplam {len(tum_diziler)} dizi kaydedildi: hdf/diziler.json')
         git config user.name "github-actions"
         git config user.email "actions@github.com"
         git add hdf/diziler.json
-        if ! git diff --quiet && ! git diff --staged --quiet; then
-          git commit -m "🤖 Dizi verileri güncellendi $(date '+%Y-%m-%d %H:%M')"
-          git push
-          echo "✅ Değişiklikler gönderildi"
-        else
-          echo "ℹ️ Yeni değişiklik yok"
-        fi
+        git diff --staged --quiet || (git commit -m "Update diziler.json" && git push)
