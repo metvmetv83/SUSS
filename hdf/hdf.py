@@ -1,16 +1,18 @@
+#!/usr/bin/env python3
 import os
 import json
 import re
 import time
 import random
+import argparse
 from typing import List, Dict, Optional
 from curl_cffi import requests
 import yaml
+from datetime import datetime
 
 BASE_URL = "https://www.hdfilmizle.now"
 
 def get_headers():
-    """Dinamik headers oluştur"""
     random_ip = f"{random.randint(1,254)}.{random.randint(1,255)}.{random.randint(1,255)}.{random.randint(1,254)}"
     return {
         "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8",
@@ -23,7 +25,6 @@ def get_headers():
     }
 
 def get_total_pages(tip: str = "dizi") -> int:
-    """Toplam sayfa sayısını bul"""
     if tip == "dizi":
         url = f"{BASE_URL}/yabanci-dizi-izle-3/"
     else:
@@ -41,7 +42,6 @@ def get_total_pages(tip: str = "dizi") -> int:
     return 10
 
 def extract_episodes(detay_html: str, base_url: str) -> List[Dict]:
-    """Bölümleri extracted et (gelişmiş)"""
     bolumler = []
     
     patterns = [
@@ -66,7 +66,6 @@ def extract_episodes(detay_html: str, base_url: str) -> List[Dict]:
     return list(unique.values())
 
 def get_episode_video(episode_url: str) -> Optional[str]:
-    """Bölümün video linkini bul"""
     for deneme in range(2):
         try:
             res = requests.get(episode_url, headers=get_headers(), impersonate="chrome", timeout=20)
@@ -94,7 +93,6 @@ def get_episode_video(episode_url: str) -> Optional[str]:
     return None
 
 def process_series(series_url: str, title: str, poster: str, max_episodes: int = 20) -> Optional[Dict]:
-    """Tek bir dizinin tüm bölümlerini işle"""
     print(f"   🎬 İşleniyor: {title}")
     
     try:
@@ -142,14 +140,11 @@ def process_series(series_url: str, title: str, poster: str, max_episodes: int =
     return None
 
 def dizi_kazı(max_sayfa: int = None, max_episodes: int = 20):
-    """Tüm dizileri kazı"""
     if max_sayfa is None:
         max_sayfa = get_total_pages("dizi")
         print(f"📊 Toplam {max_sayfa} sayfa bulundu")
     
     tüm_diziler = []
-    basarili = 0
-    basarisiz = 0
     
     for sayfa in range(1, max_sayfa + 1):
         print(f"\n🔄 [DİZİ] Sayfa {sayfa}/{max_sayfa} taranıyor...")
@@ -159,7 +154,6 @@ def dizi_kazı(max_sayfa: int = None, max_episodes: int = 20):
             res = requests.get(target_url, headers=get_headers(), impersonate="chrome", timeout=30)
             if res.status_code != 200:
                 print(f"⚠️ Sayfa {sayfa} yüklenemedi. HTTP: {res.status_code}")
-                basarisiz += 1
                 continue
             
             html = res.text
@@ -198,86 +192,73 @@ def dizi_kazı(max_sayfa: int = None, max_episodes: int = 20):
                 time.sleep(random.uniform(1.0, 2.0))
                 
                 dizi_data = process_series(temiz_url, title, poster, max_episodes)
-                
                 if dizi_data:
                     tüm_diziler.append(dizi_data)
-                    basarili += 1
                     print(f"      ✅ Başarılı! Toplam bölüm: {dizi_data['toplam_bolum']}")
                 else:
-                    basarisiz += 1
                     print(f"      ❌ Başarısız")
         
         except Exception as e:
             print(f"❌ Sayfa {sayfa} genel hatası: {e}")
-            basarisiz += 1
         
         if sayfa < max_sayfa:
             wait_time = random.uniform(2, 4)
             print(f"   ⏳ {wait_time:.1f} saniye bekleniyor...")
             time.sleep(wait_time)
     
-    print(f"\n📊 İstatistikler:")
-    print(f"   ✅ Başarılı: {basarili} dizi")
-    print(f"   ❌ Başarısız: {basarisiz} dizi")
-    print(f"   📈 Toplam: {len(tüm_diziler)} dizi")
-    
     return tüm_diziler
 
-def save_as_yaml(data: Dict, filename: str):
-    """YAML formatında kaydet"""
-    with open(filename, 'w', encoding='utf-8') as f:
-        yaml.dump(data, f, allow_unicode=True, default_flow_style=False, sort_keys=False)
-    print(f"✅ YAML dosyası kaydedildi: {filename}")
+def save_data(data: Dict, filename: str, format: str = "both"):
+    """JSON ve/veya YAML formatında kaydet"""
+    os.makedirs("hdf", exist_ok=True)
+    
+    if format in ["json", "both"]:
+        json_path = os.path.join("hdf", f"{filename}.json")
+        with open(json_path, 'w', encoding='utf-8') as f:
+            json.dump(data, f, ensure_ascii=False, indent=2)
+        print(f"✅ JSON kaydedildi: {json_path}")
+    
+    if format in ["yaml", "both"]:
+        yaml_path = os.path.join("hdf", f"{filename}.yaml")
+        with open(yaml_path, 'w', encoding='utf-8') as f:
+            yaml.dump(data, f, allow_unicode=True, default_flow_style=False, sort_keys=False)
+        print(f"✅ YAML kaydedildi: {yaml_path}")
 
-def save_as_json(data: Dict, filename: str):
-    """JSON formatında kaydet"""
-    with open(filename, 'w', encoding='utf-8') as f:
-        json.dump(data, f, ensure_ascii=False, indent=2)
-    print(f"✅ JSON dosyası kaydedildi: {filename}")
-
-if __name__ == "__main__":
+def main():
+    parser = argparse.ArgumentParser(description='HDFilmIzle Kazıyıcı')
+    parser.add_argument('--dizi', action='store_true', help='Sadece dizileri kazı')
+    parser.add_argument('--film', action='store_true', help='Sadece filmleri kazı')
+    parser.add_argument('--both', action='store_true', help='Hem film hem dizi kazı')
+    parser.add_argument('--max-pages', type=int, default=None, help='Maksimum sayfa sayısı')
+    parser.add_argument('--max-episodes', type=int, default=20, help='Maksimum bölüm sayısı')
+    parser.add_argument('--format', choices=['json', 'yaml', 'both'], default='both', help='Çıktı formatı')
+    
+    args = parser.parse_args()
+    
     print("🎬 HDFilmIzle Kazıyıcı Başlatılıyor...")
     print("=" * 50)
     
-    # Kullanıcıdan input al
-    secim = input("Ne kazımak istersiniz?\n1 - Diziler\n2 - Filmler\nSeçiminiz (1/2): ").strip()
-    
-    if secim == "1":
-        sayfa_input = input("Kaç sayfa taranacak? (Boş bırakırsanız tüm sayfalar): ").strip()
-        max_sayfa = int(sayfa_input) if sayfa_input else None
-        
-        episode_input = input("Her dizi için maksimum bölüm sayısı (varsayılan 20): ").strip()
-        max_episodes = int(episode_input) if episode_input else 20
-        
-        # Format seçimi
-        format_secim = input("Hangi formatta kaydedilsin?\n1 - YAML\n2 - JSON\n3 - Her ikisi\nSeçiminiz (1/2/3): ").strip()
-        
-        veri = {
-            "diziler": dizi_kazı(max_sayfa=max_sayfa, max_episodes=max_episodes),
-            "metadata": {
-                "toplam_dizi_sayisi": 0,  # Sonra doldurulacak
-                "kazıma_tarihi": time.strftime("%Y-%m-%d %H:%M:%S"),
-                "kaynak": BASE_URL
-            }
+    veri = {
+        "metadata": {
+            "kazıma_tarihi": datetime.now().isoformat(),
+            "kaynak": BASE_URL,
+            "version": "1.0.0"
         }
-        veri["metadata"]["toplam_dizi_sayisi"] = len(veri["diziler"])
-        
-        # Klasör oluştur
-        hedef_klasor = "hdf"
-        if not os.path.exists(hedef_klasor):
-            os.makedirs(hedef_klasor)
-        
-        # Seçilen formatta kaydet
-        if format_secim == "1":
-            save_as_yaml(veri, os.path.join(hedef_klasor, "data.yaml"))
-        elif format_secim == "2":
-            save_as_json(veri, os.path.join(hedef_klasor, "data.json"))
-        else:
-            save_as_yaml(veri, os.path.join(hedef_klasor, "data.yaml"))
-            save_as_json(veri, os.path.join(hedef_klasor, "data.json"))
-        
-        print(f"\n✅ Tüm işlemler tamamlandı!")
-        print(f"📁 Veriler '{hedef_klasor}/' klasörüne kaydedildi.")
+    }
     
-    else:
-        print("Film modu henüz hazır değil...")
+    if args.dizi or args.both or (not args.dizi and not args.film):
+        print("\n📺 DİZİLER KAZINIYOR...")
+        veri["diziler"] = dizi_kazı(max_sayfa=args.max_pages, max_episodes=args.max_episodes)
+        print(f"\n✅ Toplam {len(veri['diziler'])} dizi kazındı")
+    
+    if args.film or args.both:
+        print("\n🎬 FİLMLER KAZINIYOR...")
+        # Film kazıma fonksiyonu buraya eklenecek
+        veri["filmler"] = []
+        print("⚠️ Film modu henüz implement edilmedi")
+    
+    save_data(veri, "data", args.format)
+    print(f"\n✅ Tüm işlemler tamamlandı!")
+
+if __name__ == "__main__":
+    main()
