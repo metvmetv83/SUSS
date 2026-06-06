@@ -3,26 +3,20 @@ import json
 import re
 import time
 import random
-import requests
+# Standart requests yerine Cloudflare TLS korumasını aşabilen curl_cffi kullanıyoruz
+from curl_cffi import requests
 
 BASE_URL = "https://www.hdfilmizle.now"
-
-USER_AGENTS = [
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36",
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/121.0"
-]
 
 def get_headers():
     random_ip = f"{random.randint(1,254)}.{random.randint(1,255)}.{random.randint(1,255)}.{random.randint(1,254)}"
     return {
-        "User-Agent": random.choice(USER_AGENTS),
-        "Referer": BASE_URL + "/",
-        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
-        "Accept-Language": "tr-TR,tr;q=0.9,en;q=0.8",
-        "X-Forwarded-For": random_ip,
-        "CF-Connecting-IP": random_ip,
-        "True-Client-IP": random_ip
+        "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8",
+        "accept-language": "tr-TR,tr;q=0.9,en-US;q=0.8,en;q=0.7",
+        "referer": BASE_URL + "/",
+        "x-forwarded-for": random_ip,
+        "cf-connecting-ip": random_ip,
+        "true-client-ip": random_ip
     }
 
 def dizi_kazı(max_sayfa=2):
@@ -33,7 +27,8 @@ def dizi_kazı(max_sayfa=2):
         target_url = f"{BASE_URL}/yabanci-dizi-izle-3/page/{sayfa}/"
         
         try:
-            res = requests.get(target_url, headers=get_headers(), timeout=15)
+            # impersonate="chrome" parametresi gerçek bir Chrome tarayıcı parmak izi sunar
+            res = requests.get(target_url, headers=get_headers(), impersonate="chrome", timeout=30)
             if res.status_code != 200:
                 print(f"⚠️ Sayfa {sayfa} yüklenemedi. HTTP Durumu: {res.status_code}")
                 continue
@@ -52,7 +47,6 @@ def dizi_kazı(max_sayfa=2):
                 link, title, _, card_inner = match
                 title = title.strip()
                 
-                # Poster Bulma
                 poster = ""
                 ds_match = re.search(r'data-src="([^"]+)"', card_inner)
                 if ds_match:
@@ -70,30 +64,26 @@ def dizi_kazı(max_sayfa=2):
                     poster = BASE_URL + poster
                     
                 print(f"   🎬 Dizi detayı çekiliyor: {title}")
-                time.sleep(random.uniform(1.0, 2.5)) # İnsan taklidi gecikme süresi
+                time.sleep(random.uniform(1.5, 3.0))
                 
                 try:
-                    detay_res = requests.get(temiz_url, headers=get_headers(), timeout=15)
+                    detay_res = requests.get(temiz_url, headers=get_headers(), impersonate="chrome", timeout=30)
                     if detay_res.status_code != 200: 
                         continue
                     detay_html = detay_res.text
                     
-                    # Sayfadaki tüm bölüm linklerini regex gruplarına göre topla
                     bolum_matches = re.findall(r'<a[^>]+href="([^"]*\/sezon-\d+\/bolum-\d+\/[^"]*)"[^>]*>[\s\S]*?<h3[^>]*>([\s\S]*?)<\/h3>', detay_html, re.IGNORECASE)
-                    
                     if not bolum_matches:
-                        # Alternatif regex pattern (farklı tema yapıları için)
                         bolum_matches = re.findall(r'<a[^>]+href="([^"]*\/bolum-\d+\/[^"]*)"[^>]*>[\s\S]*?<h3[^>]*>([\s\S]*?)<\/h3>', detay_html, re.IGNORECASE)
 
                     bolum_detaylari = []
                     
-                    # Bulgulanan tüm bölümleri tek tek dolaş
                     for b_link, b_title in bolum_matches:
                         b_url = b_link if b_link.startswith("http") else BASE_URL + b_link
-                        time.sleep(0.8) # Bölüm geçişlerinde hafif bekleme
+                        time.sleep(1.0)
                         
                         try:
-                            b_res = requests.get(b_url, headers=get_headers(), timeout=10)
+                            b_res = requests.get(b_url, headers=get_headers(), impersonate="chrome", timeout=20)
                             if b_res.status_code == 200:
                                 v_match = re.search(r'<iframe[^>]+(?:data-src|src)="([^"]*vidrame\.pro\/vr\/([a-zA-Z0-9]+)[^"]*)"', b_res.text, re.IGNORECASE)
                                 if v_match:
@@ -102,13 +92,11 @@ def dizi_kazı(max_sayfa=2):
                                         "m3u8": f"https://vidrame.pro/vr/get/{v_match.group(2)}/master.m3u8"
                                     })
                         except Exception as ep_err:
-                            print(f"      ❌ Bölüm çekilemedi ({b_title.strip()}): {ep_err}")
+                            print(f"      ❌ Bölüm hatası ({b_title.strip()}): {ep_err}")
                             pass
                                 
                     if bolum_detaylari:
-                        # Bölümleri isimlerine göre sıralı hale getir
                         bolum_detaylari.sort(key=lambda x: [int(s) if s.isdigit() else s for s in re.split(r'(\d+)', x['bolum_adi'])])
-                        
                         sonuclar.append({
                             "title": title,
                             "poster": poster,
@@ -116,19 +104,18 @@ def dizi_kazı(max_sayfa=2):
                             "toplam_bolum": len(bolum_detaylari),
                             "bolumler": bolum_detaylari
                         })
-                        print(f"      ✅ Başarıyla eklendi: {len(bolum_detaylari)} Bölüm")
+                        print(f"      ✅ Eklendi: {len(bolum_detaylari)} Bölüm")
                 except Exception as e:
-                    print(f"   ❌ Hata oluştu ({title}): {e}")
+                    print(f"   ❌ Detay hatası ({title}): {e}")
                     
         except Exception as e:
-            print(f"❌ Sayfa hatası: {e}")
+            print(f"❌ Sayfa genel hatası: {e}")
             
     return sonuclar
 
 if __name__ == "__main__":
-    # Sadece dizileri çekiyoruz
     veri = {
-        "diziler": dizi_kazı(max_sayfa=2) # Taranacak sayfa sayısını buradan değiştirebilirsin
+        "diziler": dizi_kazı(max_sayfa=2)
     }
     
     hedef_klasor = "hdf"
