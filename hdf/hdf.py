@@ -7,7 +7,6 @@ import requests
 
 BASE_URL = "https://www.hdfilmizle.now"
 
-# Farklı tarayıcı taklitleri
 USER_AGENTS = [
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36",
@@ -51,7 +50,6 @@ def veri_kazı(tip="film", max_sayfa=2):
                 link, title, _, card_inner = match
                 title = title.strip()
                 
-                # Poster Bulma
                 poster = ""
                 ds_match = re.search(r'data-src="([^"]+)"', card_inner)
                 if ds_match:
@@ -68,9 +66,8 @@ def veri_kazı(tip="film", max_sayfa=2):
                 if poster and not poster.startswith("http"):
                     poster = BASE_URL + poster
                     
-                # Detay Sayfasına Git
                 print(f"   🎬 Detay çekiliyor: {title}")
-                time.sleep(random.uniform(1.5, 3.0)) # Bloklanmamak için insan taklidi bekleme süresi
+                time.sleep(random.uniform(1.5, 3.0))
                 
                 try:
                     detay_res = requests.get(temiz_url, headers=get_headers(), timeout=15)
@@ -88,11 +85,9 @@ def veri_kazı(tip="film", max_sayfa=2):
                             })
                     
                     elif tip == "dizi":
-                        # Bölüm linklerini topla
                         bolum_matches = re.findall(r'<a[^>]+href="([^"]*\/sezon-\d+\/bolum-\d+\/[^"]*)"[^>]*>[\s\S]*?<h3[^>]*>([\s\S]*?)<\/h3>', detay_html, re.IGNORECASE)
                         
                         bolum_detaylari = []
-                        # İlk 5 bölümü çekelim (Süreç uzamasın diye, isteğe göre artırılabilir)
                         for b_link, b_title in bolum_matches[:5]:
                             b_url = b_link if b_link.startswith("http") else BASE_URL + b_link
                             time.sleep(1)
@@ -124,12 +119,19 @@ def veri_kazı(tip="film", max_sayfa=2):
     return sonuclar
 
 if __name__ == "__main__":
-    # Hem filmleri hem dizileri çekip ayrı ayrı veya birleşik kaydedebiliriz
     veri = {
         "filmler": veri_kazı(tip="film", max_sayfa=2),
         "diziler": veri_kazı(tip="dizi", max_sayfa=1)
     }
     
-    with open("data.json", "w", encoding="utf-8") as f:
+    # HDF klasör yolunu belirle ve yoksa oluştur
+    hedef_klasor = "hdf"
+    if not os.path.exists(hedef_klasor):
+        os.makedirs(hedef_klasor)
+        
+    hedef_dosya = os.path.join(hedef_klasor, "data.json")
+    
+    with open(hedef_dosya, "w", encoding="utf-8") as f:
         json.dump(veri, f, ensure_ascii=False, indent=2)
-    print("✅ Veriler başarıyla 'data.json' dosyasına kaydedildi!")
+        
+    print(f"✅ Veriler başarıyla '{hedef_dosya}' yoluna kaydedildi!")
