@@ -25,21 +25,23 @@ def get_headers():
         "True-Client-IP": random_ip
     }
 
-def veri_kazı(tip="film", max_sayfa=2):
+def dizi_kazı(max_sayfa=2):
     sonuclar = []
     
     for sayfa in range(1, max_sayfa + 1):
-        print(f"🔄 [{tip.upper()}] Sayfa {sayfa} taranıyor...")
-        target_url = f"{BASE_URL}/yabanci-dizi-izle-3/page/{sayfa}/" if tip == "dizi" else f"{BASE_URL}/page/{sayfa}/"
+        print(f"🔄 [DİZİ] Sayfa {sayfa} taranıyor...")
+        target_url = f"{BASE_URL}/yabanci-dizi-izle-3/page/{sayfa}/"
         
         try:
             res = requests.get(target_url, headers=get_headers(), timeout=15)
             if res.status_code != 200:
+                print(f"⚠️ Sayfa {sayfa} yüklenemedi. HTTP Durumu: {res.status_code}")
                 continue
                 
             html = res.text
             main_match = re.search(r'id="moviesListResult"([\s\S]*?)<\/nav>', html)
             if not main_match:
+                print(f"⚠️ Sayfa {sayfa} üzerinde 'moviesListResult' alanı bulunamadı.")
                 continue
                 
             list_html = main_match.group(1)
@@ -50,6 +52,7 @@ def veri_kazı(tip="film", max_sayfa=2):
                 link, title, _, card_inner = match
                 title = title.strip()
                 
+                # Poster Bulma
                 poster = ""
                 ds_match = re.search(r'data-src="([^"]+)"', card_inner)
                 if ds_match:
@@ -59,72 +62,75 @@ def veri_kazı(tip="film", max_sayfa=2):
                     if s_match: poster = s_match.group(1)
                 
                 temiz_url = link if link.startswith("http") else BASE_URL + link
-                if tip == "dizi":
-                    dizi_ana = re.match(r'(https:\/\/www\.hdfilmizle\.now\/dizi\/[^\/]+\/)', temiz_url)
-                    if dizi_ana: temiz_url = dizi_ana.group(1)
+                dizi_ana = re.match(r'(https:\/\/www\.hdfilmizle\.now\/dizi\/[^\/]+\/)', temiz_url)
+                if dizi_ana: 
+                    temiz_url = dizi_ana.group(1)
                     
                 if poster and not poster.startswith("http"):
                     poster = BASE_URL + poster
                     
-                print(f"   🎬 Detay çekiliyor: {title}")
-                time.sleep(random.uniform(1.5, 3.0))
+                print(f"   🎬 Dizi detayı çekiliyor: {title}")
+                time.sleep(random.uniform(1.0, 2.5)) # İnsan taklidi gecikme süresi
                 
                 try:
                     detay_res = requests.get(temiz_url, headers=get_headers(), timeout=15)
-                    if detay_res.status_code != 200: continue
+                    if detay_res.status_code != 200: 
+                        continue
                     detay_html = detay_res.text
                     
-                    if tip == "film":
-                        iframe_match = re.search(r'<iframe[^>]+(?:data-src|src)="([^"]*vidrame\.pro\/vr\/([a-zA-Z0-9]+)[^"]*)"', detay_html, re.IGNORECASE)
-                        if iframe_match:
-                            sonuclar.append({
-                                "title": title,
-                                "poster": poster,
-                                "url": temiz_url,
-                                "m3u8": f"https://vidrame.pro/vr/get/{iframe_match.group(2)}/master.m3u8"
-                            })
+                    # Sayfadaki tüm bölüm linklerini regex gruplarına göre topla
+                    bolum_matches = re.findall(r'<a[^>]+href="([^"]*\/sezon-\d+\/bolum-\d+\/[^"]*)"[^>]*>[\s\S]*?<h3[^>]*>([\s\S]*?)<\/h3>', detay_html, re.IGNORECASE)
                     
-                    elif tip == "dizi":
-                        bolum_matches = re.findall(r'<a[^>]+href="([^"]*\/sezon-\d+\/bolum-\d+\/[^"]*)"[^>]*>[\s\S]*?<h3[^>]*>([\s\S]*?)<\/h3>', detay_html, re.IGNORECASE)
+                    if not bolum_matches:
+                        # Alternatif regex pattern (farklı tema yapıları için)
+                        bolum_matches = re.findall(r'<a[^>]+href="([^"]*\/bolum-\d+\/[^"]*)"[^>]*>[\s\S]*?<h3[^>]*>([\s\S]*?)<\/h3>', detay_html, re.IGNORECASE)
+
+                    bolum_detaylari = []
+                    
+                    # Bulgulanan tüm bölümleri tek tek dolaş
+                    for b_link, b_title in bolum_matches:
+                        b_url = b_link if b_link.startswith("http") else BASE_URL + b_link
+                        time.sleep(0.8) # Bölüm geçişlerinde hafif bekleme
                         
-                        bolum_detaylari = []
-                        for b_link, b_title in bolum_matches[:5]:
-                            b_url = b_link if b_link.startswith("http") else BASE_URL + b_link
-                            time.sleep(1)
-                            try:
-                                b_res = requests.get(b_url, headers=get_headers(), timeout=10)
-                                if b_res.status_code == 200:
-                                    v_match = re.search(r'<iframe[^>]+(?:data-src|src)="([^"]*vidrame\.pro\/vr\/([a-zA-Z0-9]+)[^"]*)"', b_res.text, re.IGNORECASE)
-                                    if v_match:
-                                        bolum_detaylari.append({
-                                            "bolum_adi": b_title.strip(),
-                                            "m3u8": f"https://vidrame.pro/vr/get/{v_match.group(2)}/master.m3u8"
-                                        })
-                            except:
-                                pass
+                        try:
+                            b_res = requests.get(b_url, headers=get_headers(), timeout=10)
+                            if b_res.status_code == 200:
+                                v_match = re.search(r'<iframe[^>]+(?:data-src|src)="([^"]*vidrame\.pro\/vr\/([a-zA-Z0-9]+)[^"]*)"', b_res.text, re.IGNORECASE)
+                                if v_match:
+                                    bolum_detaylari.append({
+                                        "bolum_adi": b_title.strip(),
+                                        "m3u8": f"https://vidrame.pro/vr/get/{v_match.group(2)}/master.m3u8"
+                                    })
+                        except Exception as ep_err:
+                            print(f"      ❌ Bölüm çekilemedi ({b_title.strip()}): {ep_err}")
+                            pass
                                 
-                        if bolum_detaylari:
-                            sonuclar.append({
-                                "title": title,
-                                "poster": poster,
-                                "url": temiz_url,
-                                "bolumler": bolum_detaylari
-                            })
+                    if bolum_detaylari:
+                        # Bölümleri isimlerine göre sıralı hale getir
+                        bolum_detaylari.sort(key=lambda x: [int(s) if s.isdigit() else s for s in re.split(r'(\d+)', x['bolum_adi'])])
+                        
+                        sonuclar.append({
+                            "title": title,
+                            "poster": poster,
+                            "url": temiz_url,
+                            "toplam_bolum": len(bolum_detaylari),
+                            "bolumler": bolum_detaylari
+                        })
+                        print(f"      ✅ Başarıyla eklendi: {len(bolum_detaylari)} Bölüm")
                 except Exception as e:
-                    print(f"Hata oluştu ({title}): {e}")
+                    print(f"   ❌ Hata oluştu ({title}): {e}")
                     
         except Exception as e:
-            print(f"Sayfa hatası: {e}")
+            print(f"❌ Sayfa hatası: {e}")
             
     return sonuclar
 
 if __name__ == "__main__":
+    # Sadece dizileri çekiyoruz
     veri = {
-        "filmler": veri_kazı(tip="film", max_sayfa=2),
-        "diziler": veri_kazı(tip="dizi", max_sayfa=1)
+        "diziler": dizi_kazı(max_sayfa=2) # Taranacak sayfa sayısını buradan değiştirebilirsin
     }
     
-    # HDF klasör yolunu belirle ve yoksa oluştur
     hedef_klasor = "hdf"
     if not os.path.exists(hedef_klasor):
         os.makedirs(hedef_klasor)
@@ -134,4 +140,4 @@ if __name__ == "__main__":
     with open(hedef_dosya, "w", encoding="utf-8") as f:
         json.dump(veri, f, ensure_ascii=False, indent=2)
         
-    print(f"✅ Veriler başarıyla '{hedef_dosya}' yoluna kaydedildi!")
+    print(f"\n✅ Tüm işlemler tamamlandı. Veriler '{hedef_dosya}' dosyasına yazıldı!")
