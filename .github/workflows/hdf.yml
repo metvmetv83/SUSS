@@ -1,8 +1,6 @@
 name: Dizi Kazıyıcı
 
 on:
-  schedule:
-    - cron: '0 */6 * * *'
   workflow_dispatch:
 
 jobs:
@@ -12,24 +10,35 @@ jobs:
       contents: write
       
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: '3.10'
+      - run: pip install requests
+      - run: |
+          python -c "
+import requests, json, os
+from datetime import datetime
 
-      - name: Install Dependencies
-        run: pip install curl_cffi pyyaml
+worker = 'https://hdfilmdizijson.64fetih.workers.dev'
+diziler = []
 
-      - name: Run Script
-        run: python hdf/hdf.py --max-pages 5 --max-episodes 10
+for sayfa in range(1, 4):
+    r = requests.get(f'{worker}/?tip=dizi&sayfa={sayfa}')
+    if r.status_code == 200:
+        for d in r.json().get('veriler', []):
+            if not d.get('hata'):
+                diziler.append(d)
 
-      - name: Commit and Push
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add hdf/
-          git commit -m "Update dizi verileri" || echo "Değişiklik yok"
+os.makedirs('hdf', exist_ok=True)
+with open('hdf/diziler.json', 'w') as f:
+    json.dump({'tarih': str(datetime.now()), 'diziler': diziler}, f, ensure_ascii=False, indent=2)
+
+print(f'{len(diziler)} dizi kaydedildi')
+"
+      - run: |
+          git config user.name "actions"
+          git config user.email "actions@github.com"
+          git add hdf/diziler.json
+          git commit -m "dizi güncelle" || echo "no change"
           git push
