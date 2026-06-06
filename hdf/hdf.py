@@ -4,6 +4,7 @@ import json
 import re
 import time
 import random
+import argparse
 from typing import List, Dict, Optional
 from curl_cffi import requests
 import yaml
@@ -31,14 +32,11 @@ def get_headers():
         "True-Client-IP": random_ip
     }
 
-def fetch_with_retry(url: str, max_retries: int = 2, timeout: int = 12) -> Optional[str]:
+def fetch_with_retry(url: str, max_retries: int = 3, timeout: int = 15) -> Optional[str]:
     """Worker'daki gibi retry mekanizmalı fetch"""
     for deneme in range(1, max_retries + 1):
         try:
-            # Rastgele IP ile yeni headers
             headers = get_headers()
-            
-            # Cookie ekle (Cloudflare'ı aşmak için)
             headers["Cookie"] = f"__cf_bm={random.randint(100000, 999999)}"
             
             response = requests.get(
@@ -54,22 +52,22 @@ def fetch_with_retry(url: str, max_retries: int = 2, timeout: int = 12) -> Optio
                 # Cloudflare kontrolü
                 if "cf-browser-verification" in html or "Attention Required" in html or "DDOS" in html:
                     print(f"      ⚠️ Deneme {deneme}: Cloudflare koruması")
-                    time.sleep(1 * deneme)
+                    time.sleep(2 * deneme)
                     continue
                 
                 return html
             
             print(f"      ⚠️ Deneme {deneme}: HTTP {response.status_code}")
-            time.sleep(0.5 * deneme)
+            time.sleep(1 * deneme)
             
         except Exception as e:
             print(f"      ⚠️ Deneme {deneme}: {str(e)[:50]}")
-            time.sleep(0.5 * deneme)
+            time.sleep(1 * deneme)
     
     return None
 
 def extract_episodes(detay_html: str) -> List[Dict]:
-    """Bölümleri extracted et - Worker'daki pattern'ler ile"""
+    """Bölümleri extracted et"""
     bolumler = []
     
     patterns = [
@@ -98,7 +96,7 @@ def extract_episodes(detay_html: str) -> List[Dict]:
 
 def get_episode_video(episode_url: str) -> Optional[str]:
     """Bölümün video linkini bul"""
-    ep_html = fetch_with_retry(episode_url, max_retries=1, timeout=8)
+    ep_html = fetch_with_retry(episode_url, max_retries=2, timeout=10)
     if not ep_html:
         return None
     
@@ -110,7 +108,7 @@ def get_episode_video(episode_url: str) -> Optional[str]:
     for pattern in patterns:
         match = re.search(pattern, ep_html, re.IGNORECASE)
         if match:
-            if match.group(2):  # vidrame pattern
+            if match.group(2):
                 return f"https://vidrame.pro/vr/get/{match.group(2)}/master.m3u8"
             elif match.group(1):
                 return match.group(1)
@@ -127,14 +125,16 @@ def get_total_pages() -> int:
         if page_links:
             return max(int(p) for p in page_links)
     
-    return 10  # Varsayılan
+    return 2  # Varsayılan 2 sayfa
 
-def dizi_kazı(max_sayfa: int = None, max_episodes: int = 8):
-    """Tüm dizileri kazı - Worker mantığı ile"""
+def dizi_kazı(max_sayfa: int = None, max_episodes: int = 10):
+    """Tüm dizileri kazı"""
     
     if max_sayfa is None:
         max_sayfa = get_total_pages()
         print(f"📊 Toplam {max_sayfa} sayfa bulundu")
+    else:
+        print(f"📊 {max_sayfa} sayfa taranacak")
     
     tüm_diziler = []
     basarili = 0
@@ -144,22 +144,18 @@ def dizi_kazı(max_sayfa: int = None, max_episodes: int = 8):
         print(f"\n🔄 [DİZİ] Sayfa {sayfa}/{max_sayfa} taranıyor...")
         target_url = f"{BASE_URL}/yabanci-dizi-izle-3/page/{sayfa}/"
         
-        # Ana sayfayı çek
-        html = fetch_with_retry(target_url, max_retries=3, timeout=15)
+        html = fetch_with_retry(target_url, max_retries=3, timeout=20)
         if not html:
             print(f"   ❌ Sayfa {sayfa} alınamadı")
             basarisiz += 1
             continue
         
-        # Ana içeriği bul
         main_match = re.search(r'id="moviesListResult"([\s\S]*?)</nav>', html)
         if not main_match:
             print(f"   ⚠️ Sayfa {sayfa}: moviesListResult bulunamadı")
             continue
         
         list_html = main_match.group(1)
-        
-        # Kartları bul
         card_regex = r'<a\s+href="([^"]+)"\s+title="([^"]+)"[^>]*class="([^"]*poster[^"]*)"[^>]*>([\s\S]*?)</a>'
         matches = re.findall(card_regex, list_html, re.IGNORECASE)
         
@@ -169,7 +165,6 @@ def dizi_kazı(max_sayfa: int = None, max_episodes: int = 8):
             link, title, _, card_inner = match
             title = title.strip()
             
-            # Poster URL
             poster = ""
             ds_match = re.search(r'data-src="([^"]+)"', card_inner)
             if ds_match:
@@ -179,7 +174,6 @@ def dizi_kazı(max_sayfa: int = None, max_episodes: int = 8):
                 if s_match:
                     poster = s_match.group(1)
             
-            # URL temizleme
             temiz_url = link if link.startswith("http") else BASE_URL + link
             dizi_match = re.match(r'(https://www\.hdfilmizle\.now/dizi/[^/]+/)', temiz_url)
             if dizi_match:
@@ -190,14 +184,12 @@ def dizi_kazı(max_sayfa: int = None, max_episodes: int = 8):
             
             print(f"\n   🎬 {title}")
             
-            # Dizi detay sayfasını çek
-            detay_html = fetch_with_retry(temiz_url, max_retries=2, timeout=12)
+            detay_html = fetch_with_retry(temiz_url, max_retries=2, timeout=15)
             if not detay_html:
                 print(f"      ❌ Detay sayfası alınamadı")
                 basarisiz += 1
                 continue
             
-            # Bölümleri bul
             bolumler = extract_episodes(detay_html)
             
             if not bolumler:
@@ -207,7 +199,6 @@ def dizi_kazı(max_sayfa: int = None, max_episodes: int = 8):
             
             print(f"      📺 {len(bolumler)} bölüm bulundu, ilk {max_episodes} işleniyor...")
             
-            # Benzersiz bölümleri al
             unique_bolumler = []
             seen_urls = set()
             for bolum in bolumler:
@@ -215,7 +206,6 @@ def dizi_kazı(max_sayfa: int = None, max_episodes: int = 8):
                     seen_urls.add(bolum["url"])
                     unique_bolumler.append(bolum)
             
-            # Bölümlerin video linklerini al (paralel)
             bolum_detaylari = []
             max_eps = min(len(unique_bolumler), max_episodes)
             
@@ -233,10 +223,9 @@ def dizi_kazı(max_sayfa: int = None, max_episodes: int = 8):
                 else:
                     print(f"            ⚠️ Video bulunamadı")
                 
-                time.sleep(random.uniform(0.3, 0.7))  # Rate limiting
+                time.sleep(random.uniform(0.3, 0.7))
             
             if bolum_detaylari:
-                # Bölümleri sırala
                 bolum_detaylari.sort(key=lambda x: [int(s) if s.isdigit() else s for s in re.split(r'(\d+)', x['bolum_adi'])])
                 
                 tüm_diziler.append({
@@ -253,12 +242,10 @@ def dizi_kazı(max_sayfa: int = None, max_episodes: int = 8):
                 basarisiz += 1
                 print(f"      ❌ Video bulunamadı")
             
-            # Diziler arası bekleme
             time.sleep(random.uniform(0.5, 1.5))
         
-        # Sayfalar arası bekleme
         if sayfa < max_sayfa:
-            wait_time = random.uniform(2, 4)
+            wait_time = random.uniform(3, 6)
             print(f"\n   ⏳ {wait_time:.1f} saniye bekleniyor...")
             time.sleep(wait_time)
     
@@ -270,18 +257,18 @@ def dizi_kazı(max_sayfa: int = None, max_episodes: int = 8):
     return tüm_diziler
 
 def main():
+    parser = argparse.ArgumentParser(description='HDFilmIzle Dizi Kazıyıcı')
+    parser.add_argument('--max-pages', type=int, default=None, help='Maksimum sayfa sayısı')
+    parser.add_argument('--max-episodes', type=int, default=10, help='Maksimum bölüm sayısı')
+    parser.add_argument('--output', type=str, default='hdf/diziler', help='Çıktı dosya adı (uzantısız)')
+    
+    args = parser.parse_args()
+    
     print("🎬 HDFilmIzle Dizi Kazıyıcı Başlatılıyor...")
     print("=" * 50)
     
-    # Kullanıcıdan input al
-    sayfa_input = input("Kaç sayfa taranacak? (Boş bırak=tümü): ").strip()
-    max_sayfa = int(sayfa_input) if sayfa_input else None
-    
-    episode_input = input("Her dizi için maksimum bölüm (varsayılan 8): ").strip()
-    max_episodes = int(episode_input) if episode_input else 8
-    
     # Dizileri kazı
-    diziler = dizi_kazı(max_sayfa=max_sayfa, max_episodes=max_episodes)
+    diziler = dizi_kazı(max_sayfa=args.max_pages, max_episodes=args.max_episodes)
     
     # Veriyi hazırla
     veri = {
@@ -289,7 +276,8 @@ def main():
             "kazıma_tarihi": datetime.now().isoformat(),
             "kaynak": BASE_URL,
             "toplam_dizi": len(diziler),
-            "max_episodes": max_episodes
+            "max_episodes": args.max_episodes,
+            "max_pages": args.max_pages
         },
         "diziler": diziler
     }
@@ -298,13 +286,13 @@ def main():
     os.makedirs("hdf", exist_ok=True)
     
     # JSON kaydet
-    json_path = "hdf/diziler.json"
+    json_path = f"{args.output}.json"
     with open(json_path, "w", encoding="utf-8") as f:
         json.dump(veri, f, ensure_ascii=False, indent=2)
     print(f"\n✅ JSON kaydedildi: {json_path}")
     
     # YAML kaydet
-    yaml_path = "hdf/diziler.yaml"
+    yaml_path = f"{args.output}.yaml"
     with open(yaml_path, "w", encoding="utf-8") as f:
         yaml.dump(veri, f, allow_unicode=True, default_flow_style=False, sort_keys=False)
     print(f"✅ YAML kaydedildi: {yaml_path}")
