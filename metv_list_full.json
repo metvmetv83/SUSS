@@ -1134,6 +1134,12 @@
     "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=469"
   },
   {
+    "id": 470,
+    "name": "Malatya Er Tv",
+    "logo": "https://www.giniko.com/logos/190x110/470.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=470"
+  },
+  {
     "id": 471,
     "name": "Natural TV",
     "logo": "https://www.giniko.com/logos/190x110/471.jpg",
@@ -1528,12 +1534,6 @@
     "name": "Haber Turk (EPG)",
     "logo": "https://www.giniko.com/logos/190x110/771.jpg",
     "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=771"
-  },
-  {
-    "id": 772,
-    "name": "Haber Global (EPG)",
-    "logo": "https://www.giniko.com/logos/190x110/772.jpg",
-    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=772"
   },
   {
     "id": 773,
