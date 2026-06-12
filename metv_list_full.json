@@ -1536,6 +1536,12 @@
     "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=771"
   },
   {
+    "id": 772,
+    "name": "Haber Global (EPG)",
+    "logo": "https://www.giniko.com/logos/190x110/772.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=772"
+  },
+  {
     "id": 773,
     "name": "KRT Kultur TV (EPG)",
     "logo": "https://www.giniko.com/logos/190x110/773.jpg",
@@ -1702,12 +1708,6 @@
     "name": "NTV (EPG)",
     "logo": "https://www.giniko.com/logos/190x110/813.jpg",
     "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=813"
-  },
-  {
-    "id": 814,
-    "name": "Kanal 7 (EPG)",
-    "logo": "https://www.giniko.com/logos/190x110/814.jpg",
-    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=814"
   },
   {
     "id": 815,
