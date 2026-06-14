@@ -1332,6 +1332,12 @@
     "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=732"
   },
   {
+    "id": 733,
+    "name": "TV8.5 (EPG)",
+    "logo": "https://www.giniko.com/logos/190x110/733.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=733"
+  },
+  {
     "id": 734,
     "name": "Kanal D (EPG)",
     "logo": "https://www.giniko.com/logos/190x110/734.jpg",
@@ -1606,6 +1612,12 @@
     "name": "TRT 4K",
     "logo": "https://www.giniko.com/logos/190x110/786.jpg",
     "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=786"
+  },
+  {
+    "id": 787,
+    "name": "TRT 1 (EPG)",
+    "logo": "https://www.giniko.com/logos/190x110/787.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=787"
   },
   {
     "id": 790,
@@ -2092,6 +2104,12 @@
     "name": "VOD test",
     "logo": "https://www.giniko.com/logos/190x110/961.jpg",
     "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=961"
+  },
+  {
+    "id": 962,
+    "name": "Fox 5",
+    "logo": "https://www.giniko.com/logos/190x110/962.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=962"
   },
   {
     "id": 963,
