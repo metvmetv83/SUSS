@@ -1572,12 +1572,6 @@
     "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=777"
   },
   {
-    "id": 778,
-    "name": "TRT Haber (EPG)",
-    "logo": "https://www.giniko.com/logos/190x110/778.jpg",
-    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=778"
-  },
-  {
     "id": 779,
     "name": "TRT World (EPG)",
     "logo": "https://www.giniko.com/logos/190x110/779.jpg",
@@ -1876,12 +1870,6 @@
     "name": "Deutsche Welle (DW)",
     "logo": "https://www.giniko.com/logos/190x110/885.jpg",
     "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=885"
-  },
-  {
-    "id": 886,
-    "name": "Euro News",
-    "logo": "https://www.giniko.com/logos/190x110/886.jpg",
-    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=886"
   },
   {
     "id": 891,
