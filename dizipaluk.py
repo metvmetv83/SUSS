@@ -31,7 +31,7 @@ async def main():
         try:
             # ❗ networkidle YOK
             await page.goto(
-                "https://dizipal.bar/filmler/",
+                "https://dizipal.bid/filmler/",
                 wait_until="domcontentloaded",
                 timeout=90000
             )
@@ -47,7 +47,7 @@ async def main():
 
             content = await page.content()
 
-            pattern = r'href="(https://dizipal\.bar/film/[^"]+)"[^>]*title="([^"]+)"'
+            pattern = r'href="(https://dizipal\.bid/film/[^"]+)"[^>]*title="([^"]+)"'
             matches = re.findall(pattern, content)
 
             movies = []
