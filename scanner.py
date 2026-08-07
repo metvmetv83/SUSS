@@ -71,7 +71,7 @@ def main():
     # 2. Sonra kendi içlerinde ID'ye göre sırala
     results.sort(key=lambda x: (not is_turkish(x["name"]), x["id"]))
 
-    with open("channels3.json", "w", encoding="utf-8") as f:
+    with open("channels7.json", "w", encoding="utf-8") as f:
         json.dump(results, f, ensure_ascii=False, indent=2)
 
     print(f"\nİşlem bitti! Toplam {len(results)} kanal bulundu.")
