@@ -726,12 +726,6 @@
     "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=364"
   },
   {
-    "id": 365,
-    "name": "Ilke TV",
-    "logo": "https://www.giniko.com/logos/190x110/365.jpg",
-    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=365"
-  },
-  {
     "id": 366,
     "name": "Balikesir Kent TV",
     "logo": "https://www.giniko.com/logos/190x110/366.jpg",
@@ -832,12 +826,6 @@
     "name": "Kanal B - Baskent",
     "logo": "https://www.giniko.com/logos/190x110/388.jpg",
     "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=388"
-  },
-  {
-    "id": 389,
-    "name": "Kanal Avrupa",
-    "logo": "https://www.giniko.com/logos/190x110/389.jpg",
-    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=389"
   },
   {
     "id": 390,
@@ -1314,12 +1302,6 @@
     "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=723"
   },
   {
-    "id": 724,
-    "name": "TV8 (EPG)",
-    "logo": "https://www.giniko.com/logos/190x110/724.jpg",
-    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=724"
-  },
-  {
     "id": 732,
     "name": "TYTTURK",
     "logo": "https://www.giniko.com/logos/190x110/732.jpg",
@@ -1368,22 +1350,10 @@
     "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=740"
   },
   {
-    "id": 741,
-    "name": "Ulke TV (EPG)",
-    "logo": "https://www.giniko.com/logos/190x110/741.jpg",
-    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=741"
-  },
-  {
     "id": 742,
     "name": "Sky 360 (EPG)",
     "logo": "https://www.giniko.com/logos/190x110/742.jpg",
     "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=742"
-  },
-  {
-    "id": 743,
-    "name": "TRT Turk (EPG)",
-    "logo": "https://www.giniko.com/logos/190x110/743.jpg",
-    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=743"
   },
   {
     "id": 744,
@@ -1434,12 +1404,6 @@
     "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=752"
   },
   {
-    "id": 753,
-    "name": "Ekol TV",
-    "logo": "https://www.giniko.com/logos/190x110/753.jpg",
-    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=753"
-  },
-  {
     "id": 754,
     "name": "Sports TV (EPG)",
     "logo": "https://www.giniko.com/logos/190x110/754.jpg",
@@ -1464,12 +1428,6 @@
     "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=757"
   },
   {
-    "id": 758,
-    "name": "TRT Muzik (EPG).",
-    "logo": "https://www.giniko.com/logos/190x110/758.jpg",
-    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=758"
-  },
-  {
     "id": 760,
     "name": "Diyanet TV (EPG)",
     "logo": "https://www.giniko.com/logos/190x110/760.jpg",
@@ -1486,12 +1444,6 @@
     "name": "TRT Belgesel (EPG)",
     "logo": "https://www.giniko.com/logos/190x110/762.jpg",
     "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=762"
-  },
-  {
-    "id": 764,
-    "name": "TRT Cocuk (EPG)",
-    "logo": "https://www.giniko.com/logos/190x110/764.jpg",
-    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=764"
   },
   {
     "id": 765,
@@ -1644,12 +1596,6 @@
     "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=800"
   },
   {
-    "id": 801,
-    "name": "Exxen 1",
-    "logo": "https://www.giniko.com/logos/190x110/801.jpg",
-    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=801"
-  },
-  {
     "id": 802,
     "name": "Halk TV (EPG)",
     "logo": "https://www.giniko.com/logos/190x110/802.jpg",
@@ -1668,22 +1614,10 @@
     "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=806"
   },
   {
-    "id": 807,
-    "name": "TRT 1 TV (EPG)",
-    "logo": "https://www.giniko.com/logos/190x110/807.jpg",
-    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=807"
-  },
-  {
     "id": 808,
     "name": "TRT Turk (EPG)",
     "logo": "https://www.giniko.com/logos/190x110/808.jpg",
     "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=808"
-  },
-  {
-    "id": 809,
-    "name": "TRT Spor HD (EPG)",
-    "logo": "https://www.giniko.com/logos/190x110/809.jpg",
-    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=809"
   },
   {
     "id": 811,
@@ -1696,12 +1630,6 @@
     "name": "TRT Cocuk (EPG)",
     "logo": "https://www.giniko.com/logos/190x110/812.jpg",
     "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=812"
-  },
-  {
-    "id": 813,
-    "name": "NTV (EPG)",
-    "logo": "https://www.giniko.com/logos/190x110/813.jpg",
-    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=813"
   },
   {
     "id": 814,
@@ -1734,12 +1662,6 @@
     "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=818"
   },
   {
-    "id": 819,
-    "name": "TRT Haber (EPG)",
-    "logo": "https://www.giniko.com/logos/190x110/819.jpg",
-    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=819"
-  },
-  {
     "id": 822,
     "name": "A Spor (EPG)",
     "logo": "https://www.giniko.com/logos/190x110/822.jpg",
@@ -1752,12 +1674,6 @@
     "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=824"
   },
   {
-    "id": 825,
-    "name": "TV8",
-    "logo": "https://www.giniko.com/logos/190x110/825.jpg",
-    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=825"
-  },
-  {
     "id": 826,
     "name": "StarTV",
     "logo": "https://www.giniko.com/logos/190x110/826.jpg",
@@ -1768,18 +1684,6 @@
     "name": "Bein Sports Xtra",
     "logo": "https://www.giniko.com/logos/190x110/828.jpg",
     "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=828"
-  },
-  {
-    "id": 830,
-    "name": "TRT Spor HD",
-    "logo": "https://www.giniko.com/logos/190x110/830.jpg",
-    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=830"
-  },
-  {
-    "id": 831,
-    "name": "TRT 1",
-    "logo": "https://www.giniko.com/logos/190x110/831.jpg",
-    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=831"
   },
   {
     "id": 835,
@@ -1824,24 +1728,6 @@
     "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=875"
   },
   {
-    "id": 876,
-    "name": "Sat7 Turk",
-    "logo": "https://www.giniko.com/logos/190x110/876.jpg",
-    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=876"
-  },
-  {
-    "id": 879,
-    "name": "LUYS TV",
-    "logo": "https://www.giniko.com/logos/190x110/879.jpg",
-    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=879"
-  },
-  {
-    "id": 880,
-    "name": "Kentron TV",
-    "logo": "https://www.giniko.com/logos/190x110/880.jpg",
-    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=880"
-  },
-  {
     "id": 881,
     "name": "1TV Armenia H1",
     "logo": "https://www.giniko.com/logos/190x110/881.jpg",
@@ -1864,18 +1750,6 @@
     "name": "France 24 English",
     "logo": "https://www.giniko.com/logos/190x110/884.jpg",
     "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=884"
-  },
-  {
-    "id": 885,
-    "name": "Deutsche Welle (DW)",
-    "logo": "https://www.giniko.com/logos/190x110/885.jpg",
-    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=885"
-  },
-  {
-    "id": 886,
-    "name": "Euro News",
-    "logo": "https://www.giniko.com/logos/190x110/886.jpg",
-    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=886"
   },
   {
     "id": 891,
@@ -1908,64 +1782,10 @@
     "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=903"
   },
   {
-    "id": 904,
-    "name": "ARB 24 TV",
-    "logo": "https://www.giniko.com/logos/190x110/904.jpg",
-    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=904"
-  },
-  {
-    "id": 905,
-    "name": "ARB TV",
-    "logo": "https://www.giniko.com/logos/190x110/905.jpg",
-    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=905"
-  },
-  {
-    "id": 906,
-    "name": "Ictimai TV",
-    "logo": "https://www.giniko.com/logos/190x110/906.jpg",
-    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=906"
-  },
-  {
-    "id": 907,
-    "name": "Medeniyyet TV",
-    "logo": "https://www.giniko.com/logos/190x110/907.jpg",
-    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=907"
-  },
-  {
-    "id": 908,
-    "name": "Real TV",
-    "logo": "https://www.giniko.com/logos/190x110/908.jpg",
-    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=908"
-  },
-  {
-    "id": 909,
-    "name": "Zexer Xeber",
-    "logo": "https://www.giniko.com/logos/190x110/909.jpg",
-    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=909"
-  },
-  {
     "id": 910,
     "name": "AzStar TV",
     "logo": "https://www.giniko.com/logos/190x110/910.jpg",
     "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=910"
-  },
-  {
-    "id": 911,
-    "name": "Kepez TV",
-    "logo": "https://www.giniko.com/logos/190x110/911.jpg",
-    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=911"
-  },
-  {
-    "id": 912,
-    "name": "Space TV",
-    "logo": "https://www.giniko.com/logos/190x110/912.jpg",
-    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=912"
-  },
-  {
-    "id": 913,
-    "name": "Start TV",
-    "logo": "https://www.giniko.com/logos/190x110/913.jpg",
-    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=913"
   },
   {
     "id": 915,
@@ -2038,18 +1858,6 @@
     "name": "Fresh TV",
     "logo": "https://www.giniko.com/logos/190x110/929.jpg",
     "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=929"
-  },
-  {
-    "id": 940,
-    "name": "Turkmeneli TV",
-    "logo": "https://www.giniko.com/logos/190x110/940.jpg",
-    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=940"
-  },
-  {
-    "id": 945,
-    "name": "EuroStar",
-    "logo": "https://www.giniko.com/logos/190x110/945.jpg",
-    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=945"
   },
   {
     "id": 954,
