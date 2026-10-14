@@ -2146,5 +2146,11 @@
     "name": "Russia Today",
     "logo": "https://www.giniko.com/logos/190x110/988.jpg",
     "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=988"
+  },
+  {
+    "id": 992,
+    "name": "Koza TV",
+    "logo": "https://www.giniko.com/logos/190x110/992.jpg",
+    "xmlUrl": "https://ginikoturkish.com/xml/secure/plist.php?ch=992"
   }
 ]
